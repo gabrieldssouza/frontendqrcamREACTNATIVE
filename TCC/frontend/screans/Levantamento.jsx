@@ -10,6 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Levantamento() {
   //vai ter que mudar tudo nessa bomba  e vai muda o banco de dados também 
+ //atualizei o banco de dados
+ 
   const route = useRoute();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
