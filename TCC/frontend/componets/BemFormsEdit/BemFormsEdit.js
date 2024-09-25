@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+
 export default function BemFormEdit(props) {
   const navigation = useNavigation();
 
@@ -20,7 +21,7 @@ export default function BemFormEdit(props) {
     useEffect(() => {
         const handleGetBem = async () => {
             try {
-                const response = await fetch(`http://192.168.1.80:3000/listarBem/${id}`);
+                const response = await fetch(`http://192.168.1.167:3000/listarBem/${id}`);
                 if (!response.ok) {
                     throw new Error('Erro ao pegar dados');
                 }
@@ -53,7 +54,7 @@ export default function BemFormEdit(props) {
         };
 
         try {
-            const response = await fetch('http://192.168.1.80:3000/editarBem', {
+            const response = await fetch('http://192.168.145.87:3000/editarBem', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

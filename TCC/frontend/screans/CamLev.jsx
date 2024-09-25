@@ -1,15 +1,21 @@
+
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function App() {
+ export default function CameraLevantamento({route}) {
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
   const navigation = useNavigation();
+  const idLevantamento = route.params?.idLevantamento;
+  console.log("idLevantamento recebido:", idLevantamento);
+
+  console.log("id levantamento cam", idLevantamento)
+
 
   useEffect(() => {
     (async () => {
@@ -20,6 +26,7 @@ export default function App() {
 
   const handleBarcodeScanned = async ({ type, data }) => {
     setScanned(true);
+    let idbem;  // Definir idbem aqui para usar em todo o escopo da função
   
     try {
       const qrJson = JSON.parse(data);
@@ -29,7 +36,7 @@ export default function App() {
         throw new Error('idbem não encontrado no QR code');
       }
   
-      const { idbem } = qrJson;
+      idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
   
       const response = await fetch(`http://192.168.1.167:3000/listarbem/${idbem}`);
@@ -37,11 +44,37 @@ export default function App() {
         throw new Error('Erro ao pegar dados');
       }
       const bem = await response.json();
-      navigation.navigate('Bem', { idbem });
+      navigation.navigate('EditBemLev', { id: idbem });
+  
+      // Criação do novo objeto com os dados do bem
+      let newData = {
+        bem_idbem: idbem,
+        Levantamento_idLevantamento: idLevantamento  // Verifique se isso é o que você precisa
+      };
+      console.log("data: ", newData);
+  
+      // Requisição para adicionar o bem ao levantamento
+      console.log("entrou no try do add ");
+      const addResponse = await fetch('http://192.168.1.167:3000/addBensLevantamento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      });
+  
+      const result = await addResponse.json();
+      if (!addResponse.ok) {
+        throw new Error(result.message || 'Erro na solicitação');
+      }
+  
+      // Navegação para a tela inicial só após o sucesso da requisição POST
+
     } catch (error) {
-      console.error('Erro ao buscar bem', error);
+      console.error('Erro ao processar QR code', error);
     }
   };
+  
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;

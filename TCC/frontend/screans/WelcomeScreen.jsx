@@ -9,14 +9,11 @@ export default function WelcomeScreen() {
   
     return (
         <SafeAreaView style={styles.container} >
-
-          
-           
+ 
             <View  style={styles.imageContainer}>
                 <Image
                     source={require("../assets/logotccbranca.png")}
                    style={styles.image}
-                   
                 />
             </View>
             <View >

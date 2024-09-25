@@ -1,6 +1,32 @@
 const bemModel = require('../models/bemModel');
 const QRCode = require('qrcode');
 
+exports.adcionarBemLevantamento = async (req,res) => {
+    const {bem_idbem, Levantamento_idLevantamento} = req.body;
+
+    try {
+        const bem = await bemModel.adcionarBemLevantamento(bem_idbem, Levantamento_idLevantamento);
+        res.status(200).send(bem);
+    } catch (erro) {
+        console.error('Erro no controlador:', erro);
+        res.status(500).send('Erro ao adicionar bem ao levantamento');
+    }
+}
+
+exports.adcionarLevantamento = async (req,res) => {
+    const {idLevantamento, data_hora, responsavel, ano} = req.body;
+
+    try {
+        const bem = await bemModel.adcionarLevantamento(idLevantamento, data_hora, responsavel, ano);
+        res.status(200).send(bem);
+    } catch (erro) {
+        console.error('Erro no controlador:', erro);
+        res.status(500).send('Erro ao adicionar levantamento');
+    }
+}
+
+
+
 exports.criarBem = async (req, res) => {
   const { nome, numero, codigo, data_aquisicao, valor_aquisicao, estado_conservacao, categoria_idCategoria, local } = req.body;
 
@@ -39,6 +65,25 @@ exports.listarBens = async (req, res) => {
         res.status(500).send(erro);
     }
 }
+
+exports.listarBensLevantamento = async (req, res) => {
+    try {
+        const bensLevantamento = await bemModel.listarBensLevantamento();
+        res.status(200).json(bensLevantamento);
+    } catch (erro) {
+        res.status(500).send(erro);
+    }
+}
+
+exports.listarLevantamento = async (req, res) => {
+    try {
+        const Levantamento = await bemModel.listarLevantamento();
+        res.status(200).json(Levantamento);
+    } catch (erro) {
+        res.status(500).send(erro);
+    }
+}
+
 
 exports.listarBem = async (req, res) => {
     try {
@@ -93,12 +138,14 @@ exports.listarBensDeCategoria = async (req, res) => {
 exports.listarBensDeLocal = async (req, res) => {
     try {
         const { idLocal } = req.params;
-        const BensDeLocal = await bemModel.listarBensDeLocal(idLocal);
-        res.status(200).json(BensDeLocal);
+        console.log('ID Local recebido:', idLocal); // Verifique o valor de idLocal
+        const listarBensDeLocais = await bemModel.listarBensDeLocais(idLocal);
+        res.status(200).json(listarBensDeLocais);
     } catch (erro) {
         res.status(500).send(erro);
     }
-}
+};
+
 
 exports.listarBemDeEstado = async (req, res) => {
     try {

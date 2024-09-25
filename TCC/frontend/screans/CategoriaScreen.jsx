@@ -14,7 +14,7 @@ export default function CategoriaScreen() {
 
  const fetchDataCategorias = async () => {
       try {
-        const response = await fetch('http://192.168.1.80:3000/listarCategorias');
+        const response = await fetch('http://192.168.1.167:3000/listarCategorias');
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
         }
@@ -35,7 +35,7 @@ export default function CategoriaScreen() {
 
    async function fetchBemCategoria(id){
     try{
-        const response = await fetch(`http://192.168.1.23:3000/listarCategoria/${id}`)
+        const response = await fetch(`http://192.168.1.167:3000/listarCategoria/${id}`)
         if(!response.ok){
             throw new Error('Erro ao pegar dados'); 
         }

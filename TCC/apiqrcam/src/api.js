@@ -73,5 +73,28 @@ app.use('/listarEstados/:nameEstado', router.get('/listarEstados/:nameEstado', a
     await bemController.listarBemDeEstado(req, res);
 }));
 
+app.use('/addBensLevantamento', router.post('/addBensLevantamento', async (req, res) => {
+    const bemController = require('./controllers/bemController');
+    await bemController.adcionarBemLevantamento(req, res);
+}));
+
+app.use('/addLevantamento', router.post('/addLevantamento', async (req, res) => {
+    const bemController = require('./controllers/bemController');
+    await bemController.adcionarLevantamento(req, res);
+}));
+
+
+app.use('/listarBensLevantamento', router.get('/listarBensLevantamento', async (req, res) => {
+    const bemController = require('./controllers/bemController');
+    await bemController.listarBensLevantamento(req, res);
+}));
+
+app.use('/listarLevantamentos', router.get('/listarLevantamentos', async (req, res) => {
+    const bemController = require('./controllers/bemController');
+    await bemController.listarLevantamento(req, res);
+}));
+
+
+
 module.exports = app;
 

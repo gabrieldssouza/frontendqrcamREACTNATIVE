@@ -16,7 +16,7 @@ export default function IndividualBem({ route }) {
   useEffect(() => {
     const fetchBem = async () => {
       try {
-        const response = await fetch(`http://192.168.1.80:3000/listarbem/${idbem}`);
+        const response = await fetch(`http://192.168.1.167:3000/listarbem/${idbem}`);
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
         }

@@ -30,7 +30,7 @@ export default function InitialScreen() {
 const filtroEstado = async () => {
   console.log(estadoConservacao)
     try {
-      const response = await fetch(`http://192.168.1.80:3000/listarEstados/${estadoConservacao}`);
+      const response = await fetch(`http://192.168.1.167:3000/listarEstados/${estadoConservacao}`);
       const result = await response.json();
       setDataEstadoFiltro(result);
       setIsAllbensVIsible(false)
@@ -49,7 +49,7 @@ const filtroEstado = async () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.1.80:3000/listarbens');
+      const response = await fetch('http://192.168.1.167:3000/listarbens');
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -90,10 +90,10 @@ const filtroEstado = async () => {
       
 
       < View > 
-      <TouchableOpacity onPress={()=> navigation.navigate('Levantamento')} style={{ justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.28,
+      <TouchableOpacity onPress={()=> navigation.navigate('LevScreen')} style={{ justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.28,
          backgroundColor: "#ECAA71", height: 50, alignItems: "center",  borderRadius: 10
       }}> 
-        <Text> Levantamento</Text>
+        <Text>Levantamento</Text>
       </TouchableOpacity>
 
                     <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Nome da filial</Text>
@@ -192,7 +192,8 @@ const filtroEstado = async () => {
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="add" size={48} color="white" /></Text>
     </TouchableOpacity>
 
-    <TouchableOpacity onPress={() =>  navigation.navigate('Cam')} style={{position: "absolute", bottom: 50, left: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
+    <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })}
+ style={{position: "absolute", bottom: 50, left: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="camera" size={48} color="white" /></Text>
     </TouchableOpacity> 
   

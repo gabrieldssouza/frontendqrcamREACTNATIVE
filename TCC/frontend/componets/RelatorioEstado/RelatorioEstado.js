@@ -13,7 +13,7 @@ export default function RelatórioEstado({data}) {
 
 const filtroEstado = async (est) => {
     try {
-      const response = await fetch(`http://192.168.1.80:3000/listarEstados/${est}`);
+      const response = await fetch(`http://192.168.1.167:3000/listarEstados/${est}`);
       const result = await response.json();
       return result;
     } catch (error) {
