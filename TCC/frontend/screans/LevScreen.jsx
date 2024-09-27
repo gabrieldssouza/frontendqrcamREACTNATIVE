@@ -63,9 +63,9 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
                             />
                             </View>
                             <View style={{ paddingLeft: 20, justifyContent: "center"}}>
-                            <Text className="textTitleBem" style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{item.ano}</Text>
-                            <Text className="textNumeroBem">Responsável: {item.responsavel}</Text>
-                            <Text className="textLocalBem">data: { item.idLevantamento}</Text>
+                            <Text  style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{item.ano}</Text>
+                            <Text >Responsável: {item.responsavel}</Text>
+                            <Text >data: { item.idLevantamento}</Text>
                             </View>
                         </View>
                     </View>
