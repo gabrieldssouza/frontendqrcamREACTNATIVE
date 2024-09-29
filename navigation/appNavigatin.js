@@ -14,7 +14,12 @@ import FormsEditBem from "../screans/FormsEditBem";
 import CameraScreen from "../screans/Camera"; 
 import LocaisScreen from "../screans/LocaisScreen";
 import CategoriaScreen from "../screans/CategoriaScreen";
-
+import CameraLevantamento from "../screans/CamLev";
+import VerificationScreen from "../screans/saveLevantamento";
+import LevLocais from "../screans/LevLocais";
+import BemLocLev from "../screans/BemLocLev";
+import EditBemLevScreen from "../screans/EditBemLev";
+import LevScreen from "../screans/LevScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +40,12 @@ export default function AppNavigation() {
                 <Stack.Screen name="Cam" options={{ headerShown: false }} component={CameraScreen} />
                 <Stack.Screen name="Local" options={{ headerShown: false }} component={LocaisScreen} />
                 <Stack.Screen name="Categoria" options={{ headerShown: false }} component={CategoriaScreen} />
+                <Stack.Screen name="Levantamento" options={{ headerShown: false }} component={LevLocais} /> 
+                 <Stack.Screen name="CamLev" component={CameraLevantamento} /> 
+                <Stack.Screen name="BemLocLev" component={BemLocLev} />
+                <Stack.Screen name="EditBemLev" component={EditBemLevScreen} />
+                <Stack.Screen name="LevScreen" component={LevScreen} />
+
             </Stack.Navigator>
          </NavigationContainer>    
     );

@@ -9,14 +9,11 @@ export default function WelcomeScreen() {
   
     return (
         <SafeAreaView style={styles.container} >
-
-          
-           
+ 
             <View  style={styles.imageContainer}>
                 <Image
                     source={require("../assets/logotccbranca.png")}
                    style={styles.image}
-                   
                 />
             </View>
             <View >
@@ -27,11 +24,11 @@ export default function WelcomeScreen() {
                     onPress={() => navigation.navigate('SingUp')}
                 >
                     <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>
-                        Cadastrar
+                        Sign Up
                     </Text>
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
-                    <Text style={{ color: 'white' }}>Já possui uma conta?</Text>
+                    <Text style={{ color: 'white' }}>Already have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                         <Text style={{ fontWeight: '600', color: '#ECAA71', marginLeft: 4 }}>Login</Text>
                     </TouchableOpacity>

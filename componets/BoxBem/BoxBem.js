@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, Dimensions} from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 
 function BoxBem( {data} ) {
   console.log("BOX" + data)
@@ -14,7 +14,7 @@ function BoxBem( {data} ) {
         </View>
         <View style={{ paddingLeft: 20, justifyContent: "center"}}>
         <Text className="textTitleBem" style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{data.nome}</Text>
-          <Text className="textNumeroBem" style>Número: {data.numero}</Text>
+          <Text className="textNumeroBem">Número: {data.numero}</Text>
           <Text className="textLocalBem">Local: {data.local}</Text>
         </View>
       </View>

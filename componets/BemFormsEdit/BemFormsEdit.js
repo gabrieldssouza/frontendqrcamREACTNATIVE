@@ -16,6 +16,7 @@ export default function BemFormEdit(props) {
     const [estadoConservacao, setEstadoConservacao] = useState('');
     const [valor, setValor] = useState('');
     const [IDcategoria, setIDcategoria] = useState('');
+    const [responsavel, setResponsavel] = useState('');
 
     useEffect(() => {
         const handleGetBem = async () => {
@@ -33,6 +34,7 @@ export default function BemFormEdit(props) {
                 setValor(result.valor_aquisicao);
                 setEstadoConservacao(result.estado_conservacao);
                 setIDcategoria(result.categoria_idCategoria);
+                setResponsavel(result.responsavel);
             } catch (error) {
                 console.error('Erro ao buscar bem', error);
             }
@@ -49,21 +51,30 @@ export default function BemFormEdit(props) {
             data_aquisicao: dataAquisicao,
             valor_aquisicao: valor,
             estado_conservacao: estadoConservacao,
-            categoria_idCategoria: IDcategoria
+            categoria_idCategoria: IDcategoria,
+            responsável_movimento: responsavel
         };
-
+    
         try {
-            const response = await fetch('http://10.0.2.2:3000/editarBem', {
+            const response = await fetch('http://192.168.1.23:3000/editarBem', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newData)
             });
-            
+
+    
+            const responseText = await response.text();
+            console.log('Resposta do servidor:', responseText);
+    
+            if (!response.ok) {
+                throw new Error(responseText);
+            }
+    
+            const responseData = JSON.parse(responseText);
             Alert.alert("Sucesso", "Bem editado com sucesso!");
-            
-            // Optionally navigate back or reset the state here
+    
         } catch (error) {
             console.error('Erro ao editar bem:', error);
             Alert.alert("Erro ao editar bem", error.message);
@@ -113,6 +124,12 @@ export default function BemFormEdit(props) {
                 value={IDcategoria}
                 placeholder= " id categoria "
                 onChangeText={setIDcategoria}
+                style={styles.input}
+            />
+            <TextInput
+                value={responsavel}
+                placeholder= "responsável pelo movimento"
+                onChangeText={setResponsavel}
                 style={styles.input}
             />
             <TouchableOpacity onPress={handleEditar}>

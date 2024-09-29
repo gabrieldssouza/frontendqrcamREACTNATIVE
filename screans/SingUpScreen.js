@@ -4,7 +4,6 @@ import { enableFreeze } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import api from "../services/api";
-import {Ionicons} from "@expo/vector-icons";
 
 export default function SingUpScreen(){ 
     const navigation = useNavigation();
@@ -27,6 +26,7 @@ export default function SingUpScreen(){
         }
         try{
             const response = await api.post('/registrar', {nome, sobrenome, telefone, email, senha});
+            console.log(response)
             if(response){
                 navigation.navigate('Initial');
             }else{
@@ -58,7 +58,7 @@ export default function SingUpScreen(){
                     <TouchableOpacity style={{borderRadius: 50, borderWidth: 2, borderColor: 'black', padding: 10, alignItems: 'left', marginLeft: 20
       }} 
                     onPress={() => navigation.goBack()}> 
-                        <Ionicons name="arrow-back" size={20} color="black" />
+                        <Text> k-----</Text>   
                     </TouchableOpacity>
     
                     <Text style={{paddingHorizontal: "24%", justifyContent: "center", 
