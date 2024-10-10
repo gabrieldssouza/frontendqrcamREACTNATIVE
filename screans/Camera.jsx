@@ -2,6 +2,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import api from '../services/api';
 
 export default function App() {
   const [facing, setFacing] = useState('back');
@@ -32,11 +33,11 @@ export default function App() {
       const { idbem } = qrJson;
       console.log('ID do Bem:', idbem);
   
-      const response = await fetch(`http://192.168.1.23:3000/listarbem/${idbem}`);
-      if (!response.ok) {
+      const response = await api.get(`/listarbem/${idbem}`);
+      if (!response.status === 200) {
         throw new Error('Erro ao pegar dados');
       }
-      const bem = await response.json();
+      const bem = response.data;
       navigation.navigate('Bem', { idbem });
     } catch (error) {
       console.error('Erro ao buscar bem', error);

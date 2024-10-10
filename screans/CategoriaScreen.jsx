@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import LogoTop from '../componets/LogoTop/LogoTop';
 import useFetchData from '../componets/FetchData/FetchData';
 import BemForm from '../componets/NewBemForms/BemForm';
+import api from '../services/api';
 
 export default function CategoriaScreen() {
   const route = useRoute();
@@ -18,11 +19,11 @@ export default function CategoriaScreen() {
 
   const fetchDataCategorias = async () => {
     try {
-      const response = await fetch('http://192.168.1.23:3000/listarCategorias');
-      if (!response.ok) {
+      const response = await api.get('/listarCategorias');
+      if (!response.status === 200) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = await response.json();
+      const result = response.data;
       setDataCategoria(result);
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
     } catch (error) {
@@ -36,11 +37,11 @@ export default function CategoriaScreen() {
 
   const fetchBemCategoria = async (id) => {
     try {
-      const response = await fetch(`http://192.168.1.23:3000/listarCategoria/${id}`);
-      if (!response.ok) {
+      const response = await api.get(`/listarCategoria/${id}`);
+      if (!response.status === 200) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = await response.json();
+      const result = response.data;
       setBemCategoria(result);
     } catch (error) {
       console.error('Erro ao buscar dados', error);

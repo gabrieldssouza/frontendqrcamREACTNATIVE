@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Button, TextInput } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import {printToFileAsync} from 'expo-print'
 import { useState } from 'react';
 import {shareAsync} from 'expo-sharing'
@@ -13,7 +14,7 @@ export default function RelatórioEstado({data}) {
 
 const filtroEstado = async (est) => {
     try {
-      const response = await fetch(`http://192.168.1.23:3000/listarEstados/${est}`);
+      const response = await fetch(`http://192.168.1.21:3000/listarEstados/${est}`);
       const result = await response.json();
       return result;
     } catch (error) {

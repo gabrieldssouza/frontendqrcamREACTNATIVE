@@ -6,6 +6,8 @@ import LogoTop from '../componets/LogoTop/LogoTop';
 import useFetchData from '../componets/FetchData/FetchData';
 import BemForm from '../componets/NewBemForms/BemForm';
 import BoxLocais from '../componets/BoxLocais/BoxLocais';
+import api from '../services/api';
+
 export default function LocaisScreen() {
   const route = useRoute();
   const navigation = useNavigation();
@@ -15,11 +17,11 @@ export default function LocaisScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.1.23:3000/listarLocais');
-        if (!response.ok) {
+        const response = await api.get('/listarLocais');
+        if (!response.status === 200) {
           throw new Error('Erro ao pegar dados');
         }
-        const result = await response.json();
+        const result = response.data;
         setData(result);
       } catch (error) {
         console.error('Erro ao buscar dados', error);

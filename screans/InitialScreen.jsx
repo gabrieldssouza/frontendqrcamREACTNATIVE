@@ -7,6 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import FilterBem from '../componets/FilterBem/FilterBem';
 import RelatórioEstado from '../componets/RelatorioEstado/RelatorioEstado';
 import { Ionicons } from '@expo/vector-icons';
+import api from '../services/api';
 
 export default function InitialScreen() {
   const route = useRoute();
@@ -31,8 +32,8 @@ export default function InitialScreen() {
 
   const filtroEstado = async () => {
     try {
-      const response = await fetch(`http://192.168.1.23:3000/listarEstados/${estadoConservacao}`);
-      const result = await response.json();
+      const response = await api.get(`/listarEstados/${estadoConservacao}`);
+      const result = await response.data;
       setDataEstadoFiltro(result);
       setIsAllbensVIsible(false);
     } catch (error) {
@@ -49,18 +50,18 @@ export default function InitialScreen() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.1.23:3000/listarbens');
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = await response.json();
-      setData(result);
-      setFilteredBens(result);
+        const response = await api.get('/listarbens');
+        if (response.status !== 200) {
+            throw new Error('Erro ao pegar dados');
+        }
+        const result = response.data;
+        setData(result);
+        setFilteredBens(result);
     } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
+        console.error('Erro ao buscar dados', error);
+        setError(error.message);
     }
-  };
+};
 
   useEffect(() => {
     fetchData();

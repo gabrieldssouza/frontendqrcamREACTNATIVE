@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, Alert, StyleSheet, Dimensions, View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import api from '../../services/api';
 
 export default function BemForm() {
   const navigation = useNavigation();
@@ -20,8 +21,8 @@ export default function BemForm() {
   useEffect(() => {
     const filtroEstado = async () => {
       try {
-        const response = await fetch('http://192.168.1.23:3000/listarLocais');
-        const result = await response.json();
+        const response = await api.get('/listarLocais');
+        const result = response.data;
   
         // Converte o resultado no formato esperado para o DropDownPicker
         const locaisFormatados = result.map((local) => ({
@@ -54,35 +55,11 @@ export default function BemForm() {
     };
     console.log(newData)
 
-    try {
-      const response = await fetch('http://192.168.1.23:3000/criarbem', {
-        method: 'POST',
-        headers: {
+    const response = await axios.put('/editarBem', newData, {
+      headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newData),
-      });
-  
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.message || 'Erro na solicitação');
-      }
-  
-      console.log('QR Code URL:', result.qrcode);
-      Alert.alert("Bem cadastrado com sucesso");
-      setNome('');
-      setNumero('');
-      setCodigo('');
-      setAquisicao('');
-      setValor('');
-      setEstadoConservacao('');
-      setIDcategoria('');
-      setLocal('');
-      navigation.navigate('Initial'); 
-    } catch (error) {
-      console.error('Erro ao cadastrar bem:', error);
-    }
-  };
+      },
+    });
 
   return (
     <ScrollView>
@@ -188,4 +165,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "white"
   },
-});
+});}
