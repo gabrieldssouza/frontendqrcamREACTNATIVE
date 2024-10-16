@@ -18,7 +18,11 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch('http://192.168.1.167:3000/listarLevantamentos');
+=======
+        const response = await fetch('http://192.168.1.23:3000/listarLevantamentos');
+>>>>>>> gabriel
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
         }

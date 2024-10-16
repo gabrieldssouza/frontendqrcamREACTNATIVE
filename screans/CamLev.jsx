@@ -39,7 +39,11 @@ import { useNavigation } from '@react-navigation/native';
       idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
   
+<<<<<<< HEAD
       const response = await fetch(`http://192.168.1.167:3000/listarbem/${idbem}`);
+=======
+      const response = await fetch(`http://192.168.1.23:3000/listarbem/${idbem}`);
+>>>>>>> gabriel
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -55,7 +59,11 @@ import { useNavigation } from '@react-navigation/native';
   
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
+<<<<<<< HEAD
       const addResponse = await fetch('http://192.168.1.167:3000/addBensLevantamento', {
+=======
+      const addResponse = await fetch('http://192.168.1.23:3000/addBensLevantamento', {
+>>>>>>> gabriel
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

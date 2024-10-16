@@ -19,7 +19,11 @@ export default function LevLocais({route}) {
 
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch('http://192.168.1.167:3000/listarLocais');
+=======
+        const response = await fetch('http://192.168.1.23:3000/listarLocais');
+>>>>>>> gabriel
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
         }
