@@ -1,6 +1,5 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "../screans/HomeScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screans/LoginScreean";
 import SingUpScreen from "../screans/SingUpScreen";
@@ -28,7 +27,6 @@ export default function AppNavigation() {
        <NavigationContainer> 
 
             <Stack.Navigator initialRouteName='Welcome'>
-                <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
                 <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
                 <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
                 <Stack.Screen name="SingUp" options={{ headerShown: false }} component={SingUpScreen} />
