@@ -26,11 +26,9 @@ export default function BemLocLev({ route }) {
 
   const fetchData = async () => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`http://192.168.1.167:3000/listarlocal/0`);
-=======
-      const response = await fetch(`http://192.168.1.23:3000/listarlocal/0`);
->>>>>>> gabriel
+
+      const response = await fetch(`http://192.168.1.56:3000/listarlocal/1`);
+
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -45,11 +43,7 @@ export default function BemLocLev({ route }) {
 
   const fetchBensLevantamento = async () => {
     try {
-<<<<<<< HEAD
-      const response = await fetch('http://192.168.1.167:3000/listarBensLevantamento');
-=======
-      const response = await fetch('http://192.168.1.23:3000/listarBensLevantamento');
->>>>>>> gabriel
+      const response = await fetch('http://192.168.1.56:3000/listarBensLevantamento');
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -71,11 +65,9 @@ export default function BemLocLev({ route }) {
   useEffect(() => {
     const fetchBem = async () => {
       try {
-<<<<<<< HEAD
-        const response = await fetch(`http://192.168.1.167:3000/listarbem/${idBem}`);
-=======
-        const response = await fetch(`http://192.168.1.23:3000/listarbem/${idBem}`);
->>>>>>> gabriel
+
+        const response = await fetch(`http://192.168.1.56:3000/listarbem/${idBem}`);
+
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
         }

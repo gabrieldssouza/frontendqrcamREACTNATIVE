@@ -20,11 +20,7 @@ export default function BemForm() {
   useEffect(() => {
     const filtroEstado = async () => {
       try {
-<<<<<<< HEAD
-        const response = await fetch('http://192.168.1.167:3000/listarLocais');
-=======
-        const response = await fetch('http://192.168.1.23:3000/listarLocais');
->>>>>>> gabriel
+        const response = await fetch('http://192.168.1.19:3000/listarLocais');
         const result = await response.json();
   
         // Converte o resultado no formato esperado para o DropDownPicker
@@ -59,11 +55,7 @@ export default function BemForm() {
     console.log(newData)
 
     try {
-<<<<<<< HEAD
-      const response = await fetch('http://192.168.1.167:3000/criarbem', {
-=======
-      const response = await fetch('http://192.168.1.23:3000/criarbem', {
->>>>>>> gabriel
+      const response = await fetch('http://192.168.1.19:3000/criarbem', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

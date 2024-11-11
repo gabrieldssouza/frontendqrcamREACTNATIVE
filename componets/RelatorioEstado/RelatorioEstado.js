@@ -13,11 +13,9 @@ export default function RelatórioEstado({data}) {
 
 const filtroEstado = async (est) => {
     try {
-<<<<<<< HEAD
+
       const response = await fetch(`http://192.168.1.167:3000/listarEstados/${est}`);
-=======
-      const response = await fetch(`http://192.168.1.23:3000/listarEstados/${est}`);
->>>>>>> gabriel
+
       const result = await response.json();
       return result;
     } catch (error) {
@@ -157,15 +155,11 @@ const ALLEstados = () => {
   }
 
  return(
-<<<<<<< HEAD
-  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.85}}> 
-    <TouchableOpacity onPress={UnicoEstado}style={{  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 15, marginTop: 10  }}>
-        <Text style={{fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 9}}>Gerar Relatório {'\n'} desse estado de conservação</Text>
-=======
+
   <View style={{alignItems: "center",}}> 
   <TouchableOpacity onPress={generetePDF}style={{  width: Dimensions.get("window").width * 0.12, backgroundColor: '#ECAA71', borderRadius: 15, height: 49}}>
         <Text style={{textAlign: 'center', color: 'white', paddingVertical: 7}}><Ionicons size={35} name="document-outline"></Ionicons></Text>
->>>>>>> gabriel
+
   </TouchableOpacity> 
   </View>
  );

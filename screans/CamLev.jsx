@@ -5,13 +5,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
  export default function CameraLevantamento({route}) {
-  const [facing, setFacing] = useState('back');
+  const [facing, setFacing] = useushState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
   const navigation = useNavigation();
   const idLevantamento = route.params?.idLevantamento;
+  const idLocal = route.params?.idLocal;
   console.log("idLevantamento recebido:", idLevantamento);
 
   console.log("id levantamento cam", idLevantamento)
@@ -38,16 +39,22 @@ import { useNavigation } from '@react-navigation/native';
   
       idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
+
   
-<<<<<<< HEAD
-      const response = await fetch(`http://192.168.1.167:3000/listarbem/${idbem}`);
-=======
-      const response = await fetch(`http://192.168.1.23:3000/listarbem/${idbem}`);
->>>>>>> gabriel
+      const response = await fetch(`http://192.168.1.56:3000/listarbem/${idbem}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
       const bem = await response.json();
+      console.log("testando o if de local errado:", bem.idLocais + " 2: " + idLocal)
+      if (bem.idLocais != idLocal){
+        //pega e ja coloca um aviso de lugar errado entao vai faz a routa de edição puxa deixa tudo igual
+        // e muda o pendencias locais para false 
+        //aproveita q ta ai e faz a mudanca de lugar, enviando avisos para ambas as pessoas
+        
+        navigation.navigate('EditBemLev', { id: idbem, pendenciaLocal: false }); 
+      }
+
       navigation.navigate('EditBemLev', { id: idbem });
   
       // Criação do novo objeto com os dados do bem
@@ -59,11 +66,7 @@ import { useNavigation } from '@react-navigation/native';
   
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
-<<<<<<< HEAD
-      const addResponse = await fetch('http://192.168.1.167:3000/addBensLevantamento', {
-=======
-      const addResponse = await fetch('http://192.168.1.23:3000/addBensLevantamento', {
->>>>>>> gabriel
+      const addResponse = await fetch('http://192.168.1.56:3000/addBensLevantamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

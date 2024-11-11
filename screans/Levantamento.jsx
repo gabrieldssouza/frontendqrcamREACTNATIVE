@@ -33,7 +33,7 @@ export default function Levantamento() {
 const filtroEstado = async () => {
   console.log(estadoConservacao)
     try {
-      const response = await fetch(`http://192.168.1.23:3000/listarEstados/${estadoConservacao}`);
+      const response = await fetch(`http://192.168.1.56:3000/listarEstados/${estadoConservacao}`);
       const result = await response.json();
       setDataEstadoFiltro(result);
       setIsAllbensVIsible(false)
@@ -52,7 +52,7 @@ const filtroEstado = async () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.1.23:3000/listarbens');
+      const response = await fetch('http://192.168.1.56:3000/listarbens');
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }

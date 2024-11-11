@@ -4,10 +4,7 @@ import {printToFileAsync} from 'expo-print'
 import { useState } from 'react';
 import {shareAsync} from 'expo-sharing'
 import { Text, TouchableOpacity, Dimensions } from 'react-native';
-<<<<<<< HEAD
-=======
-import { Ionicons } from '@expo/vector-icons';
->>>>>>> gabriel
+
 
 
 export default function FilterBem({data}) {
@@ -58,13 +55,8 @@ export default function FilterBem({data}) {
  return(
 
   <View style={{alignItems: "center",}}> 
-<<<<<<< HEAD
   <TouchableOpacity onPress={generetePDF}style={{  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 15, marginTop: 10  }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 7}}>Gerar Relatório de {'\n'} todos os bens</Text>
-=======
-  <TouchableOpacity onPress={generetePDF}style={{  width: Dimensions.get("window").width * 0.12, backgroundColor: '#ECAA71', borderRadius: 15, height: 49}}>
-        <Text style={{textAlign: 'center', color: 'white', paddingVertical: 7}}><Ionicons size={35} name="document-outline"></Ionicons></Text>
->>>>>>> gabriel
   </TouchableOpacity> 
   </View>
  );
