@@ -9,6 +9,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import FilterBem from '../componets/FilterBem/FilterBem';
 import RelatórioEstado from '../componets/RelatorioEstado/RelatorioEstado';
 import { Ionicons } from '@expo/vector-icons';
+import api from '../services/api';
+import axios from 'axios';
 
 export default function InitialScreen() {
   const route = useRoute();
@@ -24,6 +26,7 @@ export default function InitialScreen() {
   const [searchText, setSearchText] = useState('');
   const [bens, setBens] = useState([]);
   const [filteredBens, setFilteredBens] = useState([]);
+  const [user, setUser] = useState(null); // Estado para armazenar um único usuário
 
   const itens = [
     { label: 'ótimo', value: 'otimo' },
@@ -32,10 +35,30 @@ export default function InitialScreen() {
     { label: 'péssimo', value: 'pessimo' },
   ];
 
+  useEffect(() => {
+    const getUserById = async (userId) => {
+      try {
+        const response = await axios.get(`http://192.168.1.14:3000/usuarios/${userId}`);
+        console.log('Dados do usuário:', response.data);
+        setUser(response.data); // Define o usuário encontrado no estado
+      } catch (error) {
+        console.error('Erro ao buscar usuário:', error.message);
+      }
+    };
+    // Chama a função para buscar o usuário com o ID desejado
+    const userId = '668b5d966edf321c2011bcda'; // ID do usuário desejado
+    getUserById(userId);
+  }, []);
+
   const filtroEstado = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch(`http://192.168.1.56:3000/listarEstados/${estadoConservacao}`);
       const result = await response.json();
+=======
+      const response = await api.get(`/listarEstados/${estadoConservacao}`);
+      const result = await response.data;
+>>>>>>> gabriel
       setDataEstadoFiltro(result);
       setIsAllbensVIsible(false);
     } catch (error) {
@@ -52,6 +75,7 @@ export default function InitialScreen() {
 
   const fetchData = async () => {
     try {
+<<<<<<< HEAD
 
       const response = await fetch('http://192.168.1.56:3000/listarbens');
 
@@ -63,9 +87,18 @@ export default function InitialScreen() {
 
       setFilteredBens(result);
 
+=======
+        const response = await api.get('/listarbens');
+        if (response.status !== 200) {
+            throw new Error('Erro ao pegar dados');
+        }
+        const result = response.data;
+        setData(result);
+        setFilteredBens(result);
+>>>>>>> gabriel
     } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
+        console.error('Erro ao buscar dados', error);
+        setError(error.message);
     }
   };
 
@@ -171,7 +204,6 @@ export default function InitialScreen() {
           <Ionicons name="camera" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
           backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10

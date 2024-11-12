@@ -8,6 +8,7 @@ import useFetchData from '../componets/FetchData/FetchData';
 import BemForm from '../componets/NewBemForms/BemForm';
 import BoxLocais from '../componets/BoxLocais/BoxLocais';
  import { Ionicons } from '@expo/vector-icons';
+ import api from '../services/api';
 
  export default function LevScreen()  {
   const route = useRoute();
@@ -18,13 +19,18 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
 
         const response = await fetch('http://192.168.1.56:3000/listarLevantamentos');
 
         if (!response.ok) {
+=======
+        const response = await api.get('/listarLevantamentos');
+        if (!response.status === 200) {
+>>>>>>> gabriel
           throw new Error('Erro ao pegar dados');
         }
-        const result = await response.json();
+        const result = response.data;
         setData(result);
       } catch (error) {
         console.error('Erro ao buscar dados', error);

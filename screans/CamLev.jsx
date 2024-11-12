@@ -3,6 +3,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import api from '../services/api';
 
  export default function CameraLevantamento({route}) {
   const [facing, setFacing] = useushState('back');
@@ -41,6 +42,7 @@ import { useNavigation } from '@react-navigation/native';
       console.log('ID do Bem:', idbem);
 
   
+<<<<<<< HEAD
       const response = await fetch(`http://192.168.1.56:3000/listarbem/${idbem}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
@@ -55,6 +57,13 @@ import { useNavigation } from '@react-navigation/native';
         navigation.navigate('EditBemLev', { id: idbem, pendenciaLocal: false }); 
       }
 
+=======
+      const response = await api.get(`/listarbem/${idbem}`);
+      if (!response.status === 200) {
+        throw new Error('Erro ao pegar dados');
+      }
+      const bem = response.data;
+>>>>>>> gabriel
       navigation.navigate('EditBemLev', { id: idbem });
   
       // Criação do novo objeto com os dados do bem
@@ -66,12 +75,20 @@ import { useNavigation } from '@react-navigation/native';
   
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
+<<<<<<< HEAD
       const addResponse = await fetch('http://192.168.1.56:3000/addBensLevantamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newData),
+=======
+      
+      const addResponse = await api.post('/addBensLevantamento', newData, {
+          headers: {
+              'Content-Type': 'application/json',
+          },
+>>>>>>> gabriel
       });
   
       const result = await addResponse.json();
