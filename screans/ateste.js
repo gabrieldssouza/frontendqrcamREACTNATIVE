@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BemForm from "../componets/NewBemForms/BemForm";
 import LogoTop from "../componets/LogoTop/LogoTop";
 
+
 export default function teste(){ 
     const navigation = useNavigation();
 

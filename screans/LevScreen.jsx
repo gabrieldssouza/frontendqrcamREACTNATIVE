@@ -19,15 +19,10 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
   useEffect(() => {
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
 
-        const response = await fetch('http://192.168.1.56:3000/listarLevantamentos');
-
-        if (!response.ok) {
-=======
         const response = await api.get('/listarLevantamentos');
         if (!response.status === 200) {
->>>>>>> gabriel
+
           throw new Error('Erro ao pegar dados');
         }
         const result = response.data;
@@ -83,14 +78,6 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
 
      </ScrollView>
          
-     <TouchableOpacity onPress={() =>  navigation.navigate('Forms')} style={{position: "absolute", bottom: 50, right: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="add" size={48} color="white" /></Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity onPress={() => navigation.navigate('CamLev', { action: 'encontrar' })}
- style={{position: "absolute", bottom: 50, left: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="camera" size={48} color="white" /></Text>
-    </TouchableOpacity> 
 
 
     </View>

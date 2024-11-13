@@ -38,7 +38,7 @@ export default function InitialScreen() {
   useEffect(() => {
     const getUserById = async (userId) => {
       try {
-        const response = await axios.get(`http://192.168.1.14:3000/usuarios/${userId}`);
+        const response = await api.get(`/usuarios/${userId}`);
         console.log('Dados do usuário:', response.data);
         setUser(response.data); // Define o usuário encontrado no estado
       } catch (error) {
@@ -47,18 +47,13 @@ export default function InitialScreen() {
     };
     // Chama a função para buscar o usuário com o ID desejado
     const userId = '668b5d966edf321c2011bcda'; // ID do usuário desejado
-    getUserById(userId);
+    getUserById(userId); 
   }, []);
 
   const filtroEstado = async () => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`http://192.168.1.56:3000/listarEstados/${estadoConservacao}`);
-      const result = await response.json();
-=======
       const response = await api.get(`/listarEstados/${estadoConservacao}`);
       const result = await response.data;
->>>>>>> gabriel
       setDataEstadoFiltro(result);
       setIsAllbensVIsible(false);
     } catch (error) {
@@ -75,27 +70,12 @@ export default function InitialScreen() {
 
   const fetchData = async () => {
     try {
-<<<<<<< HEAD
-
-      const response = await fetch('http://192.168.1.56:3000/listarbens');
-
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = await response.json();
-      setData(result);
-
-      setFilteredBens(result);
-
-=======
         const response = await api.get('/listarbens');
         if (response.status !== 200) {
             throw new Error('Erro ao pegar dados');
         }
-        const result = response.data;
-        setData(result);
+        const result = await response.data;
         setFilteredBens(result);
->>>>>>> gabriel
     } catch (error) {
         console.error('Erro ao buscar dados', error);
         setError(error.message);
@@ -114,11 +94,9 @@ export default function InitialScreen() {
   }, [searchText, data]);
 
   const renderRelatorio = () => {
-    if (estadoConservacao) {
+
       return <RelatórioEstado data={DataEstadoFiltro} />;
-    } else {
-      return <FilterBem data={filteredBens} />;
-    }
+  
   };
 
   return (
@@ -194,17 +172,17 @@ export default function InitialScreen() {
         ))}
       </ScrollView>
       
-      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ marginBottom: 25, position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="camera" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
+      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{ marginBottom: 10,
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
           backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
         }}>

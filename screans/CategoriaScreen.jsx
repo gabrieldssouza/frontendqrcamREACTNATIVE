@@ -22,11 +22,14 @@ export default function CategoriaScreen() {
   const fetchDataCategorias = async () => {
     try {
       const response = await api.get('/listarCategorias');
-      if (!response.status === 200) {
+      if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = response.data;
+      const result = await response.data;
       setDataCategoria(result);
+
+     
+
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
     } catch (error) {
       console.error('Erro ao buscar dados', error);
@@ -40,10 +43,10 @@ export default function CategoriaScreen() {
   const fetchBemCategoria = async (id) => {
     try {
       const response = await api.get(`/listarCategoria/${id}`);
-      if (!response.status === 200) {
+      if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = response.data;
+      const result = await response.json();
       setBemCategoria(result);
     } catch (error) {
       console.error('Erro ao buscar dados', error);

@@ -5,19 +5,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../services/api';
 
+
  export default function CameraLevantamento({route}) {
-  const [facing, setFacing] = useushState('back');
+  const navigation = useNavigation();
+  const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
-  const navigation = useNavigation();
   const idLevantamento = route.params?.idLevantamento;
-  const idLocal = route.params?.idLocal;
   console.log("idLevantamento recebido:", idLevantamento);
-
-  console.log("id levantamento cam", idLevantamento)
-
+  const idLocal = route.params?.idLocal;
+  
 
   useEffect(() => {
     (async () => {
@@ -41,31 +40,12 @@ import api from '../services/api';
       idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
 
-  
-<<<<<<< HEAD
-      const response = await fetch(`http://192.168.1.56:3000/listarbem/${idbem}`);
+      const response = await fetch(`http://192.168.1.122:3000/listarbem/${idbem}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
       const bem = await response.json();
-      console.log("testando o if de local errado:", bem.idLocais + " 2: " + idLocal)
-      if (bem.idLocais != idLocal){
-        //pega e ja coloca um aviso de lugar errado entao vai faz a routa de edição puxa deixa tudo igual
-        // e muda o pendencias locais para false 
-        //aproveita q ta ai e faz a mudanca de lugar, enviando avisos para ambas as pessoas
-        
-        navigation.navigate('EditBemLev', { id: idbem, pendenciaLocal: false }); 
-      }
-
-=======
-      const response = await api.get(`/listarbem/${idbem}`);
-      if (!response.status === 200) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const bem = response.data;
->>>>>>> gabriel
-      navigation.navigate('EditBemLev', { id: idbem });
-  
+      console.log("chegou no listar")
       // Criação do novo objeto com os dados do bem
       let newData = {
         bem_idbem: idbem,
@@ -75,23 +55,15 @@ import api from '../services/api';
   
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
-<<<<<<< HEAD
-      const addResponse = await fetch('http://192.168.1.56:3000/addBensLevantamento', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newData),
-=======
-      
-      const addResponse = await api.post('/addBensLevantamento', newData, {
+
+      const addResponse = await api.post('http://192.168.1.122:3000/addBensLevantamento', newData, {
           headers: {
               'Content-Type': 'application/json',
           },
->>>>>>> gabriel
+
       });
-  
-      const result = await addResponse.json();
+
+      navigation.navigate('EditBemLev', { id: idbem });
       if (!addResponse.ok) {
         throw new Error(result.message || 'Erro na solicitação');
       }

@@ -21,8 +21,7 @@ export default function WelcomeScreen() {
                     style={
                         styles.buttonLog
                     }
-                    onPress={() => navigation.navigate('SingUp')}
-                >
+                    onPress={() => navigation.navigate('SingUp')}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>
                         Sign Up
                     </Text>
@@ -30,7 +29,7 @@ export default function WelcomeScreen() {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
                     <Text style={{ color: 'white' }}>Already have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Text style={{ fontWeight: '600', color: '#ECAA71', marginLeft: 4 }}>Login</Text/>
+                        <Text style={{ fontWeight: '600', color: '#ECAA71', marginLeft: 4 }}>Login</Text>
                     </TouchableOpacity>
                 </View>
             </View>

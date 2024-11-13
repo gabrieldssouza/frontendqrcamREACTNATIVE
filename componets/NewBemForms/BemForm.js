@@ -17,9 +17,6 @@ export default function BemForm() {
   const [IDcategoria, setIDcategoria] = useState('');
   const [foto, setFoto] = useState(null);
 
-
-
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

@@ -5,9 +5,10 @@ import LogoTop from '../componets/LogoTop/LogoTop';
 import BoxBem from '../componets/BoxBem/BoxBem';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
-import RelatórioFaltas from '../componets/LevRelat/LevRelatorio';
+import axios from 'axios';
+import RelatorioFaltas from '../componets/LevRelat/LevRelatorio';
 
-export default function BemLocLev({ route }) {
+export default function BemLocLev({route}) {
   const navigation = useNavigation();
   
   const [data, setData] = useState([]);
@@ -25,15 +26,10 @@ export default function BemLocLev({ route }) {
 
   const fetchData = async () => {
     try {
-<<<<<<< HEAD
 
-      const response = await fetch(`http://192.168.1.56:3000/listarlocal/1`);
-
-      if (!response.ok) {
-=======
       const response = await api.get(`/listarlocal/1`);
       if (response.status !== 200) {
->>>>>>> gabriel
+
         throw new Error('Erro ao pegar dados');
       }
       const result = response.data;
@@ -47,13 +43,10 @@ export default function BemLocLev({ route }) {
 
   const fetchBensLevantamento = async () => {
     try {
-<<<<<<< HEAD
-      const response = await fetch('http://192.168.1.56:3000/listarBensLevantamento');
-      if (!response.ok) {
-=======
+
       const response = await api.get('/listarBensLevantamento');
       if (response.status !== 200) {
->>>>>>> gabriel
+
         throw new Error('Erro ao pegar dados');
       }
       const result = response.data;
@@ -71,12 +64,11 @@ export default function BemLocLev({ route }) {
       fetchBensLevantamento();
     }, [])
   );
-<<<<<<< HEAD
+
   useEffect(() => {
     const fetchBem = async () => {
       try {
-
-        const response = await fetch(`http://192.168.1.56:3000/listarbem/${idBem}`);
+        const response = await axios.get(`/listarbem/${idBem}`);
 
         if (!response.ok) {
           throw new Error('Erro ao pegar dados');
@@ -90,21 +82,27 @@ export default function BemLocLev({ route }) {
     fetchBem();
   }, [idBem]);
   
-  
-=======
-
->>>>>>> gabriel
   // Determinar itens esperados
   const expectedItems = data;
 
   // Itens faltantes
   const missingItems = expectedItems.filter(item =>
+    item.pendencia_local == false &&
     !bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
+
 
   const findItems = expectedItems.filter(item =>
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
+
+ 
+  const errorplace = expectedItems.filter(item =>
+    item.pendencia_local == true &&
+    bensLevantamento.some(scannedItem => scannedItem.bem_idbem === item.idbem)
+  );
+  console.log("place", errorplace)
+  
 
   const renderItem = ({ item }) => {
     if (!item.idbem) {
@@ -117,7 +115,7 @@ export default function BemLocLev({ route }) {
   };
 
   const renderRelatorio = () => {
-    return <RelatórioFaltas faltando={missingItems} encontrados={findItems} />;
+    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace}/>;
   };
 
   return (
@@ -147,16 +145,12 @@ export default function BemLocLev({ route }) {
         ))}
       </ScrollView>
       {renderRelatorio()}
-      <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{  marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-          <Ionicons name="camera" size={48} color="white" />
-        </Text>
-      </TouchableOpacity>
+   
     </View>
   );
 }

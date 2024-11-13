@@ -17,15 +17,10 @@ export default function LocaisScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
 
-        const response = await fetch('http://192.168.1.56:3000/listarLocais');
-
-        if (!response.ok) {
-=======
         const response = await api.get('/listarLocais');
         if (!response.status === 200) {
->>>>>>> gabriel
+
           throw new Error('Erro ao pegar dados');
         }
         const result = response.data;

@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 
  
-export default function RelatórioFaltas({faltando, encontrados}) {
+export default function RelatorioFaltas({faltando, encontrados, lugarErrado}) {
 
     const UnicoEstado = () => {   
   html = `
@@ -53,6 +53,30 @@ export default function RelatórioFaltas({faltando, encontrados}) {
             </thead>
             <tbody>
               ${encontrados.map(item => `
+                <tr>
+                  <td>${item.codigo}</td>
+                  <td>${item.nome}</td>
+                  <td>R$ ${item.valor_aquisicao}</td>
+                  <td>${item.estado_conservacao}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+
+           <h2 style="font-size: 16px; text-align: center; margin-bottom: 25px; margin-top: 40px;">Itens no lugar errado</h2>
+          
+          <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th style="width: 20%;">Código</th>
+                <th style="width: 50%;">Nome</th>
+                <th style="width: 25%;">Valor</th>
+                 <th style="width: 15%;">Estado de conservação</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${lugarErrado.map(item => `
                 <tr>
                   <td>${item.codigo}</td>
                   <td>${item.nome}</td>
