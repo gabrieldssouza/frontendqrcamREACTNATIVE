@@ -1,16 +1,22 @@
+
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../services/api';
 
-export default function App() {
+
+ export default function CameraLevantamento({route}) {
+  const navigation = useNavigation();
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
-  const navigation = useNavigation();
+  const idLevantamento = route.params?.idLevantamento;
+  console.log("idLevantamento recebido:", idLevantamento);
+  const idLocal = route.params?.idLocal;
+  
 
   useEffect(() => {
     (async () => {
@@ -21,29 +27,51 @@ export default function App() {
 
   const handleBarcodeScanned = async ({ type, data }) => {
     setScanned(true);
-  
+    let idbem;  // Definir idbem aqui para usar em todo o escopo da função
+
     try {
       const qrJson = JSON.parse(data);
       console.log('QR JSON:', qrJson);
-  
+
       if (!qrJson.idbem) {
         throw new Error('idbem não encontrado no QR code');
       }
-  
-      const { idbem } = qrJson;
-      console.log('ID do Bem:', idbem);
-  
-      const response = await api.get(`/listarbem/${idbem}`);
 
-      if (response.status !== 200) {
-        throw new Error('Erro ao pegar dados');
-      }
+      idbem = qrJson.idbem;  // Atribuir idbem aqui
+      console.log('ID do Bem:', idbem);
+
+      const response = await api.get(`/listarbem/${idbem}`);
       const bem = response.data;
-      navigation.navigate('Bem', { idbem });
+      console.log("chegou no listar");
+
+      // Criação do novo objeto com os dados do bem
+      let newData = {
+        bem_idbem: idbem,
+        Levantamento_idLevantamento: idLevantamento  // Verifique se isso é o que você precisa
+      };
+      console.log("data: ", newData);
+
+      // Requisição para adicionar o bem ao levantamento
+      console.log("entrou no try do add ");
+
+      const addResponse = await api.post('/addBensLevantamento', newData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      navigation.navigate('EditBemLev', { id: idbem });
+      if (!addResponse.status === 200) {
+        throw new Error(addResponse.data.message || 'Erro na solicitação');
+      }
+
+      // Navegação para a tela inicial só após o sucesso da requisição POST
+
     } catch (error) {
-      console.error('Erro ao buscar bem', error);
+      console.error('Erro ao processar QR code', error);
     }
   };
+  
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;

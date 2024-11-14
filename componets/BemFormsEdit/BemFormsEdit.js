@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import api from "../../services/api";
 
 export default function BemFormEdit(props) {
   const navigation = useNavigation();
@@ -20,11 +21,8 @@ export default function BemFormEdit(props) {
     useEffect(() => {
         const handleGetBem = async () => {
             try {
-                const response = await fetch(`http://192.168.1.23:3000/listarBem/${id}`);
-                if (!response.ok) {
-                    throw new Error('Erro ao pegar dados');
-                }
-                const result = await response.json();
+                const response = await api.get(`/listarBem/${id}`);
+                const result = response.data;
                 setBem(result);
                 setNome(result.nome);
                 setNumero(result.numero);
@@ -53,14 +51,7 @@ export default function BemFormEdit(props) {
         };
 
         try {
-            const response = await fetch('http://10.0.2.2:3000/editarBem', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newData)
-            });
-            
+            await api.put('/editarBem', newData);
             Alert.alert("Sucesso", "Bem editado com sucesso!");
             
             // Optionally navigate back or reset the state here
@@ -71,6 +62,7 @@ export default function BemFormEdit(props) {
     };
 
     return (
+        
         <View style={{ margin: "8%" }}>
 
             <TextInput

@@ -11,7 +11,7 @@ export default function LogoTop(){
  return(
     <View style={{  alignItems: 'center', backgroundColor: '#ECAA71', width: Dimensions.get('window').width * 0.30, height: Dimensions.get('window').width * 0.35, 
     alignItems: "flex-start", borderBottomEndRadius: 20, borderBottomStartRadius: 20, justifyContent:"center"}}>
-
+       
       <Image
                     source={require("../../assets/logotccbranca.png")}
                    style={{ width: 90, 

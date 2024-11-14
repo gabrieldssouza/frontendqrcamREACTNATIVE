@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { ScrollView, Alert, StyleSheet, Dimensions, View, TextInput, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Alert, StyleSheet, Dimensions, View, TextInput, TouchableOpacity, Text, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as ImagePicker from 'expo-image-picker';
+import api from '../../services/api';
 
 export default function BemForm() {
   const navigation = useNavigation();
@@ -11,133 +14,144 @@ export default function BemForm() {
   const [estadoConservacao, setEstadoConservacao] = useState('');
   const [valor, setValor] = useState('');
   const [local, setLocal] = useState('');
-  const [IDcategoria, setIDcategoria] = useState([]);
-    const handleCadastrar = async () => {
-    let newData = {
-      nome,
-      numero,
-      codigo,
-      data_aquisicao: dataAquisicao,
-      valor_aquisicao: valor,
-      estado_conservacao: estadoConservacao,
-      categoria_idCategoria: IDcategoria,
-      local: local,
-    };
-  
-    try {
-      const response = await fetch('http://192.168.1.23:3000/criarbem', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newData),
-      });
-  
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.message || 'Erro na solicitação');
+  const [IDcategoria, setIDcategoria] = useState('');
+  const [foto, setFoto] = useState(null);
+  const [locais, setLocais] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchLocais = async () => {
+      try {
+        const response = await api.get('/listarlocais');
+        const result = response.data;
+        setLocais(result);
+        setItems(result.map(item => ({ label: item.nome, value: item.idLocais })));
+      } catch (error) {
+        console.error('Erro ao buscar locais', error);
       }
-  
-      console.log('QR Code URL:', result.qrcode);
-      Alert.alert("Bem cadastrado com sucesso");
-      setNome('');
-      setNumero('');
-      setCodigo('');
-      setAquisicao('');
-      setValor('');
-      setEstadoConservacao('');
-      setIDcategoria('');
-      setLocal('');
-      navigation.navigate('Initial'); 
-    } catch (error) {
-      console.error('Erro ao cadastrar bem:', error);
+    };
+    fetchLocais();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFoto(result.assets[0].uri);
+
     }
   };
 
+  const handleCadastrar = async () => {
+    if (!nome || !numero || !codigo || !estadoConservacao || !local || !IDcategoria) {
+        Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
+        return;
+    }
+    const formData = new FormData();
+    formData.append('nome', nome);
+    formData.append('numero', numero);
+    formData.append('codigo', codigo);
+    formData.append('data_aquisicao', dataAquisicao);
+    formData.append('estado_conservacao', estadoConservacao);
+    formData.append('valor_aquisicao', valor);
+    formData.append('local_idLocais', local);
+    formData.append('categoria_idCategoria', IDcategoria);
+    if (foto) {
+        const filename = foto.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+        formData.append('foto', {
+            uri: foto,
+            name: filename,
+            type,
+        });
+    }
+    console.log(formData);
+    try {
+        const response = await api.post('/criarbem', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('Bem criado com sucesso:', response.data);
+        navigation.navigate('Initial');
+    } catch (error) {
+        console.error('Erro ao criar bem:', error);
+        Alert.alert('Erro', 'Erro ao criar bem. Tente novamente.');
+    }
+};
+
   return (
     <ScrollView>
-    <View style={{ margin: "8%" }}>
-
-      <TextInput
-        value={nome}
-        placeholder="Nome"
-        onChangeText={setNome}
-        style={styles.input}
-        placeholderTextColor="black"
-        
-      />
-      <TextInput
-        value={numero}
-        placeholder="Número"
-        onChangeText={setNumero}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-
-      
-      <TextInput
-        value={codigo}
-        placeholder="Código"
-        onChangeText={setCodigo}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TextInput
-        value={dataAquisicao}
-        placeholder="Data de Aquisição"
-        onChangeText={setAquisicao}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TextInput
-        value={valor}
-        placeholder="Valor do Bem"
-        onChangeText={setValor}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TextInput
-        value={estadoConservacao}
-        placeholder="Estado de Conservação do Bem"
-        onChangeText={setEstadoConservacao}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TextInput
-        value={local}
-        placeholder="Local que se encontra"
-        onChangeText={setLocal}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TextInput
-        value={IDcategoria}
-        placeholder="Categoria do bem"
-        onChangeText={setIDcategoria}
-        style={styles.input}
-        placeholderTextColor="black"
-      />
-      <TouchableOpacity onPress={handleCadastrar}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white', backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>Adicionar Bem</Text>
+      <View>
+        <Text>Nome:</Text>
+        <TextInput value={nome} onChangeText={setNome} style={styles.input} />
+        <Text>Número:</Text>
+        <TextInput value={numero} onChangeText={setNumero} style={styles.input} />
+        <Text>Código:</Text>
+        <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
+        <Text>Data de Aquisição:</Text>
+        <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
+        <Text>Estado de Conservação:</Text>
+        <TextInput value={estadoConservacao} onChangeText={setEstadoConservacao} style={styles.input} />
+        <Text>Valor:</Text>
+        <TextInput value={valor} onChangeText={setValor} style={styles.input} />
+        <Text>Local:</Text>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          placeholder="Selecione um local"
+          containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
+          style={{ borderColor: "black", borderWidth: 2, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+          dropDownContainerStyle={{
+            backgroundColor: '#29304B',
+            borderColor: 'black',
+            borderWidth: 2,
+            borderRadius: 10,
+          }}
+          onChangeValue={setLocal}
+        />
+        <Text>Categoria:</Text>
+        <TextInput value={IDcategoria} onChangeText={setIDcategoria} style={styles.input} />
+        <Button title="Escolher Foto" onPress={pickImage} />
+        {foto && <Image source={{ uri: foto }} style={{ width: 200, height: 200 }} />}
+        <TouchableOpacity onPress={handleCadastrar}>
+          <Text style={styles.buttonText}>Confirmar</Text>
         </TouchableOpacity>
-      
-    </View>
+      </View>
     </ScrollView>
   );
-} 
+}
 
 const styles = StyleSheet.create({
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        width: Dimensions.get("window").width * 0.85,
-        marginVertical: 5,
-        borderRadius: 15,
-        marginBottom: 10,
-        color: "white"
-      },
-      
-
-})
-
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    width: Dimensions.get("window").width * 0.85,
+    marginVertical: 5,
+    borderRadius: 15,
+    marginBottom: 10,
+    color: "white"
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: "#ECAA71",
+    borderRadius: 30,
+    paddingVertical: 10
+  }
+});

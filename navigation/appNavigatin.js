@@ -1,6 +1,5 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "../screans/HomeScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screans/LoginScreean";
 import SingUpScreen from "../screans/SingUpScreen";
@@ -14,7 +13,14 @@ import FormsEditBem from "../screans/FormsEditBem";
 import CameraScreen from "../screans/Camera"; 
 import LocaisScreen from "../screans/LocaisScreen";
 import CategoriaScreen from "../screans/CategoriaScreen";
-
+import CameraLevantamento from "../screans/CamLev";
+import VerificationScreen from "../screans/saveLevantamento";
+import LevLocais from "../screans/LevLocais";
+import BemLocLev from "../screans/BemLocLev";
+import EditBemLevScreen from "../screans/EditBemLev";
+import LevScreen from "../screans/LevScreen";
+import BensDeLocalScreen from "../screans/BensDeLocalScreen";
+import AddLocal from "../screans/AddLocal";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +29,6 @@ export default function AppNavigation() {
        <NavigationContainer> 
 
             <Stack.Navigator initialRouteName='Welcome'>
-                <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
                 <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
                 <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
                 <Stack.Screen name="SingUp" options={{ headerShown: false }} component={SingUpScreen} />
@@ -35,6 +40,13 @@ export default function AppNavigation() {
                 <Stack.Screen name="Cam" options={{ headerShown: false }} component={CameraScreen} />
                 <Stack.Screen name="Local" options={{ headerShown: false }} component={LocaisScreen} />
                 <Stack.Screen name="Categoria" options={{ headerShown: false }} component={CategoriaScreen} />
+                <Stack.Screen name="Levantamento" options={{ headerShown: false }} component={LevLocais} /> 
+                 <Stack.Screen name="CamLev" component={CameraLevantamento} /> 
+                <Stack.Screen name="BemLocLev" component={BemLocLev} />
+                <Stack.Screen name="EditBemLev" component={EditBemLevScreen} />
+                <Stack.Screen name="LevScreen" component={LevScreen} />
+                <Stack.Screen name="BensDeLocal" component={BensDeLocalScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="NovoLocal" component={AddLocal} options={{ headerShown: false }} />
             </Stack.Navigator>
          </NavigationContainer>    
     );

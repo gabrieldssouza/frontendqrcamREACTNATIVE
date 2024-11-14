@@ -8,24 +8,23 @@ import BemForm from "../componets/NewBemForms/BemForm";
 import LogoTop from "../componets/LogoTop/LogoTop";
 import BemFormEdit from "../componets/BemFormsEdit/BemFormsEdit";
 
-export default function FormsEditBem({route}){ 
+export default function EditBemLevScreen({route}){ 
 
     const navigation = useNavigation();
     const id = route.params?.id;
+    const pendenciaLocal = route.params?.pendenciaLocal;
     console.log("ID DA PDOGINA" + id)
     
         return(
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative"}} > 
 
             <LogoTop/>
-           <BemFormEdit id={id}> </BemFormEdit>
+           <BemFormEdit id={id} pendenciaLocal={pendenciaLocal}></BemFormEdit>
 
-            <TouchableOpacity onPress={() =>  navigation.navigate('Bem',  {id: id, key: id} )}>
+            <TouchableOpacity onPress={() =>  navigation.navigate('BemLocLev' )}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white',  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>confirmado</Text>
             </TouchableOpacity>
 </View>
 
           );
     }
-    
-    
