@@ -16,8 +16,24 @@ export default function BemForm() {
   const [local, setLocal] = useState('');
   const [IDcategoria, setIDcategoria] = useState('');
   const [foto, setFoto] = useState(null);
+  const [locais, setLocais] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([]);
 
-
+  useEffect(() => {
+    const fetchLocais = async () => {
+      try {
+        const response = await api.get('/listarlocais');
+        const result = response.data;
+        setLocais(result);
+        setItems(result.map(item => ({ label: item.nome, value: item.idLocais })));
+      } catch (error) {
+        console.error('Erro ao buscar locais', error);
+      }
+    };
+    fetchLocais();
+  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,6 +45,7 @@ export default function BemForm() {
 
     if (!result.canceled) {
       setFoto(result.assets[0].uri);
+
     }
   };
 
@@ -44,7 +61,7 @@ export default function BemForm() {
     formData.append('data_aquisicao', dataAquisicao);
     formData.append('estado_conservacao', estadoConservacao);
     formData.append('valor_aquisicao', valor);
-    formData.append('local', local);
+    formData.append('local_idLocais', local);
     formData.append('categoria_idCategoria', IDcategoria);
     if (foto) {
         const filename = foto.split('/').pop();
@@ -87,7 +104,24 @@ export default function BemForm() {
         <Text>Valor:</Text>
         <TextInput value={valor} onChangeText={setValor} style={styles.input} />
         <Text>Local:</Text>
-        <TextInput value={local} onChangeText={setLocal} style={styles.input} />
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          placeholder="Selecione um local"
+          containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
+          style={{ borderColor: "black", borderWidth: 2, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+          dropDownContainerStyle={{
+            backgroundColor: '#29304B',
+            borderColor: 'black',
+            borderWidth: 2,
+            borderRadius: 10,
+          }}
+          onChangeValue={setLocal}
+        />
         <Text>Categoria:</Text>
         <TextInput value={IDcategoria} onChangeText={setIDcategoria} style={styles.input} />
         <Button title="Escolher Foto" onPress={pickImage} />

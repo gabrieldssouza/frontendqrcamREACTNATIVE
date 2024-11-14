@@ -38,8 +38,6 @@ export default function SingUpScreen(){
         }
     }    
 
-    
-
         return(
             <View style={styles.container}> 
                <SafeAreaView style={styles.containerBoxTop}> 

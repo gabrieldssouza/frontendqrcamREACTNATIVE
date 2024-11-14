@@ -34,7 +34,8 @@ export default function App() {
       console.log('ID do Bem:', idbem);
   
       const response = await api.get(`/listarbem/${idbem}`);
-      if (!response.status === 200) {
+
+      if (response.status !== 200) {
         throw new Error('Erro ao pegar dados');
       }
       const bem = response.data;

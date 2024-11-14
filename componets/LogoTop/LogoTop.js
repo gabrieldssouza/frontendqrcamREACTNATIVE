@@ -12,9 +12,6 @@ export default function LogoTop(){
     <View style={{  alignItems: 'center', backgroundColor: '#ECAA71', width: Dimensions.get('window').width * 0.30, height: Dimensions.get('window').width * 0.35, 
     alignItems: "flex-start", borderBottomEndRadius: 20, borderBottomStartRadius: 20, justifyContent:"center"}}>
        
-       <TouchableOpacity style={{backgroundColor: "black", width: 30, height: 30}} onPress={goBack}> 
-        <Text> volta</Text>
-       </TouchableOpacity>
       <Image
                     source={require("../../assets/logotccbranca.png")}
                    style={{ width: 90, 

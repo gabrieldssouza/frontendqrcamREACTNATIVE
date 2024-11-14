@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput } from 'react-native';
+
 import BoxBem from '../componets/BoxBem/BoxBem';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import LogoTop from '../componets/LogoTop/LogoTop';
@@ -16,6 +18,7 @@ export default function InitialScreen() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isAllbensVIsible, setIsAllbensVIsible] = useState(true);
+
   const [estadoConservacao, setEstadoConservacao] = useState('');
   const [isOpem, setIsOpem] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
@@ -35,7 +38,7 @@ export default function InitialScreen() {
   useEffect(() => {
     const getUserById = async (userId) => {
       try {
-        const response = await axios.get(`http://192.168.1.14:3000/usuarios/${userId}`);
+        const response = await api.get(`/usuarios/${userId}`);
         console.log('Dados do usuário:', response.data);
         setUser(response.data); // Define o usuário encontrado no estado
       } catch (error) {
@@ -44,7 +47,7 @@ export default function InitialScreen() {
     };
     // Chama a função para buscar o usuário com o ID desejado
     const userId = '668b5d966edf321c2011bcda'; // ID do usuário desejado
-    getUserById(userId);
+    getUserById(userId); 
   }, []);
 
   const filtroEstado = async () => {
@@ -71,14 +74,19 @@ export default function InitialScreen() {
         if (response.status !== 200) {
             throw new Error('Erro ao pegar dados');
         }
-        const result = response.data;
-        setData(result);
+        const result = await response.data;
         setFilteredBens(result);
     } catch (error) {
         console.error('Erro ao buscar dados', error);
         setError(error.message);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   useEffect(() => {
     fetchData();
@@ -92,11 +100,9 @@ export default function InitialScreen() {
   }, [searchText, data]);
 
   const renderRelatorio = () => {
-    if (estadoConservacao) {
+
       return <RelatórioEstado data={DataEstadoFiltro} />;
-    } else {
-      return <FilterBem data={filteredBens} />;
-    }
+  
   };
 
   return (
@@ -172,17 +178,17 @@ export default function InitialScreen() {
         ))}
       </ScrollView>
       
-      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ marginBottom: 25, position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="camera" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
+      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{ marginBottom: 10,
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
           backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
         }}>

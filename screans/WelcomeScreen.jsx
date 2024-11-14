@@ -21,8 +21,7 @@ export default function WelcomeScreen() {
                     style={
                         styles.buttonLog
                     }
-                    onPress={() => navigation.navigate('SingUp')}
-                >
+                    onPress={() => navigation.navigate('SingUp')}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>
                         Sign Up
                     </Text>

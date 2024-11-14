@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -13,6 +14,7 @@ export default function CategoriaScreen() {
   const navigation = useNavigation();
   const [dataCategoria, setDataCategoria] = useState([]);
   const [BemCategoria, setBemCategoria] = useState([]);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([]);
@@ -20,11 +22,14 @@ export default function CategoriaScreen() {
   const fetchDataCategorias = async () => {
     try {
       const response = await api.get('/listarCategorias');
-      if (!response.status === 200) {
+      if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = response.data;
+      const result = await response.data;
       setDataCategoria(result);
+
+     
+
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
     } catch (error) {
       console.error('Erro ao buscar dados', error);
@@ -38,10 +43,10 @@ export default function CategoriaScreen() {
   const fetchBemCategoria = async (id) => {
     try {
       const response = await api.get(`/listarCategoria/${id}`);
-      if (!response.status === 200) {
+      if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = response.data;
+      const result = await response.json();
       setBemCategoria(result);
     } catch (error) {
       console.error('Erro ao buscar dados', error);
@@ -54,10 +59,12 @@ export default function CategoriaScreen() {
     }
   }, [value]);
 
+
   const [searchText, setSearchText] = useState('');
 
   return (
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative" }}>
+
       <LogoTop />
       <View>
         <Text style={{ fontSize: 25, color: "white", marginLeft: 10, marginTop: 30 }}>Nome da filial</Text>

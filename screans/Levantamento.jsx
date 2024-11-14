@@ -33,43 +33,38 @@ export default function Levantamento() {
 
 const filtroEstado = async () => {
   console.log(estadoConservacao)
-    try {
-      const response = await api.get(`/listarEstados/${estadoConservacao}`);
-      const result = response.data;
-      setDataEstadoFiltro(result);
-      setIsAllbensVIsible(false)
-      console.log(DataEstadoFiltro)
-    } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
-    } 
-  };
+  try {
+    const response = await api.get(`/listarEstados/${estadoConservacao}`);
+    setDataEstadoFiltro(response.data);
+    setIsAllbensVIsible(false);
+    console.log(DataEstadoFiltro);
+  } catch (error) {
+    console.error('Erro ao buscar dados', error);
+    setError(error.message);
+  }
+};
 
-  useEffect(() => {
-    if (estadoConservacao) {
-      filtroEstado();
-    }
-  }, [estadoConservacao]);
+useEffect(() => {
+  if (estadoConservacao) {
+    filtroEstado();
+  }
+}, [estadoConservacao]);
 
-  const fetchData = async () => {
-    try {
-      const response = await api.get('/listarbens');
-      if (!response.status === 200) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = response.data;
-      setData(result);
-    } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
-    }
-  };
+const fetchData = async () => {
+  try {
+    const response = await api.get('/listarbens');
+    setData(response.data);
+  } catch (error) {
+    console.error('Erro ao buscar dados', error);
+    setError(error.message);
+  }
+};
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchData();
-    }, [])
-  );
+useFocusEffect(
+  useCallback(() => {
+    fetchData();
+  }, [])
+);
 
   const renderRelatorio = () => {
     if (estadoConservacao) {

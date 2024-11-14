@@ -6,23 +6,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BemForm from "../componets/NewBemForms/BemForm";
 import LogoTop from "../componets/LogoTop/LogoTop";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 import api from "../services/api";
 
 export default function IndividualBem({ route }) {
   const navigation = useNavigation();
   const idbem = route.params?.idbem;
-  console.log(idbem);
+  console.log("id", idbem);
   const [Bem, setBem] = useState(null);
 
   useEffect(() => {
     const fetchBem = async () => {
       try {
         const response = await api.get(`/listarbem/${idbem}`);
-        if (!response.status === 200) {
-          throw new Error('Erro ao pegar dados');
-        }
-        const result = response.data;
-        setBem(result);
+        setBem(response.data);
       } catch (error) {
         console.error('Erro ao buscar bem', error);
       }

@@ -20,8 +20,10 @@ export default function LevLocais({route}) {
 
     const fetchData = async () => {
       try {
+
         const response = await api.get('/listarLocais');
         if (!response.status === 200) {
+
           throw new Error('Erro ao pegar dados');
         }
         const result = response.data;
@@ -64,14 +66,6 @@ export default function LevLocais({route}) {
 
      </ScrollView>
          
-     <TouchableOpacity onPress={() =>  navigation.navigate('Forms')} style={{position: "absolute", bottom: 50, right: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="add" size={48} color="white" /></Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity onPress={() => navigation.navigate('CamLev', { action: 'encontrar' })}
- style={{position: "absolute", bottom: 50, left: 30,  width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50  }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11}}><Ionicons name="camera" size={48} color="white" /></Text>
-    </TouchableOpacity> 
 
 
     </View>
