@@ -6,6 +6,8 @@ import api from '../../services/api';
 export default function AddLocalForms() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
+  const [ responsavel, setResponsavel] = useState('');
+
 
   const handleCadastrar = async () => {
     if (!nome) {
@@ -19,7 +21,7 @@ export default function AddLocalForms() {
     console.log(formData);
     try {
       const response = await api.post('/criarlocal', {
-        nome,
+        nome, responsavel
       });
       console.log('Local criado com sucesso:', response.data);
       navigation.navigate('Local'); // Navega de volta para a tela de locais
@@ -35,6 +37,10 @@ export default function AddLocalForms() {
       <View>
         <Text>Nome do Local:</Text>
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
+      </View>
+      <View>
+        <Text>Nome do Responsável:</Text>
+        <TextInput value={responsavel} onChangeText={setResponsavel} style={styles.input} />
       </View>
       <TouchableOpacity style={{ borderRadius: 30 }} onPress={handleCadastrar}>
         <Text style={styles.buttonText}>Cadastrar</Text>

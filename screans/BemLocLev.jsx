@@ -198,13 +198,13 @@ export default function BemLocLev({route}) {
         const { id1, id2 } = item; // Extrai os IDs do objeto
         const ids = [id1, id2]; // Cria um array com os dois IDs
         for (const id of ids) {
-          const response = await fetch(`http://192.168.1.114:3000/listarbem/${id}`);
-          if (!response.ok) {
+          const response = await api.get(`/listarbem/${id}`);
+          if (response.status !== 200) {
             throw new Error('Erro ao pegar dados');
           }
-          const result = await response.json();
+          const result = response.data;
           console.log("data", result); // Exibe o resultado do bem encontrado
-  
+
           // Aqui você precisa garantir que está manipulando o estado corretamente.
           setBemIdsTag(prevBemIdsTag => [...prevBemIdsTag, result]);
         }
@@ -231,7 +231,7 @@ export default function BemLocLev({route}) {
 
 
   const renderRelatorio = () => {
-    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace}/>;
+    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
   };
 
   return (

@@ -39,6 +39,26 @@ export default function LocaisScreen() {
         <Text style={{ fontSize: 25, color: "white", marginLeft: 10, marginTop: 30 }}>Nome da filial</Text>
         <View style={{ height: 3, backgroundColor: 'white', width: Dimensions.get("window").width * 0.85, marginTop: 4 }} />
       </View>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", paddingTop: 30 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Initial')} style={{
+          justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.28,
+          backgroundColor: "#4A6382", height: 50, alignItems: "center", borderTopLeftRadius: 10, borderBottomLeftRadius: 10
+        }}>
+          <Text style={{ fontSize: 15, fontWeight: 'bold', alignItems: "center", color: 'white' }}>Todos</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Local')} style={{
+          justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.28,
+          backgroundColor: "#ECAA71", height: 50, alignItems: "center"
+        }}>
+          <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Locais</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Categoria')} style={{
+          justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.28,
+          backgroundColor: "#4A6382", height: 50, alignItems: "center", borderTopRightRadius: 10, borderBottomRightRadius: 10
+        }}>
+          <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Categoria</Text>
+        </TouchableOpacity>
+      </View>
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <TextInput
           placeholder='Pesquisar'

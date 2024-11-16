@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Alert, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import RelatorioCategoria from '../RelatorioCat/RelatCat';
 
 export default function DropdownRelat() {
   const [openRelat, setopenRelat] = useState(false);
@@ -48,7 +49,7 @@ export default function DropdownRelat() {
 
   // Funções fictícias para cada caso
   const handleTodos = () => Alert.alert('Todos selecionados');
-  const handleEstados = () => Alert.alert('Estados de Conservação selecionados');
+  const handleEstados = () => <RelatorioCategoria/>
   const handleLocais = () => Alert.alert('Locais selecionados');
   const handleLocalIndividual = () => Alert.alert('Local Individual selecionado');
   const handleCategorias = () => Alert.alert('Categorias selecionadas');
