@@ -14,22 +14,17 @@ export default function ModalNoTag({ data, onClose }) {
     console.log("IDS merge missing", id_atual, id_antigo)
     try {
       console.log("tentando merge missing")
-      const response = await fetch('http://192.168.1.114:3000/missingTag', {
-        method: 'PUT', // Especificando que é um POST
-        headers: {
-            'Content-Type': 'application/json' // Definindo o tipo de conteúdo como JSON
-        },
-        body: JSON.stringify({
-            id_bem_atual: id_atual,
-            id_bem_antigo: id_antigo
-        })
-    });
-      console.log('Resposta do servidor:', response.json());
+      const response = await api.put('/missingTag', {
+        id_bem_atual: id_atual,
+        id_bem_antigo: id_antigo
+      });
+      console.log('Resposta do servidor:', response.data);
     } catch (error) {
       console.error('Erro ao atualizar o bem:', error);
     }
-    
   }
+    
+  
 
   return (
     <ModalContainer onBackdropPress={onClose} isVisible={true} style={styles.modalContainer}>

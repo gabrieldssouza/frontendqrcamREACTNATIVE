@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import api from "../../services/api";
 export default function BemFormEdit(props) {
   const navigation = useNavigation();
 
@@ -51,12 +52,10 @@ export default function BemFormEdit(props) {
 
         try {
 
-            const response = await fetch('http://192.168.126.87:3000/editarBem', {
-                method: 'PUT',
+            const response = await api.put('/editarBem', newData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newData)
             });
 
             Alert.alert("Sucesso", "Bem editado com sucesso!");

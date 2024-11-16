@@ -4,7 +4,6 @@
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-   
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
@@ -26,6 +25,7 @@
           "recordAudioAndroid": true
         }
       ]
-    ]
+    ],
+    "sdkVersion": "52.0.0"
   }
 }

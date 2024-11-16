@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput } from 'react-native';
-
 import BoxBem from '../componets/BoxBem/BoxBem';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import LogoTop from '../componets/LogoTop/LogoTop';
@@ -10,7 +8,6 @@ import FilterBem from '../componets/FilterBem/FilterBem';
 import RelatórioEstado from '../componets/RelatorioEstado/RelatorioEstado';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
-import axios from 'axios';
 import DropdownRelat from '../componets/dropDowRelat/DropRelat';
 
 export default function InitialScreen() {
@@ -19,13 +16,11 @@ export default function InitialScreen() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isAllbensVIsible, setIsAllbensVIsible] = useState(true);
-
   const [estadoConservacao, setEstadoConservacao] = useState('');
   const [isOpem, setIsOpem] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
   const [DataEstadoFiltro, setDataEstadoFiltro] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [bens, setBens] = useState([]);
   const [filteredBens, setFilteredBens] = useState([]);
   const [user, setUser] = useState(null); // Estado para armazenar um único usuário
 
@@ -35,21 +30,6 @@ export default function InitialScreen() {
     { label: 'ruim', value: 'ruim' },
     { label: 'péssimo', value: 'pessimo' },
   ];
-
-  useEffect(() => {
-    const getUserById = async (userId) => {
-      try {
-        const response = await api.get(`/usuarios/${userId}`);
-        console.log('Dados do usuário:', response.data);
-        setUser(response.data); // Define o usuário encontrado no estado
-      } catch (error) {
-        console.error('Erro ao buscar usuário:', error.message);
-      }
-    };
-    // Chama a função para buscar o usuário com o ID desejado
-    const userId = '668b5d966edf321c2011bcda'; // ID do usuário desejado
-    getUserById(userId); 
-  }, []);
 
   const filtroEstado = async () => {
     try {
@@ -71,15 +51,16 @@ export default function InitialScreen() {
 
   const fetchData = async () => {
     try {
-        const response = await api.get('/listarbens');
-        if (response.status !== 200) {
-            throw new Error('Erro ao pegar dados');
-        }
-        const result = await response.data;
-        setFilteredBens(result);
+      const response = await api.get('/listarbens');
+      if (response.status !== 200) {
+        throw new Error('Erro ao pegar dados');
+      }
+      const result = response.data;
+      setData(result);
+      setFilteredBens(result);
     } catch (error) {
-        console.error('Erro ao buscar dados', error);
-        setError(error.message);
+      console.error('Erro ao buscar dados', error);
+      setError(error.message);
     }
   };
 
@@ -101,9 +82,11 @@ export default function InitialScreen() {
   }, [searchText, data]);
 
   const renderRelatorio = () => {
-
+    if (estadoConservacao) {
       return <RelatórioEstado data={DataEstadoFiltro} />;
-  
+    } else {
+      return <FilterBem data={filteredBens} />;
+    }
   };
 
   return (
@@ -178,18 +161,17 @@ export default function InitialScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      
-      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ marginBottom: 25, position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="camera" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{ marginBottom: 10,
+      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
           backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
         }}>

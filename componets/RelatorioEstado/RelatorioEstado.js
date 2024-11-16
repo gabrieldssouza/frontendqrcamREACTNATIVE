@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { Ionicons } from '@expo/vector-icons';
+import api from '../../services/api';
 
 
 export default function RelatorioEstado({ data }) {
@@ -10,10 +11,8 @@ export default function RelatorioEstado({ data }) {
 
   const filtroEstado = async (cat) => {
     try {
-      const response = await fetch(`http://192.168.1.114:3000/listarCategoria/${cat}`);
-      const result = await response.json();
-      return result;
-
+      const response = await api.get(`/listarCategoria/${cat}`);
+      return response.data;
     } catch (error) {
       console.error('Erro ao buscar dados', error);
       return [];

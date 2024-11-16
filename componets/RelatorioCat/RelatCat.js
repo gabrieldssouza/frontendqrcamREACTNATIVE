@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import api from '../../services/api';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 ;
@@ -10,9 +11,8 @@ export default function RelatorioCategoria() {
 
   const filtroEstado = async (est) => {
     try {
-      const response = await fetch(`http://192.168.1.114:3000/listarEstados/${est}`);
-      const result = await response.json();
-      return result;
+      const response = await api.get(`/listarEstados/${est}`);
+      return response.data;
     } catch (error) {
       console.error('Erro ao buscar dados', error);
       return [];
