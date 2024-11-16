@@ -8,7 +8,6 @@ import LogoTop from '../componets/LogoTop/LogoTop';
 import useFetchData from '../componets/FetchData/FetchData';
 import BemForm from '../componets/NewBemForms/BemForm';
 import api from '../services/api';
-import RelatorioCategoria from '../componets/RelatorioCat/RelatCat';
 
 export default function CategoriaScreen() {
   const route = useRoute();
@@ -22,17 +21,14 @@ export default function CategoriaScreen() {
 
   const fetchDataCategorias = async () => {
     try {
-
+    
       const response = await api.get('/listarCategorias');
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
       const result = await response.data;
       setDataCategoria(result);
-
+      console.log(result)
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
     } catch (error) {
-      console.error('Erro ao buscar dados', error);
+      console.error('Erro ao buscar dados da part 1', error);
     }
   };
 
@@ -41,16 +37,13 @@ export default function CategoriaScreen() {
   }, []);
 
   const fetchBemCategoria = async (id) => {
+    console.log("id", id)
     try {
-
       const response = await api.get(`/listarCategoria/${id}`);
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = await response.json();
+      const result = await response.data;
       setBemCategoria(result);
     } catch (error) {
-      console.error('Erro ao buscar dados', error);
+      console.error('Erro ao buscar dados pat 2', error);
     }
   };
 
@@ -107,7 +100,6 @@ export default function CategoriaScreen() {
             }}
           />
         </View>
-        <RelatorioCategoria data={BemCategoria}/> 
         <View style={{ flex: 0.8 }}>
           <TextInput
             placeholder='Pesquisar'

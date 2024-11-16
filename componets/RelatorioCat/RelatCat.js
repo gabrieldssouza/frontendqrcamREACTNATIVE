@@ -5,6 +5,7 @@ import { shareAsync } from 'expo-sharing';
 ;
 
 export default function RelatorioCategoria() {
+  console.log("pelo menso ta")
   const [estados, setEstados] = useState({ otimo: [], bom: [], ruim: [], pessimo: [] });
 
   const filtroEstado = async (est) => {
@@ -81,19 +82,12 @@ export default function RelatorioCategoria() {
     } catch (error) {
       console.error('Erro ao gerar ou compartilhar o PDF', error);
     }
-  };const MeuComponente = () => {
-    const mostrarAlerta = () => {
-      Alert.alert(
-        'Título do Alerta',
-        'Mensagem do Alerta'
-        // Sem botões definidos
-      );
-    };
+  };
   
     return (
       <View>
-        <Button title="Mostrar Alerta" onPress={mostrarAlerta} />
+       
       </View>
     );// Não renderiza nada na tela
   }
-}
+
