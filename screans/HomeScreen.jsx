@@ -36,6 +36,22 @@ export default function HomeScreen() {
       ) : (
         <Text>Carregando usuário...</Text>
       )}
+ 
+ 
+ 
+ 
+ <TouchableOpacity onPress={() => navigation.navigate("Forms", { etiqueta: false})} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+       <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
+         Sem etiqueta
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={verifyNoTag} style={{ position: "absolute", bottom: 50, left: 120, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+       <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
+       Verificar Bens sem Etiqueta
+        </Text>
+      </TouchableOpacity>
+
+
     </View>
   );
 }

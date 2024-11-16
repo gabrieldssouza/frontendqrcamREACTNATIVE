@@ -22,11 +22,12 @@ export default function CategoriaScreen() {
 
   const fetchDataCategorias = async () => {
     try {
-      const response = await fetch('http://192.168.1.114:3000/listarCategorias');
+
+      const response = await api.get('/listarCategorias');
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = await response.json();
+      const result = await response.data;
       setDataCategoria(result);
 
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
@@ -41,7 +42,8 @@ export default function CategoriaScreen() {
 
   const fetchBemCategoria = async (id) => {
     try {
-      const response = await fetch(`http://192.168.1.114:3000/listarCategoria/${id}`);
+
+      const response = await api.get(`/listarCategoria/${id}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }

@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import axios from 'axios';
 import RelatorioFaltas from '../componets/LevRelat/LevRelatorio';
+
 import FormNoTag from '../componets/FormNoTag/FormNoTag';
 import BemForm from '../componets/NewBemForms/BemForm';
 
@@ -15,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import ModalNoTag from '../componets/ModalNoTag/ModalNoTag';
+
 export default function BemLocLev({route}) {
   const navigation = useNavigation();
   
@@ -80,6 +82,7 @@ export default function BemLocLev({route}) {
 
   const fetchBensLevantamento = async () => {
     try {
+
       const response = await api.get('/listarBensLevantamento');
       if (response.status !== 200) {
 
@@ -102,7 +105,6 @@ export default function BemLocLev({route}) {
       fetchBensLevantamento();
     }, [])
   );
-
 
   useEffect(() => {
     const fetchBem = async () => {
@@ -130,6 +132,7 @@ export default function BemLocLev({route}) {
     !bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
 
+
   const findItems = expectedItems.filter(item =>
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
@@ -139,7 +142,6 @@ export default function BemLocLev({route}) {
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem === item.idbem)
   );
   console.log("place", errorplace)
-
   const verifyNoTag = async () => {
     console.log("entro no verify");
     try {
@@ -214,6 +216,7 @@ export default function BemLocLev({route}) {
       console.error('Erro ao buscar bem', error);
     }
   };
+
   
 
   const renderItem = ({ item }) => {
@@ -257,7 +260,7 @@ export default function BemLocLev({route}) {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      
+
       <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{  marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />

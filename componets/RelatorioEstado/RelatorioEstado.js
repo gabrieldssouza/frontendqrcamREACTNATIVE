@@ -4,18 +4,22 @@ import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { Ionicons } from '@expo/vector-icons';
 
+
 export default function RelatorioEstado({ data }) {
   // Correção: inicialize estados corretamente como um objeto vazio com useState
+
 
   const filtroEstado = async (cat) => {
     try {
       const response = await fetch(`http://192.168.1.114:3000/listarCategoria/:idCategoria${cat}`);
       const result = await response.json();
       return result;
+
     } catch (error) {
       console.error('Erro ao buscar dados', error);
       return [];
     }
+
   };
 
 
@@ -23,7 +27,9 @@ export default function RelatorioEstado({ data }) {
     const html = `
       <html>
         <body>
+
           <h1>Relatório de Patrimônios - Produtos por categoria</h1>
+
           <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
@@ -66,6 +72,7 @@ export default function RelatorioEstado({ data }) {
       <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.12, backgroundColor: '#ECAA71', borderRadius: 15, height: 49 }}>
         <Text style={{ textAlign: 'center', color: 'white', paddingVertical: 7 }}>
           <Ionicons size={35} name="document-outline" />
+
         </Text>
       </TouchableOpacity>
     </View>

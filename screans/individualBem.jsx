@@ -19,14 +19,8 @@ export default function IndividualBem({ route }) {
     const fetchBem = async () => {
       try {
 
-        const response = await fetch(`http://192.168.1.114:3000/listarbem/${idbem}`);
-
-        if (!response.ok) {
-          throw new Error('Erro ao pegar dados');
-        }
-        const result = await response.json();
-        console.log("data", Bem)
-        setBem(result);
+        const response = await api.get(`/listarbem/${idbem}`);
+        setBem(response.data);
       } catch (error) {
         console.error('Erro ao buscar bem', error);
       }

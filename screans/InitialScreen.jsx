@@ -83,6 +83,12 @@ export default function InitialScreen() {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
   useEffect(() => {
     fetchData();
   }, []);

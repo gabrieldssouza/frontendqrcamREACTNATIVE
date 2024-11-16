@@ -7,6 +7,7 @@ import api from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+
  export default function CameraLevantamento({route}) {
   const navigation = useNavigation();
   const [facing, setFacing] = useState('back');
@@ -14,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
+
   const [idLevantamento, setIdLevantamento] = useState(null);
   const idLocal = route.params?.idLocal;
   console.log("idLevantamento camera:", idLevantamento);
@@ -34,6 +36,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
   console.log("idLevantamento cam:", idLevantamento );
 
+
   useEffect(() => {
     (async () => {
       const { status } = await requestPermission();
@@ -44,33 +47,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
   const handleBarcodeScanned = async ({ type, data }) => {
     setScanned(true);
     let idbem;  // Definir idbem aqui para usar em todo o escopo da função
-  
+
     try {
       const qrJson = JSON.parse(data);
       console.log('QR JSON:', qrJson);
-  
+
       if (!qrJson.idbem) {
         throw new Error('idbem não encontrado no QR code');
       }
-  
+
       idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
 
-      const response = await fetch(`http://192.168.1.114:3000/listarbem/${idbem}`);
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const bem = await response.json();
-      console.log("chegou no listar")
+
+      const response = await api.get(`/listarbem/${idbem}`);
+      const bem = response.data;
+      console.log("chegou no listar");
+
       // Criação do novo objeto com os dados do bem
       let newData = {
         bem_idbem: idbem,
         Levantamento_idLevantamento: idLevantamento  // Verifique se isso é o que você precisa
       };
       console.log("data: ", newData);
-  
+
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
+
 
       const addResponse = await api.post('http://192.168.1.114:3000/addBensLevantamento', newData, {
           headers: {
@@ -85,8 +88,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
       if (!addResponse.ok) {
         throw new Error(result.message || 'Erro na solicitação');
+
+
       }
-  
+
       // Navegação para a tela inicial só após o sucesso da requisição POST
 
     } catch (error) {

@@ -19,6 +19,8 @@ import LevLocais from "../screans/LevLocais";
 import BemLocLev from "../screans/BemLocLev";
 import EditBemLevScreen from "../screans/EditBemLev";
 import LevScreen from "../screans/LevScreen";
+import BensDeLocalScreen from "../screans/BensDeLocalScreen";
+import AddLocal from "../screans/AddLocal";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +45,8 @@ export default function AppNavigation() {
                 <Stack.Screen name="BemLocLev" component={BemLocLev} />
                 <Stack.Screen name="EditBemLev" component={EditBemLevScreen} />
                 <Stack.Screen name="LevScreen" component={LevScreen} />
-
+                <Stack.Screen name="BensDeLocal" component={BensDeLocalScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="NovoLocal" component={AddLocal} options={{ headerShown: false }} />
             </Stack.Navigator>
          </NavigationContainer>    
     );

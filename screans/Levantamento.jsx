@@ -32,43 +32,41 @@ export default function Levantamento() {
 
 const filtroEstado = async () => {
   console.log(estadoConservacao)
-    try {
-      const response = await fetch(`http://192.168.1.56:3000/listarEstados/${estadoConservacao}`);
-      const result = await response.json();
-      setDataEstadoFiltro(result);
-      setIsAllbensVIsible(false)
-      console.log(DataEstadoFiltro)
-    } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
-    } 
-  };
 
-  useEffect(() => {
-    if (estadoConservacao) {
-      filtroEstado();
-    }
-  }, [estadoConservacao]);
+  try {
+    const response = await api.get(`/listarEstados/${estadoConservacao}`);
+    setDataEstadoFiltro(response.data);
+    setIsAllbensVIsible(false);
+    console.log(DataEstadoFiltro);
+  } catch (error) {
+    console.error('Erro ao buscar dados', error);
+    setError(error.message);
+  }
+};
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/listarbens');
-      if (!response.ok) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
-    }
-  };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchData();
-    }, [])
-  );
+useEffect(() => {
+  if (estadoConservacao) {
+    filtroEstado();
+  }
+}, [estadoConservacao]);
+
+
+const fetchData = async () => {
+  try {
+    const response = await api.get('/listarbens');
+    setData(response.data);
+  } catch (error) {
+    console.error('Erro ao buscar dados', error);
+    setError(error.message);
+  }
+};
+
+useFocusEffect(
+  useCallback(() => {
+    fetchData();
+  }, [])
+);
 
   const renderRelatorio = () => {
     if (estadoConservacao) {

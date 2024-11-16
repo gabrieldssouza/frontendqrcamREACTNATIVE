@@ -19,11 +19,9 @@ export default function BemFormEdit(props) {
     useEffect(() => {
         const handleGetBem = async () => {
             try {
-                const response = await fetch(`http://192.168.1.114:3000/listarBem/${id}`);
-                if (!response.ok) {
-                    throw new Error('Erro ao pegar dados');
-                }
-                const result = await response.json();
+                const response = await api.get(`/listarBem/${id}`);
+                const result = response.data;
+
                 setBem(result);
                 setNome(result.nome);
                 setNumero(result.numero);
@@ -52,6 +50,7 @@ export default function BemFormEdit(props) {
         };
 
         try {
+
             const response = await fetch('http://192.168.126.87:3000/editarBem', {
                 method: 'PUT',
                 headers: {
@@ -59,7 +58,7 @@ export default function BemFormEdit(props) {
                 },
                 body: JSON.stringify(newData)
             });
-            
+
             Alert.alert("Sucesso", "Bem editado com sucesso!");
             
             // Optionally navigate back or reset the state here
