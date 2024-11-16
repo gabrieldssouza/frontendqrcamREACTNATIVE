@@ -35,7 +35,8 @@ export default function App() {
       console.log('ID do Bem:', idbem);
   
 
-      const response = await fetch(`http://192.168.1.122:3000/listarbem/${idbem}`);
+      const response = await fetch(`http://192.168.1.114:3000/listarbem/${idbem}`);
+
 
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');

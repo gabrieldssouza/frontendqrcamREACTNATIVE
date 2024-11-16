@@ -11,6 +11,7 @@ import RelatórioEstado from '../componets/RelatorioEstado/RelatorioEstado';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import axios from 'axios';
+import DropdownRelat from '../componets/dropDowRelat/DropRelat';
 
 export default function InitialScreen() {
   const route = useRoute();
@@ -161,7 +162,7 @@ export default function InitialScreen() {
           />
         </View>
         <View style={{ marginTop: 30, marginBottom: 20 }}>
-          {renderRelatorio()}
+          <DropdownRelat></DropdownRelat>
         </View>
       </View>
       <ScrollView>

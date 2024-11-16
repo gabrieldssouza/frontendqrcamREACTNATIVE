@@ -11,7 +11,7 @@ export default function HomeScreen() {
   
     const getUserById = async (userId) => {
       try {
-        const response = await axios.get(`http://192.168.1.56:3000/usuarios/${userId}`);
+        const response = await axios.get(`http://192.168.1.114:3000/usuarios/${userId}`);
         console.log('Dados do usuário:', response.data);
         setUser(response.data); // Define o usuário encontrado no estado
       } catch (error) {

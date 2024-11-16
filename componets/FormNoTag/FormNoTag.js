@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
 
-export default function BemForm() {
+export default function FormNoTag() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [numero, setNumero] = useState('');
@@ -16,7 +16,6 @@ export default function BemForm() {
   const [local, setLocal] = useState('');
   const [IDcategoria, setIDcategoria] = useState('');
   const [foto, setFoto] = useState(null);
-  
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +45,7 @@ export default function BemForm() {
     formData.append('valor_aquisicao', valor);
     formData.append('local', local);
     formData.append('categoria_idCategoria', IDcategoria);
-  
+    formData.append('etiqueta', true);
     if (foto) {
         const filename = foto.split('/').pop();
         const match = /\.(\w+)$/.exec(filename);

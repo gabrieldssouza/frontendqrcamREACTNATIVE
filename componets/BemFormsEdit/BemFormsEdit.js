@@ -19,7 +19,7 @@ export default function BemFormEdit(props) {
     useEffect(() => {
         const handleGetBem = async () => {
             try {
-                const response = await fetch(`http://192.168.1.122:3000/listarBem/${id}`);
+                const response = await fetch(`http://192.168.1.114:3000/listarBem/${id}`);
                 if (!response.ok) {
                     throw new Error('Erro ao pegar dados');
                 }

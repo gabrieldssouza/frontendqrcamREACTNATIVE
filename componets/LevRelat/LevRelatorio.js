@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 export default function RelatorioFaltas({faltando, encontrados, lugarErrado}) {
 
     const UnicoEstado = () => {   
-  html = `
+  const html = `
  <html>
         <body>
           <h1 style="font-size: 20px; text-align: center; margin-bottom: 40px;  margin-top: 40px;"> Relatório de Patrimônios - Itens Faltando em sala </h1>
@@ -98,13 +98,12 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado}) {
     });
 
     await shareAsync(file.uri);
-
   }
 
  return(
-  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.85}}> 
-    <TouchableOpacity onPress={UnicoEstado} style={{  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 15, marginTop: 10  }}>
-        <Text style={{fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 9}}>Gerar Relatório {'\n'} de itens nao encontrados</Text>
+  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.28, }}> 
+    <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.28, backgroundColor: "#ECAA71", borderRadius: 15,  marginRight: 10 }}>
+        <Text style={{paddingVertical: 11, fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 9}}>Gerar {'\n'} relatório </Text>
   </TouchableOpacity> 
   </View>
  );

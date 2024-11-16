@@ -8,6 +8,7 @@ import LogoTop from '../componets/LogoTop/LogoTop';
 import useFetchData from '../componets/FetchData/FetchData';
 import BemForm from '../componets/NewBemForms/BemForm';
 import api from '../services/api';
+import RelatorioCategoria from '../componets/RelatorioCat/RelatCat';
 
 export default function CategoriaScreen() {
   const route = useRoute();
@@ -21,14 +22,12 @@ export default function CategoriaScreen() {
 
   const fetchDataCategorias = async () => {
     try {
-      const response = await api.get('/listarCategorias');
+      const response = await fetch('http://192.168.1.114:3000/listarCategorias');
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
-      const result = await response.data;
+      const result = await response.json();
       setDataCategoria(result);
-
-     
 
       setItems(result.map(item => ({ label: item.nome, value: item.idCategoria })));
     } catch (error) {
@@ -42,7 +41,7 @@ export default function CategoriaScreen() {
 
   const fetchBemCategoria = async (id) => {
     try {
-      const response = await api.get(`/listarCategoria/${id}`);
+      const response = await fetch(`http://192.168.1.114:3000/listarCategoria/${id}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -90,7 +89,7 @@ export default function CategoriaScreen() {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            placeholder="Selecione uma opção"
+            placeholder="Selecione a categoria"
             containerStyle={{ height: 40 }}
             style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.35, borderRadius: 15, padding: 9, backgroundColor: '#29304B', zIndex: 1001 }}
             dropDownContainerStyle={{
@@ -106,6 +105,7 @@ export default function CategoriaScreen() {
             }}
           />
         </View>
+        <RelatorioCategoria data={BemCategoria}/> 
         <View style={{ flex: 0.8 }}>
           <TextInput
             placeholder='Pesquisar'

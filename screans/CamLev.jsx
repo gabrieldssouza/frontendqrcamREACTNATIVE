@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
  export default function CameraLevantamento({route}) {
@@ -13,10 +14,25 @@ import api from '../services/api';
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [qrData, setQrData] = useState(null);
-  const idLevantamento = route.params?.idLevantamento;
-  console.log("idLevantamento recebido:", idLevantamento);
+  const [idLevantamento, setIdLevantamento] = useState(null);
   const idLocal = route.params?.idLocal;
+  console.log("idLevantamento camera:", idLevantamento);
   
+  useEffect(() => {
+    const fetchIdLevantamento = async () => {   
+
+      const storedIdLevantamento = await AsyncStorage.getItem('idLevantamento');
+      if (storedIdLevantamento) {
+        setIdLevantamento(storedIdLevantamento);
+      }
+    };
+    if(idLevantamento){
+      saveIdLevantamento(idLevantamento)
+    }
+    fetchIdLevantamento();
+  }, []);
+
+  console.log("idLevantamento cam:", idLevantamento );
 
   useEffect(() => {
     (async () => {
@@ -40,7 +56,7 @@ import api from '../services/api';
       idbem = qrJson.idbem;  // Atribuir idbem aqui
       console.log('ID do Bem:', idbem);
 
-      const response = await fetch(`http://192.168.1.122:3000/listarbem/${idbem}`);
+      const response = await fetch(`http://192.168.1.114:3000/listarbem/${idbem}`);
       if (!response.ok) {
         throw new Error('Erro ao pegar dados');
       }
@@ -56,14 +72,17 @@ import api from '../services/api';
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
 
-      const addResponse = await api.post('http://192.168.1.122:3000/addBensLevantamento', newData, {
+      const addResponse = await api.post('http://192.168.1.114:3000/addBensLevantamento', newData, {
           headers: {
               'Content-Type': 'application/json',
           },
 
       });
+      const result = await addResponse.data
 
+      console.log("pé navegar: ", idbem);
       navigation.navigate('EditBemLev', { id: idbem });
+
       if (!addResponse.ok) {
         throw new Error(result.message || 'Erro na solicitação');
       }
