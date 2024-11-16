@@ -231,7 +231,7 @@ export default function BemLocLev({route}) {
 
 
   const renderRelatorio = () => {
-    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace}/>;
+    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
   };
 
   return (
