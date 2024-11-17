@@ -11,10 +11,8 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
  import api from '../services/api';
 
  export default function LevScreen()  {
-  const route = useRoute();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
- 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,9 +47,6 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
     }} />
                            
       </View>
-
-
-
       <ScrollView style={{ marginTop: 30}}>
       
         {data.map((item, index) => (

@@ -24,18 +24,127 @@ export default function DropdownRelat() {
   const [locais, setLocais] = useState({});
   const [bemLocais, setBemlocais] = useState({});
 
+  function obterDataAtualFormatada() {
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+    const ano = data.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  }
+  const [categorias, setCategorias  ] = useState({});
+  const [bemCatgorias, setBemCatgorias] = useState({});
+
+  const fetchCategoria = async () => {
+    try {
+      const response = await api.get('/listarcategorias');
+      const result = await response.data;
+      setCategorias(result)
+      console.log(categorias[1].nome)
+      result.forEach(item => {
+        filtroCategoria(item.idCategoria)}
+      )
+    } catch (error) {
+      console.error('Erro ao buscar locais:', error);
+    }
+  };
+
+  const filtroCategoria= async (loc) => {
+    try {
+      const response = await fetch(`http://192.168.1.114:3000/listarLocal/${loc}`);
+      console.log("loc", loc)
+      const result = await response.json();
+      setBemlocais((prevState) => ({
+        ...prevState,
+        [loc]: result
+      }));
+      
+    } catch (error) {
+      console.error('Erro ao buscar dados', error);
+      return [];
+    }
+  };
+
+  const gerarPDFLocais = async () => {
+    await fetchLocais();
+    const html = `
+      <html>
+        <body>
+        <table style="width: 100%; border: none;">
+      <tr>
+        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Bens por lugar</td>
+        <td style="width: 10%;"></td>
+      </tr>
+    </table>
+       <!-- Informações adicionais -->
+    <div style="; font-size: 14px; margin-top: 20px;">
+      <p><strong>Data de expedição do arquivo:</strong> ${obterDataAtualFormatada()}</p>
+      <p><strong>Entidade:</strong> [Nome da Entidade]</p>
+    </div>
+     ${Object.keys(bemLocais).map(est => `
+      <tr>
+                  <td colspan="4" style="background-color: #f2f2f2; font-weight: bold;">Localizados em ${locais[est-1].nome}</td>
+       </tr>
+          <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Estado de Conservação</th>
+              </tr>
+            </thead>
+            <tbody>            
+                ${bemLocais[est].map(item => `
+                  <tr>
+                    <td>${item.codigo}</td>
+                    <td>${item.nome}</td>
+                    <td>R$ ${item.valor_aquisicao}</td>
+                    <td>${item.estado_conservacao}</td>
+                  </tr>
+                `).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+            <!-- Rodapé com local, data e assinaturas -->
+    <table style="width: 100%; margin-top: 30px;">
+      <tr>
+        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Diretor(a) de Administração</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Responsável</div>
+        </td>
+      </tr>
+    </table>
+        </body>
+      </html>
+    `;
+    try {
+      const { uri } = await Print.printToFileAsync({ html });
+      await shareAsync(uri);
+    } catch (error) {
+      console.error('Erro ao gerar ou compartilhar o PDF', error);
+    }
+  };
+
   const fetchLocais = async () => {
     try {
       const response = await api.get('/listarlocais');
       const result = await response.data;
-      // Supondo que 'data' seja um array de objetos com a propriedade 'nome' e 'itens'
       setLocais(result)
-      console.log(locais[1].nome)
+      console.log(locais[2].nome)
       result.forEach(item => {
         filtroLocal(item.idLocais)}
       )
     } catch (error) {
-      console.error('Erro ao buscar categorias:', error);
+      console.error('Erro ao buscar locais:', error);
     }
   };
 
@@ -60,7 +169,22 @@ export default function DropdownRelat() {
     const html = `
       <html>
         <body>
-          <h1>Relatório de Patrimônios - Bens por local </h1>
+        <table style="width: 100%; border: none;">
+      <tr>
+        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Bens por lugar</td>
+        <td style="width: 10%;"></td>
+      </tr>
+    </table>
+       <!-- Informações adicionais -->
+    <div style="; font-size: 14px; margin-top: 20px;">
+      <p><strong>Data de expedição do arquivo:</strong> ${obterDataAtualFormatada()}</p>
+      <p><strong>Entidade:</strong> [Nome da Entidade]</p>
+    </div>
+     ${Object.keys(bemLocais).map(est => `
+      <tr>
+                  <td colspan="4" style="background-color: #f2f2f2; font-weight: bold;">Localizados em ${locais[est-1].nome}</td>
+       </tr>
           <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
@@ -70,11 +194,7 @@ export default function DropdownRelat() {
                 <th>Estado de Conservação</th>
               </tr>
             </thead>
-            <tbody>
-             ${Object.keys(bemLocais).map(est => `
-                <tr>
-                  <td colspan="4" style="background-color: #f2f2f2; font-weight: bold;">Faixa para ${locais[1].nome}</td>
-                </tr> 
+            <tbody>            
                 ${bemLocais[est].map(item => `
                   <tr>
                     <td>${item.codigo}</td>
@@ -86,10 +206,26 @@ export default function DropdownRelat() {
               `).join('')}
             </tbody>
           </table>
+            <!-- Rodapé com local, data e assinaturas -->
+    <table style="width: 100%; margin-top: 30px;">
+      <tr>
+        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Diretor(a) de Administração</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Responsável</div>
+        </td>
+      </tr>
+    </table>
         </body>
       </html>
     `;
-
     try {
       const { uri } = await Print.printToFileAsync({ html });
       await shareAsync(uri);
@@ -128,7 +264,22 @@ export default function DropdownRelat() {
     const html = `
       <html>
         <body>
-          <h1>Relatório de Patrimônios - Todos os Bens</h1>
+          <!-- Cabeçalho com logo e título -->
+    <table style="width: 100%; border: none;">
+      <tr>
+        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Estados de conservação</td>
+        <td style="width: 10%;"></td>
+      </tr>
+    </table>
+
+    <!-- Informações adicionais -->
+    <div style="; font-size: 14px; margin-top: 20px;">
+      <p><strong>Data do arquivo:</strong> ${obterDataAtualFormatada()}</p>
+      <p><strong>Entidade:</strong> [Nome da Entidade]</p>
+  
+    </div>
+
           <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
@@ -154,6 +305,23 @@ export default function DropdownRelat() {
               `).join('')}
             </tbody>
           </table>
+            <!-- Rodapé com local, data e assinaturas -->
+    <table style="width: 100%; margin-top: 30px;">
+      <tr>
+        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Diretor(a) de Administração</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Responsável</div>
+        </td>
+      </tr>
+    </table>
         </body>
       </html>
     `;
@@ -168,12 +336,14 @@ export default function DropdownRelat() {
 
   const fetchData = async () => {
     try {
+     
         const response = await api.get('/listarbens');
         if (response.status !== 200) {
             throw new Error('Erro ao pegar dados');
         }
         const result = await response.data;
         setFilteredBens(result);
+         console.log("ta ok")
     } catch (error) {
         console.error('Erro ao buscar dados', error);
         setError(error.message);
@@ -185,7 +355,21 @@ export default function DropdownRelat() {
     const html = `
       <html>
         <body>
-          <h1>Relatório de Patrimônios - Todos os Bens</h1>
+         <!-- Cabeçalho com logo e título -->
+    <table style="width: 100%; border: none;">
+      <tr>
+        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Todos os bens</td>
+        <td style="width: 10%;"></td>
+      </tr>
+    </table>
+
+    <!-- Informações adicionais -->
+    <div style="; font-size: 14px; margin-top: 20px;">
+      <p><strong>Data do arquivo:</strong> ${obterDataAtualFormatada()}</p>
+      <p><strong>Entidade:</strong> [Nome da Entidade]</p>
+    
+    </div>
           <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
             <thead>
               <tr>
@@ -207,6 +391,23 @@ export default function DropdownRelat() {
                 `).join('')}
             </tbody>
           </table>
+            <!-- Rodapé com local, data e assinaturas -->
+    <table style="width: 100%; margin-top: 30px;">
+      <tr>
+        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Diretor(a) de Administração</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Responsável</div>
+        </td>
+      </tr>
+    </table>
         </body>
       </html>
     `;
