@@ -15,7 +15,6 @@ export default function CategoriaScreen() {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
 
-
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -32,7 +31,6 @@ export default function CategoriaScreen() {
 
     fetchCategorias();
   }, []);
-
 
   useEffect(() => {
     const fetchBemCategoria = async () => {
@@ -83,7 +81,6 @@ export default function CategoriaScreen() {
           <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Categoria</Text>
         </TouchableOpacity>
       </View>
-
       <View style={{ marginTop: 30, marginBottom: 20, zIndex: 1000 }}>
         <DropDownPicker
           items={categorias}
@@ -106,10 +103,10 @@ export default function CategoriaScreen() {
             borderBottomColor: "black"
           }}
         />
-
       </View>
       <TextInput
         placeholder='Pesquisar'
+        placeholderTextColor="black"
         value={searchText}
         onChangeText={setSearchText}
         style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginBottom: 20 }}

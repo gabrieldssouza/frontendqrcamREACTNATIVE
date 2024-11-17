@@ -10,6 +10,7 @@ export default function LocaisScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [filteredLocais, setFilteredLocais] = useState([]);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
@@ -20,6 +21,7 @@ export default function LocaisScreen() {
       }
       const result = response.data;
       setData(result);
+      setFilteredLocais(result);
     } catch (error) {
       console.error('Erro ao buscar dados', error);
       setError(error.message);
@@ -31,6 +33,17 @@ export default function LocaisScreen() {
       fetchData();
     }, [])
   );
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const filtered = data.filter(local =>
+      local.nome.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredLocais(filtered);
+  }, [searchText, data]);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative" }}>
@@ -59,25 +72,39 @@ export default function LocaisScreen() {
           <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Categoria</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: 30, marginBottom: 20 }}>
-        <TextInput
-          placeholder='Pesquisar'
-          value={searchText}
-          onChangeText={setSearchText}
-          style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.75, textAlign: "left", height: 40, borderRadius: 15, padding: 9 }}
-        />
+      <View style={{ flexDirection: "row", justifyContent: "space-between", width: Dimensions.get("window").width * 0.85 }}>
+        <View style={{ marginTop: 30, marginBottom: 20 }}>
+          <TextInput
+            placeholder='Pesquisar'
+            placeholderTextColor='black'
+            value={searchText}
+            onChangeText={setSearchText}
+            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
+          />
+        </View>
       </View>
       <ScrollView>
-        {data.map((item) => (
+        {filteredLocais.map((item) => (
           <TouchableOpacity onPress={() => navigation.navigate('BensDeLocal', { idLocal: item.idLocais })} key={item.idLocais}>
             <BoxLocais data={item} />
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.navigate('NovoLocal')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 30 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
+          <Ionicons name="camera" size={48} color="white" />
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
+          justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
+          backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
+        }}>
+          <Text>Levantamento</Text>
       </TouchableOpacity>
     </View>
   );

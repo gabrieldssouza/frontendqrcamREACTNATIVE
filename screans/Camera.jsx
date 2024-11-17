@@ -2,7 +2,6 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import api from '../services/api';
 
 export default function App() {
@@ -34,15 +33,11 @@ export default function App() {
       const { idbem } = qrJson;
       console.log('ID do Bem:', idbem);
   
-
-
       const response = await api.get(`/listarbem/${idbem}`);
-
-      if (response.status !== 200) {
-
+      if (!response.status === 200) {
         throw new Error('Erro ao pegar dados');
       }
-      const bem = await response.json();
+      const bem = response.data;
       navigation.navigate('Bem', { idbem });
     } catch (error) {
       console.error('Erro ao buscar bem', error);

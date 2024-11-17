@@ -14,6 +14,7 @@ export default function InitialScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
+  const [locais, setLocais] = useState([]);
   const [error, setError] = useState(null);
   const [isAllbensVIsible, setIsAllbensVIsible] = useState(true);
   const [estadoConservacao, setEstadoConservacao] = useState('');
@@ -64,14 +65,28 @@ export default function InitialScreen() {
     }
   };
 
+  const fetchLocais = async () => {
+    try {
+      const response = await api.get('/listarlocais');
+      if (response.status !== 200) {
+        throw new Error('Erro ao pegar locais');
+      }
+      setLocais(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar locais:', error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchData();
+      fetchLocais();
     }, [])
   );
 
   useEffect(() => {
     fetchData();
+    fetchLocais();
   }, []);
 
   useEffect(() => {
@@ -145,19 +160,20 @@ export default function InitialScreen() {
         <View style={{ marginTop: 30, marginBottom: 20 }}>
           <TextInput
             placeholder='Pesquisar'
+            placeholderTextColor="black"
             value={searchText}
             onChangeText={setSearchText}
-            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.45, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
+            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.42, textAlign: "left", height: 49, borderRadius: 15, padding: 9 }}
           />
         </View>
-        <View style={{ marginTop: 30, marginBottom: 20 }}>
+        <View style={{ marginTop: 30, marginBottom: 10 }}>
           <DropdownRelat></DropdownRelat>
         </View>
       </View>
       <ScrollView>
         {(isAllbensVIsible ? filteredBens : DataEstadoFiltro).map((item) => (
           <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: item.idbem, key: item.idbem })} key={item.idbem}>
-            <BoxBem data={item} />
+            <BoxBem data={item} locais={locais} />
           </TouchableOpacity>
         ))}
       </ScrollView>
