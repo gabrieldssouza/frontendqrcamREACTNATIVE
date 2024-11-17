@@ -16,17 +16,17 @@ export default function LoginScreen() {
             return;
         }
 
-       // try {
-       //     const response = await api.post('/logar', { email, senha });
-         //   if (response) {
-           //     navigation.navigate('Initial');
-       //     } else {
-       //         alert("Email ou senha incorretos.");
-       //     }
-      //  } catch (error) {
-       //     console.error("Erro ao fazer login:", error.message);
-         //   alert("Erro ao fazer login. Tente novamente.");
-        //}
+       try {
+           const response = await api.post('/logar', { email, senha });
+           if (response) {
+               navigation.navigate('Initial');
+           } else {
+               alert("Email ou senha incorretos.");
+           }
+       } catch (error) {
+           console.error("Erro ao fazer login:", error.message);
+           alert("Erro ao fazer login. Tente novamente.");
+        }
     }
 
     useEffect(() => {
@@ -80,7 +80,7 @@ export default function LoginScreen() {
                         onChangeText={setSenha}
                     />
 
-                    <TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={() => navigation.navigate('Initial')}>
+                    <TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={handleLogin}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Entrar</Text>
                     </TouchableOpacity>
                 </View>
