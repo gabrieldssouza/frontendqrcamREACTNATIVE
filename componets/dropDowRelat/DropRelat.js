@@ -15,9 +15,11 @@ export default function DropdownRelat() {
     { label: 'Todos', value: 'todos' },
     { label: 'Estados de Conservação', value: 'estados' },
     { label: 'Locais', value: 'locais' },
+    { label: 'Categorias', value: 'categorias' },
   ]);
 
   const [estados, setEstados] = useState({ otimo: [], bom: [], ruim: [], pessimo: [] });
+  const [categorias, setCategorias] = useState({ Móveis: [], Eletrônicos: [] });
   const [locais, setLocais] = useState({});
   const [bemLocais, setBemlocais] = useState({});
 
@@ -28,8 +30,112 @@ export default function DropdownRelat() {
     const ano = data.getFullYear();
     return `${dia}/${mes}/${ano}`;
   }
-  const [categorias, setCategorias  ] = useState({});
-  const [bemCatgorias, setBemCatgorias] = useState({});
+  const [bemCategorias, setBemCatgorias] = useState({});
+
+  
+  const filtroCategorias = async (cat) => {
+    try {
+      const response = await api.get(`/listarCategoria/${cat}`);
+      const result = await response.data;
+      return result;
+    } catch (error) {
+      console.error('Erro ao buscar dados', error);
+      return [];
+    }
+  };
+
+  
+
+  const carregarCategorias = async () => {
+    try {
+      const Móveis = await filtroCategorias(1);
+      const Eletrônicos = await filtroCategorias(4);
+      setCategorias({ Móveis, Eletrônicos});
+      console.log("carregados")
+    } catch (error) {
+      console.error('Erro ao carregar os Categorias', error);
+    }
+  };
+
+
+
+  const gerarPDFCategorias = async () => {
+    await carregarCategorias();
+    if (!categorias || categorias.length == 0) {
+      console.log("Nenhum dado encontrado para gerar o PDF");
+      return; 
+    }
+    const html = `
+      <html>
+        <body>
+          <!-- Cabeçalho com logo e título -->
+    <table style="width: 100%; border: none;">
+      <tr>
+        <td style="width: 10%;"><img src="https://i.imgur.com/pRC35QQ.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Categorias</td>
+        <td style="width: 10%;"></td>
+      </tr>
+    </table>
+
+    <!-- Informações adicionais -->
+    <div style="; font-size: 14px; margin-top: 20px;">
+      <p><strong>Data do arquivo:</strong> ${obterDataAtualFormatada()}</p>
+      <p><strong>Entidade:</strong> [Nome da Entidade]</p>
+  
+    </div>
+   ${Object.keys(categorias).map(est => `
+      <tr>
+                  <td colspan="4" style="font-weight: bold; padding-top: 20px;"> Na categotia ${est}:</td>
+                </tr>
+          <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Estado de Conservação</th>
+              </tr>
+            </thead>
+            <tbody>   
+                ${categorias[est].map(item => `
+                  <tr>
+                    <td>${item.codigo}</td>
+                    <td>${item.nome}</td>
+                    <td>R$ ${item.valor_aquisicao}</td>
+                    <td>${item.estado_conservacao}</td>
+                  </tr>
+                `).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+            <!-- Rodapé com local, data e assinaturas -->
+    <table style="width: 100%; margin-top: 30px;">
+      <tr>
+        <td style="text-align: left;">Data:____________________________________</td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Diretor(a) de Administração</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"></td>
+        <td style="text-align: right;">
+          <div>____________________________________</div>
+          <div>Responsável</div>
+        </td>
+      </tr>
+    </table>
+        </body>
+      </html>
+    `;
+
+    try {
+      const { uri } = await Print.printToFileAsync({ html });
+      await shareAsync(uri);
+    } catch (error) {
+      console.error('Erro ao gerar ou compartilhar o PDF', error);
+    }
+  };
 
 
   const fetchLocais = async () => {
@@ -64,12 +170,16 @@ export default function DropdownRelat() {
 
   const gerarPDFLocais = async () => {
     await fetchLocais();
+    if (!bemLocais||  bemLocais.length == 0) {
+      console.log("Nenhum dado encontrado para gerar o PDF");
+      return; 
+    }
     const html = `
       <html>
         <body>
         <table style="width: 100%; border: none;">
       <tr>
-        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="width: 10%;"><img src="https://i.imgur.com/pRC35QQ.png" alt="Logo" style="width: 100px; height: auto;"></td>
         <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Bens por lugar</td>
         <td style="width: 10%;"></td>
       </tr>
@@ -107,7 +217,7 @@ export default function DropdownRelat() {
             <!-- Rodapé com local, data e assinaturas -->
     <table style="width: 100%; margin-top: 30px;">
       <tr>
-        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+         <td style="text-align: left;">Data:____________________________________</td>
         <td style="text-align: right;">
           <div>____________________________________</div>
           <div>Diretor(a) de Administração</div>
@@ -161,7 +271,7 @@ export default function DropdownRelat() {
     await carregarEstados();
     if (!estados || estados.length == 0) {
       console.log("Nenhum dado encontrado para gerar o PDF");
-      return; 
+       return; 
     }
     const html = `
       <html>
@@ -169,7 +279,7 @@ export default function DropdownRelat() {
           <!-- Cabeçalho com logo e título -->
     <table style="width: 100%; border: none;">
       <tr>
-        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="width: 10%;"><img src="https://i.imgur.com/pRC35QQ.png" alt="Logo" style="width: 100px; height: auto;"></td>
         <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Estados de conservação</td>
         <td style="width: 10%;"></td>
       </tr>
@@ -209,7 +319,7 @@ export default function DropdownRelat() {
             <!-- Rodapé com local, data e assinaturas -->
     <table style="width: 100%; margin-top: 30px;">
       <tr>
-        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+         <td style="text-align: left;">Data:____________________________________</td>
         <td style="text-align: right;">
           <div>____________________________________</div>
           <div>Diretor(a) de Administração</div>
@@ -277,7 +387,7 @@ export default function DropdownRelat() {
           <!-- Cabeçalho com logo e título -->
           <table style="width: 100%; border: none;">
             <tr>
-              <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+              <td style="width: 10%;"><img src="https://i.imgur.com/pRC35QQ.png" alt="Logo" style="width: 100px; height: auto;"></td>
               <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Todos os bens</td>
               <td style="width: 10%;"></td>
             </tr>
@@ -313,7 +423,7 @@ export default function DropdownRelat() {
           <!-- Rodapé com local, data e assinaturas -->
           <table style="width: 100%; margin-top: 30px;">
             <tr>
-              <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+               <td style="text-align: left;">Data:____________________________________</td>
               <td style="text-align: right;">
                 <div>____________________________________</div>
                 <div>Diretor(a) de Administração</div>
@@ -375,10 +485,8 @@ export default function DropdownRelat() {
   const handleTodos = () => gerarPDFTodos()
   const handleEstados = () => gerarPDFEstados() ;
   const handleLocais = () => gerarPDFLocais()
-  const handleLocalIndividual = () => Alert.alert('Local Individual selecionado');
-  const handleCategorias = () => Alert.alert('Categorias selecionadas');
-  const handleCategoriaIndividual = () => Alert.alert('Categoria Individual selecionada');
-
+  const handleCategorias = () => gerarPDFCategorias();
+  
   return (
     <View style={styles.container}>
       

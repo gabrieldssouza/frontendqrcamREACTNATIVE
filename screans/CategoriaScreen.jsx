@@ -34,6 +34,7 @@ export default function CategoriaScreen() {
 
   useEffect(() => {
     const fetchBemCategoria = async () => {
+      console.log(selectedCategoria)
       if (selectedCategoria) {
         try {
           const response = await api.get(`/listarCategoria/${selectedCategoria}`);
