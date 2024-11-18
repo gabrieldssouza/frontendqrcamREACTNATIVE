@@ -130,67 +130,91 @@ export default function BemForm() {
   return (
     <ScrollView>
       <View>
-        <Text>Nome:</Text>
+        <Text style={{color:"white"}}>Nome:</Text>
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
-        <Text>Número:</Text>
+        <Text style={{color:"white"}}>Número:</Text>
         <TextInput value={numero} onChangeText={setNumero} style={styles.input} />
-        <Text>Código:</Text>
+        <Text style={{color:"white"}}>Código:</Text>
         <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
-        <Text>Data de Aquisição:</Text>
+        <Text style={{color:"white"}}>Data de Aquisição:</Text>
         <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
-        <Text>Valor:</Text>
+        <Text style={{color:"white"}}>Valor:</Text>
         <TextInput value={valor} onChangeText={setValor} style={styles.input} />
-        <Text>Estado de Conservação:</Text>
-        <View style={{ zIndex: 1000 }}>
-          <DropDownPicker
-            open={openEstadoConservacao}
-            value={estadoConservacao}
-            items={[
-              { label: 'Ótimo', value: 'ótimo' },
-              { label: 'Bom', value: 'bom' },
-              { label: 'Ruim', value: 'ruim' },
-              { label: 'Péssimo', value: 'péssimo' }
-            ]}
-            setOpen={setOpenEstadoConservacao}
-            setValue={setEstadoConservacao}
-            placeholder="Selecione o estado de conservação"
-            placeholderStyle={{ color: '#ccc' }}
-            containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
-            style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
-            dropDownContainerStyle={{
-              backgroundColor: '#29304B',
-              borderColor: '#ccc',
-              borderWidth: 1,
-              borderRadius: 10,
-              zIndex: 1000
-            }}
-            listItemContainerStyle={{ zIndex: 1000 }}
-          />
-        </View>
-        <Text>Local:</Text>
-        <View style={{ zIndex: 900 }}>
-          <DropDownPicker
-            open={openLocal}
-            value={valueLocal}
-            items={itemsLocal}
-            setOpen={setOpenLocal}
-            setValue={setValueLocal}
-            setItems={setItemsLocal}
-            placeholder="Selecione um local"
-            placeholderStyle={{ color: '#ccc' }}
-            containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
-            style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
-            dropDownContainerStyle={{
-              backgroundColor: '#29304B',
-              borderColor: '#ccc',
-              borderWidth: 1,
-              borderRadius: 10,
-              zIndex: 900
-            }}
-            onChangeValue={setLocal}
-          />
-        </View>
-        <Text>Categoria:</Text>
+        <Text style={{color:"white"}}>Estado de Conservação:</Text>
+        <View style={{ zIndex: openEstadoConservacao ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openEstadoConservacao}
+    value={estadoConservacao}
+    items={[
+      { label: 'Ótimo', value: 'ótimo' },
+      { label: 'Bom', value: 'bom' },
+      { label: 'Ruim', value: 'ruim' },
+      { label: 'Péssimo', value: 'péssimo' }
+    ]}
+    setOpen={setOpenEstadoConservacao}
+    setValue={setEstadoConservacao}
+    placeholder="Selecione o estado de conservação"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openEstadoConservacao ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}    textStyle={{
+      color: '#D1D5DB', // Cor do texto dos itens (branco suave)
+    }}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+
+<Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10,}}>Local:</Text>
+<View style={{ zIndex: openLocal ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openLocal}
+    value={valueLocal}
+    items={itemsLocal}
+    setOpen={setOpenLocal}
+    setValue={setValueLocal}
+    setItems={setItemsLocal}
+    placeholder="Selecione um local"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openLocal ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}
+    onChangeValue={setLocal}   textStyle={{
+      color: '#D1D5DB', // Cor do texto dos itens (branco suave)
+    }}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+        <Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10}}>Categoria:</Text>
         <View style={{ zIndex: 800 }}>
           <DropDownPicker
             open={openCategoria}
@@ -211,12 +235,21 @@ export default function BemForm() {
               zIndex: 800
             }}
             dropDownDirection="DOWN"
-            onChangeValue={setIDcategoria}
+            onChangeValue={setIDcategoria}   textStyle={{
+              color: '#D1D5DB', // Cor do texto dos itens (branco suave)
+            }}
+            arrowIconStyle={{
+              tintColor: '#ECAA71', // Cor da seta
+            }}
           />
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-          <Button title="Escolher Foto" onPress={pickImage} />
-          <Button title="Tirar Foto" onPress={takePhoto} />
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={pickImage}>
+          <Text style={styles.buttonFoto}>Escolher Foto</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={takePhoto}>
+          <Text style={styles.buttonFoto}>Tirar Foto</Text>
+        </TouchableOpacity>
         </View>
         {foto && <Image source={{ uri: foto }} style={{ width: 200, height: 200, alignSelf: 'center', marginBottom: 10 }} />}
         <TouchableOpacity onPress={handleCadastrar}>
@@ -226,7 +259,6 @@ export default function BemForm() {
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
@@ -246,5 +278,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#ECAA71",
     borderRadius: 30,
     paddingVertical: 10
-  }
+  }, buttonFoto: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: "#ECAA71",
+    borderRadius: 30,
+    paddingHorizontal: 30, 
+    paddingVertical: 10, 
+    marginTop: 10
+  },buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    marginBottom: 10
+  },
 });

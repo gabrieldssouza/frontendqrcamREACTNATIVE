@@ -80,7 +80,7 @@ export default function LoginScreen() {
                         onChangeText={setSenha}
                     />
 
-                    <TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={handleLogin}>
+<TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={() => navigation.navigate('Initial')}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Entrar</Text>
                     </TouchableOpacity>
                 </View>

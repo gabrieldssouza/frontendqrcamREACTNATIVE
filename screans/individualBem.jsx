@@ -14,21 +14,54 @@ export default function IndividualBem({ route }) {
   const idbem = route.params?.idbem;
   console.log("id", idbem);
   const [Bem, setBem] = useState(null);
+ 
 
   useEffect(() => {
-    const fetchBem = async () => {
-      try {
-
-        const response = await api.get(`/listarbem/${idbem}`);
-        setBem(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar bem', error);
-      }
-    };
+    
     fetchBem();
+    
   }, [idbem]);
 
-  console.log(Bem);
+  const fetchBem = async () => {
+    try {
+      const response = await api.get(`/listarbem/${idbem}`);
+      setBem(response.data); // Atualiza o estado com os dados do bem
+      console.log("passou no Bem ");
+    } catch (error) {
+      console.error('Erro ao buscar bem', error);
+    }
+  };
+
+  const [Local, setLocal] = useState(null); // Estado para armazenar os dados do local
+const [LocalName, setLocalName] = useState(''); // Estado para armazenar o nome do local
+
+useEffect(() => {
+  if (Bem && Bem.local_idLocais) {
+    fetchLocal(); // Chama a função fetchLocal quando Bem e local_idLocais estão definidos
+  }
+}, [Bem]);
+
+const fetchLocal = async () => {
+  if (!Bem.local_idLocais) {
+    console.log("Local ID não disponível.");
+    return;
+  }
+
+  try {
+    const response = await api.get(`/local/${Bem.local_idLocais}`);
+    setLocal(response.data); // Atualiza o estado com os dados do local
+    console.log("Local data:", response.data);
+  } catch (error) {
+    console.error('Erro ao buscar local', error);
+  }
+};
+
+useEffect(() => {
+  if (Local && Local.nome) {
+    setLocalName(Local.nome);
+  
+  }
+}, [Local]);
     return(
 
         <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative"}} > 
@@ -36,26 +69,22 @@ export default function IndividualBem({ route }) {
         <LogoTop/>
 
         < View > 
-
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30, color: "white"}}>Bem {Bem?.codigo}</Text>
+                    <Text style={{fontSize: 25, color: "white", marginLeft: 5, marginTop: 35, color: "white"}}>Bem {Bem?.codigo}</Text>
                     
              <TouchableOpacity onPress={() => navigation.navigate('BemFormEdit', {id:idbem})} > 
-             <Ionicons name="pencil" size={25} color="white" style={{left: 160, top: 35}} />
+             <Ionicons name="pencil" size={25} color="white" style={{left: 185, top: 35}} />
             </TouchableOpacity>
             </View>
-
-
                     <View style={{ height: 2,
     backgroundColor: "#ECAA71", width: Dimensions.get("window").width * 0.85, marginTop: 4
-    }} />
-                           
+    }} /> 
       </View>
 
       <ScrollView style={{width: Dimensions.get('window').width * 0.85, marginTop: 10}}> 
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10,  color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+      
         <View style={{paddingLeft: 30,  color: "white"}}> 
             <Text style={{ color: "white"}}>Número</Text>
             <Text style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18,  color: "white"}}>{Bem?.numero}</Text>
@@ -63,8 +92,8 @@ export default function IndividualBem({ route }) {
        
         </View>
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10, color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+       
         <View style={{paddingLeft: 30, color: "white" }}> 
             <Text style={{color: "white"}}>Código</Text>
             <Text style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18, color: "white"}}>{Bem?.codigo}</Text>
@@ -72,8 +101,8 @@ export default function IndividualBem({ route }) {
         
         </View>
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10, color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+       
         <View style={{paddingLeft: 30 }}> 
             <Text style={{color: "white"}}>Nome:</Text>
             <Text style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18, color: "white"}}>{Bem?.nome}</Text>
@@ -81,8 +110,7 @@ export default function IndividualBem({ route }) {
         
         </View>
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10, color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
         <View style={{paddingLeft: 30 }}> 
             <Text style={{color: "white"}}>Data de aquisição</Text>
             <Text style={{ color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{Bem?.data_aquisicao}</Text>
@@ -90,8 +118,8 @@ export default function IndividualBem({ route }) {
         
         </View>
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10, color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+       
         <View style={{paddingLeft: 30 }}> 
             <Text style={{color: "white"}}>valor de aquisição</Text>
             <Text style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18, color: "white"}}>{Bem?.valor_aquisicao}</Text>
@@ -99,37 +127,34 @@ export default function IndividualBem({ route }) {
         
         </View>
         
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10, color: "white"}}> icon </Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+       
         <View style={{paddingLeft: 30, color: "white" }}> 
             <Text style={{color: "white"}}>Estado de conservação</Text>
             <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{Bem?.estado_conservacao}</Text>
         </View>
+
+        
         
         </View>
 
-        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 80}}> 
-        <Text style={{ padding: 10,  color: "white" }}>icon</Text>
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+       
+       <View style={{paddingLeft: 30, color: "white" }}> 
+           <Text style={{color: "white"}}>Local</Text>
+           <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{LocalName}</Text>
+       </View>
+       </View>
+
+        <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
+      
         <View style={{paddingLeft: 30,  color: "white"}}> 
             <Text style={{ color: "white"}}>Categoria</Text>
             <Text style={{  color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{Bem?.categoria_idCategoria}</Text>
         </View>
         <View style={{flex: 1}} />
-
-        <TouchableOpacity onPress={() => navigation.navigate('LocalBem', {id:id})}
-                        >
-                        <Text style={{ fontSize: 13, fontWeight: 'bold', textAlign: 'center', color: 'white', backgroundColor: "#ECAA71", borderRadius: 15, paddingVertical: 7, width: 100}}>Locais {'\n'} passados</Text>
-                    </TouchableOpacity>
         </View>
-
-      </ScrollView> 
-
-
-        
-
-
-
-      
+      </ScrollView>     
 </View>
         
 

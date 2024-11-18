@@ -90,27 +90,35 @@ export default function CategoriaScreen() {
           setValue={setSelectedCategoria}
           placeholder="Selecione a categoria"
           containerStyle={{ height: 40 }}
-          style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.85, borderRadius: 15, padding: 9, backgroundColor: '#29304B', zIndex: 1001 }}
+          placeholderStyle={{ color: '#ccc' }}
+          style={{ borderColor: "#F0F0F0", borderWidth: 2, width: Dimensions.get("window").width * 0.85, borderRadius: 15, padding: 9, backgroundColor: '#29304B', zIndex: 1001 }}
           dropDownContainerStyle={{
+            color: "white",
             backgroundColor: '#29304B',
-            borderColor: 'black',
+            borderColor: '#F0F0F0',
             borderWidth: 2,
             borderRadius: 10,
             width: Dimensions.get("window").width * 0.35,
           }}
           listItemLabelStyle={{
-            color: 'black',
-            borderBottomColor: "black"
+            color: '#F0F0F0',
+            borderBottomColor: "#F0F0F0"
+          }}
+          textStyle={{
+            color: '#D1D5DB', // Cor do texto dos itens (branco suave)
+          }}
+          arrowIconStyle={{
+            tintColor: '#ECAA71', // Cor da seta
           }}
         />
       </View>
-      <TextInput
-        placeholder='Pesquisar'
-        placeholderTextColor="black"
-        value={searchText}
-        onChangeText={setSearchText}
-        style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginBottom: 20 }}
-      />
+          <TextInput
+            placeholder='Pesquisar'
+            placeholderTextColor='#F0F0F0'
+            value={searchText}
+            onChangeText={setSearchText}
+            style={{  borderColor: "#F0F0F0", color: '#FFFFFF', borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
+          />
       <ScrollView>
         {BemCategoria.map((bem) => (
           <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: bem.idbem, key: bem.idbem })} key={bem.idbem}>

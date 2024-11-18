@@ -7,6 +7,7 @@ import BemForm from "../componets/NewBemForms/BemForm";
 import LogoTop from "../componets/LogoTop/LogoTop";
 
 
+
 export default function BemForms({route}){ 
     const navigation = useNavigation();
     let etiqueta = route.params?.etiqueta;
@@ -15,10 +16,9 @@ export default function BemForms({route}){
         return(
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative"}} >
             <LogoTop />
-            <BemForm etiqueta={etiqueta}/>
+            <BemForm />
 </View>
             
-
         
           );
     }

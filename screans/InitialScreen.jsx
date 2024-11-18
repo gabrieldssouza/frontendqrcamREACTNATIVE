@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import DropdownRelat from '../componets/dropDowRelat/DropRelat';
 
+
 export default function InitialScreen() {
   const route = useRoute();
   const navigation = useNavigation();
@@ -132,38 +133,50 @@ export default function InitialScreen() {
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between", width: Dimensions.get("window").width * 0.85 }}>
-        <View style={{ marginTop: 30, marginBottom: 20, flex: 1, zIndex: 1000 }}>
-          <DropDownPicker
-            items={itens}
-            open={isOpem}
-            setOpen={() => setIsOpem(!isOpem)}
-            value={currentValue}
-            setValue={(val) => setCurrentValue(val)}
-            maxHeight={200}
-            autoScroll
-            placeholder="Estado"
-            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.25, borderRadius: 15, padding: 9, backgroundColor: '#29304B', zIndex: 1001 }}
-            onChangeValue={value => setEstadoConservacao(value)}
-            dropDownContainerStyle={{
-              backgroundColor: '#29304B',
-              borderColor: 'black',
-              borderWidth: 2,
-              borderRadius: 10,
-              width: Dimensions.get("window").width * 0.35,
-            }}
-            listItemLabelStyle={{
-              color: 'black',
-              borderBottomColor: "black"
-            }}
-          />
-        </View>
+      <View style={{ marginTop: 30, marginBottom: 20, flex: 1, zIndex: 1000 }}>
+  <DropDownPicker
+    items={itens}
+    open={isOpem}
+    setOpen={() => setIsOpem(!isOpem)}
+    value={currentValue}
+    setValue={(val) => setCurrentValue(val)}
+    maxHeight={200}
+    autoScroll
+    placeholder="Estado"
+    style={{ 
+      borderColor: '#F0F0F0',
+      borderWidth: 2, 
+      width: Dimensions.get('window').width * 0.25, 
+      borderRadius: 15, 
+      padding: 9, 
+      backgroundColor: '#29304B', 
+      zIndex: 1001 
+    }}
+    onChangeValue={value => setEstadoConservacao(value)}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#F0F0F0',
+      borderWidth: 2,
+      borderRadius: 10,
+      width: Dimensions.get('window').width * 0.35,
+    }}
+    listItemLabelStyle={{
+      color: '#F0F0F0', // Branco mais suave
+      borderBottomColor: '#F0F0F0',
+      marginVertical: 5, // Adiciona espaçamento entre os itens
+    }} textStyle={{
+      color: '#D1D5DB', // Cor do texto dos itens (branco suave)
+    }}showArrowIcon={false} // Remove o ícone de seta
+    showTickIcon={false} // Remove o ícone de seleção
+  />
+</View>
         <View style={{ marginTop: 30, marginBottom: 20 }}>
           <TextInput
             placeholder='Pesquisar'
-            placeholderTextColor="black"
+            placeholderTextColor="#F0F0F0"
             value={searchText}
             onChangeText={setSearchText}
-            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.42, textAlign: "left", height: 49, borderRadius: 15, padding: 9 }}
+            style={{ color: '#FFFFFF', borderColor: "#F0F0F0", borderWidth: 2, width: Dimensions.get("window").width * 0.42, textAlign: "left", height: 49, borderRadius: 15, padding: 9 }}
           />
         </View>
         <View style={{ marginTop: 30, marginBottom: 10 }}>
@@ -191,7 +204,7 @@ export default function InitialScreen() {
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
           backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
         }}>
-          <Text>Levantamento</Text>
+          <Text style={{ fontSize: 17, fontWeight: 'bold', alignItems: "center", color: 'white' }}>Inventário</Text>
         </TouchableOpacity>
     </View>
   );
