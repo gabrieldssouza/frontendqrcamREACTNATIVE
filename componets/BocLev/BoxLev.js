@@ -1,8 +1,24 @@
 import React from "react";
 import { View, Text, Image, Dimensions } from "react-native";
 
-function BoxLev({ data}) {
+function BoxLev({data, errorplace}) {
   console.log("FOTO", data.foto);
+  console.log("eror", errorplace);
+
+
+  const fetchBem = async (idBem) => {
+    try {
+      const response = await api.get(`/listarbem/${idBem}`);
+      if (response.status !== 200) {
+        throw new Error('Erro ao pegar dados');
+      }
+      console.log("dat")
+      return response.data; // Retorna os dados do bem
+    } catch (error) {
+      console.error('Err ao buscar bem id do bem:', idBem, error);
+      return null; // Retorna null em caso de erro
+    }
+  };
 
   return (
     <View className="containerBoxBem">

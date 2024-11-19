@@ -15,12 +15,13 @@ export default function FormsEditBem({route}){
     console.log("ID DA PDOGINA" + id)
     
         return(
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative"}} > 
-
-            <LogoTop/>
-           <BemFormEdit id={id}> </BemFormEdit>
-
-</View>
+            <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B'}} >
+                <LogoTop/>
+                <BemFormEdit id={id} />
+                <TouchableOpacity onPress={() =>  navigation.navigate('Initial' )}>
+                     <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white',  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>Voltar</Text>
+                </TouchableOpacity>
+            </View>
 
           );
     }

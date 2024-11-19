@@ -61,7 +61,7 @@ export default function DropdownRelat() {
 
   const gerarPDFCategorias = async () => {
     await carregarCategorias();
-    if (!categorias || categorias.length == 0) {
+    if (!categorias || categorias[0] == '') {
       console.log("Nenhum dado encontrado para gerar o PDF");
       return; 
     }
@@ -170,7 +170,7 @@ export default function DropdownRelat() {
 
   const gerarPDFLocais = async () => {
     await fetchLocais();
-    if (!bemLocais||  bemLocais.length == 0) {
+    if (!bemLocais||  bemLocais[0] == '') {
       console.log("Nenhum dado encontrado para gerar o PDF");
       return; 
     }
@@ -269,7 +269,7 @@ export default function DropdownRelat() {
 
   const gerarPDFEstados = async () => {
     await carregarEstados();
-    if (!estados || estados.length == 0) {
+    if (!estados || estados[0] == '') {
       console.log("Nenhum dado encontrado para gerar o PDF");
        return; 
     }

@@ -27,10 +27,10 @@ export default function InitialScreen() {
   const [user, setUser] = useState(null); // Estado para armazenar um único usuário
 
   const itens = [
-    { label: 'ótimo', value: 'otimo' },
-    { label: 'bom', value: 'bom' },
-    { label: 'ruim', value: 'ruim' },
-    { label: 'péssimo', value: 'pessimo' },
+    { label: 'Ótimo', value: 'otimo' },
+    { label: 'Bom', value: 'bom' },
+    { label: 'Ruim', value: 'ruim' },
+    { label: 'Péssimo', value: 'pessimo' },
   ];
 
   const filtroEstado = async () => {
@@ -190,19 +190,19 @@ export default function InitialScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 63, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-          <Ionicons name="add" size={48} color="white" />
+          <Ionicons name="add" size={45} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 63, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-          <Ionicons name="camera" size={48} color="white" />
+          <Ionicons name="camera" size={45} color="white" />
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
           justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
-          backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
+          backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10, marginBottom: 7
         }}>
           <Text style={{ fontSize: 17, fontWeight: 'bold', alignItems: "center", color: 'white' }}>Inventário</Text>
         </TouchableOpacity>

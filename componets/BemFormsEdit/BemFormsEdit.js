@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import api from "../../services/api";
 import { Ionicons } from '@expo/vector-icons'; 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 export default function BemFormEdit(props) {
   const navigation = useNavigation();
@@ -11,7 +13,6 @@ export default function BemFormEdit(props) {
   const [openEstadoConservacao, setOpenEstadoConservacao] = useState(false);
   const [local, setLocal] = useState('');
   const [IDcategoria, setIDcategoria] = useState('');
-
   const [Bem, setBem] = useState(null);
   const [nome, setNome] = useState('');
   const [numero, setNumero] = useState('');
@@ -30,7 +31,37 @@ export default function BemFormEdit(props) {
   const [openCategoria, setOpenCategoria] = useState(false);
   const [valueCategoria, setValueCategoria] = useState(null);
   const [itemsCategoria, setItemsCategoria] = useState([]);
-
+   const [showDatePicker, setShowDatePicker] = useState(false)
+  const formatCurrency = (value) => {
+    // Remove caracteres não numéricos
+    const numericValue = value.replace(/\D/g, "");
+    // Adiciona vírgula e duas casas decimais
+    const formattedValue = (parseInt(numericValue, 10) / 100).toFixed(2).replace(".", ",");
+    return formattedValue;
+  };
+  
+  // Função para tratar mudanças no campo de valor
+  const handleValorChange = (input) => {
+    const formatted = formatCurrency(input);
+    setValor(formatted);
+  };
+  
+  const showDatePickerHandler = () => {
+    setShowDatePicker(true);
+  };
+  
+  // Função para capturar a data selecionada
+  const onDateChange = (event, selectedDate) => {
+    setShowDatePicker(false); // Fecha o calendário
+    if (selectedDate) {
+      const day = selectedDate.getDate().toString().padStart(2, "0");
+      const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = selectedDate.getFullYear();
+      const formattedDate = `${day}/${month}/${year}`; // Formato: DD/MM/YYYY
+      setAquisicao(formattedDate);
+    }
+  };
+  
   useEffect(() => {
     const fetchBem = async () => {
       try {
@@ -85,8 +116,8 @@ export default function BemFormEdit(props) {
     const formData = {
       idbem: id,
       nome,
-      numero,
-      codigo,
+      numero: id,
+      codigo: id,
       data_aquisicao: dataAquisicao,
       estado_conservacao: estadoConservacao,
       valor_aquisicao: valor,
@@ -110,18 +141,34 @@ export default function BemFormEdit(props) {
 
   return (
     <ScrollView>
-      <View>
+      <View >
         <Text style={{color:"white"}}>Nome:</Text>
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
         <Text style={{color:"white"}}>Número:</Text>
         <TextInput value={numero} onChangeText={setNumero} style={styles.input} />
-        <Text style={{color:"white"}}>Código:</Text>
-        <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
         <Text style={{color:"white"}}>Data de Aquisição:</Text>
-        <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
-        <Text style={{color:"white"}}>Valor:</Text>
-        <TextInput value={valor} onChangeText={setValor} style={styles.input} />
-        <Text style={{color:"white"}}>Estado de Conservação:</Text>
+        <TouchableOpacity onPress={showDatePickerHandler} style={styles.input}>
+          <Text style={{ color: dataAquisicao ? "white" : "#ccc" }}>
+              {dataAquisicao || "Selecione uma data"}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+          <Text style={{color:"white"}}>Valor:</Text>
+  <TextInput
+    value={valor}
+    onChangeText={handleValorChange}
+    style={styles.input}
+    keyboardType="numeric" // Abre o teclado numérico
+    placeholder="0,00"
+    placeholderTextColor="#ccc"
+  /> <Text style={{color:"white"}}>Estado de Conservação:</Text>
         <View style={{ zIndex: openEstadoConservacao ? 2000 : 1000 }}>
   <DropDownPicker
     open={openEstadoConservacao}
@@ -226,8 +273,8 @@ export default function BemFormEdit(props) {
             }}
           />
         </View>
-        <TouchableOpacity onPress={() => handleEditar()}>
-          <Text style={{ paddingHorizontal: 5, margin: 20 , fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white',  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>Editar BEM</Text>
+        <TouchableOpacity onPress={() => {handleEditar()}}>
+          <Text style={{ paddingHorizontal: 5, marginTop: 20 , fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white',  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>Editar BEM</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

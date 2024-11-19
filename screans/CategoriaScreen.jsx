@@ -20,7 +20,7 @@ export default function CategoriaScreen() {
       try {
         const response = await api.get('/listarcategorias');
         const categoriasData = response.data.map(categoria => ({
-          label: categoria.nome,
+          label: categoria.nome.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '), 
           value: categoria.idCategoria,
         }));
         setCategorias(categoriasData);
@@ -118,7 +118,7 @@ export default function CategoriaScreen() {
             placeholderTextColor='#F0F0F0'
             value={searchText}
             onChangeText={setSearchText}
-            style={{  borderColor: "#F0F0F0", color: '#FFFFFF', borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
+            style={{borderColor: "#F0F0F0", color: '#FFFFFF', borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9 }}
           />
       <ScrollView>
         {BemCategoria.map((bem) => (

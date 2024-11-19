@@ -14,7 +14,7 @@ export default function BemForms({route}){
     console.log(etiqueta)
 
         return(
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative"}} >
+            <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B'}} >
             <LogoTop />
             <BemForm />
 </View>

@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 export default function FormNoTag() {
   const navigation = useNavigation();
@@ -25,7 +27,38 @@ export default function FormNoTag() {
   const [valueCategoria, setValueCategoria] = useState(null);
   const [itemsCategoria, setItemsCategoria] = useState([]);
   const [openEstadoConservacao, setOpenEstadoConservacao] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false)
 
+  const formatCurrency = (value) => {
+    // Remove caracteres não numéricos
+    const numericValue = value.replace(/\D/g, "");
+    // Adiciona vírgula e duas casas decimais
+    const formattedValue = (parseInt(numericValue, 10) / 100).toFixed(2).replace(".", ",");
+    return formattedValue;
+  };
+  
+  // Função para tratar mudanças no campo de valor
+  const handleValorChange = (input) => {
+    const formatted = formatCurrency(input);
+    setValor(formatted);
+  };
+  
+  const showDatePickerHandler = () => {
+    setShowDatePicker(true);
+  };
+  
+  // Função para capturar a data selecionada
+  const onDateChange = (event, selectedDate) => {
+    setShowDatePicker(false); // Fecha o calendário
+    if (selectedDate) {
+      const day = selectedDate.getDate().toString().padStart(2, "0");
+      const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = selectedDate.getFullYear();
+      const formattedDate = `${day}/${month}/${year}`; // Formato: DD/MM/YYYY
+      setAquisicao(formattedDate);
+    }
+  };
+  
   useEffect(() => {
     const fetchLocais = async () => {
       try {
@@ -93,7 +126,7 @@ export default function FormNoTag() {
     const formData = new FormData();
     formData.append('nome', nome);
     formData.append('numero', numero);
-    formData.append('codigo', codigo);
+    formData.append('codigo', numero);
     formData.append('data_aquisicao', dataAquisicao);
     formData.append('estado_conservacao', estadoConservacao);
     formData.append('valor_aquisicao', valor);
@@ -133,12 +166,29 @@ export default function FormNoTag() {
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
         <Text style={styles.label}>Número:</Text>
         <TextInput value={numero} onChangeText={setNumero} style={styles.input} />
-        <Text style={styles.label}>Código:</Text>
-        <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
-        <Text style={styles.label}>Data de Aquisição:</Text>
-        <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
-        <Text style={styles.label}>Valor:</Text>
-        <TextInput value={valor} onChangeText={setValor} style={styles.input} />
+        <Text style={{color:"white"}}>Data de Aquisição:</Text>
+        <TouchableOpacity onPress={showDatePickerHandler} style={styles.input}>
+          <Text style={{ color: dataAquisicao ? "white" : "#ccc" }}>
+              {dataAquisicao || "Selecione uma data"}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+       <Text style={{color:"white"}}>Valor:</Text>
+  <TextInput
+    value={valor}
+    onChangeText={handleValorChange}
+    style={styles.input}
+    keyboardType="numeric" // Abre o teclado numérico
+    placeholder="0,00"
+    placeholderTextColor="#ccc"
+  />
         <Text style={{color:"white"}}>Estado de Conservação:</Text>
         <View style={{ zIndex: openEstadoConservacao ? 2000 : 1000 }}>
   <DropDownPicker
