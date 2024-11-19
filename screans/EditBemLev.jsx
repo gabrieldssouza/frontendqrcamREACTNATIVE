@@ -20,7 +20,10 @@ export default function EditBemLevScreen({route}){
 
             <LogoTop/>
            <BemFormEdit id={id} pendenciaLocal={pendenciaLocal}></BemFormEdit>     
-</View>
+
+           <TouchableOpacity onPress={() =>  navigation.navigate('BemLocLev' )}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white',  width: Dimensions.get("window").width * 0.85, backgroundColor: "#ECAA71", borderRadius: 30, paddingVertical: 10 }}>Voltar</Text>
+            </TouchableOpacity></View>
 
           );
     }

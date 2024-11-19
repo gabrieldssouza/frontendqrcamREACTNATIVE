@@ -10,6 +10,7 @@ import RelatorioFaltas from '../componets/LevRelat/LevRelatorio';
 
 import FormNoTag from '../componets/FormNoTag/FormNoTag';
 import BemForm from '../componets/NewBemForms/BemForm';
+import BoxLev from '../componets/BocLev/BoxLev';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -29,7 +30,6 @@ export default function BemLocLev({route}) {
   const idLocal = route.params?.idLocal;
   const idBem = route.params?.idBem;
   const idLevantamento = route.params?.idLevantamento;
-  const [BemIdsTag, setBemIdsTag] = useState([]);
   const [modalVisible, setModalVisible] = useState(false); 
   const [IdLevantamento, setIdLevantamento] = useState(null)
   const matchingItems = [];
@@ -101,46 +101,63 @@ export default function BemLocLev({route}) {
 
   useFocusEffect(
     useCallback(() => {
-      fetchData();
-      fetchBensLevantamento();
+       fetchData();
+       fetchBensLevantamento();
+       processErrorPlace()
     }, [])
   );
 
-  useEffect(() => {
-    const fetchBem = async () => {
-      try {
-        const response = await axios.get(`/listarbem/${idBem}`);
+  const [BemErPlace, setBemErPlace] = useState([]); // Estado para armazenar os resultados
 
-        if (!response.ok) {
-          throw new Error('Erro ao pegar dados');
-        }
-        const result = await response.json();
-        setBem(result);
-      } catch (error) {
-        console.error('Erro ao buscar bem', error);
+const fetchBem = async (idBem) => {
+  try {
+    const response = await api.get(`/listarbem/${idBem}`);
+    if (response.status !== 200) {
+      throw new Error('Erro ao pegar dados');
+    }
+    console.log("dat")
+    return response.data; // Retorna os dados do bem
+  } catch (error) {
+    console.error('Err ao buscar bem id do bem:', idBem, error);
+    return null; // Retorna null em caso de erro
+  }
+};
+const errorplace = []
+  const processErrorPlace = async () => {
+    errorplace = bensLevantamento.filter(scannedItem =>
+      !expectedItems.some(item => item.idbem == scannedItem.bem_idbem)
+    );
+    const resultArray = []; // Array temporário para armazenar os dados
+    for (const scannedItem of errorplace) {
+      const bemData = await fetchBem(scannedItem.bem_idbem); // Chama a função para cada item
+      if (bemData) {
+        resultArray.push(bemData); // Adiciona ao array se não for null
       }
-    };
-    fetchBem();
-  }, [idBem]);
+    }
+    setBemErPlace(resultArray); // Atualiza o estado com os resultados
+  };
+
+  if (errorplace.length > 0) {
+    processErrorPlace();
+  }
+ // Executa quando errorplace for atualizado
+
   
-  // Determinar itens esperados
-  const expectedItems = data;
+  const expectedItems = data; // Bens Esperados na sala
 
   // Itens faltantes
   const missingItems = expectedItems.filter(item =>
     !bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
-  console.log("missing", missingItems)
+ 
 
   const findItems = expectedItems.filter(item =>
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
 
-  const errorplace = expectedItems.filter(item =>
-    bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
-  );
+  console.log("BemErPlae",BemErPlace)
 
-  // Função para buscar os dados de um bem específico
+// Função para buscar os dados de um bem específico
 // Função para buscar os dados de um bem específico
 const fetchBemNome = async (nome) => {
   try {
@@ -208,9 +225,9 @@ const renderModals = () => {
 
 // A renderização do modal deve ser chamada onde você deseja exibir os modais
 
-
 const renderRelatorio = () => {
-    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
+  
+    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={BemErPlace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
   };
 
 return (
@@ -223,21 +240,27 @@ return (
       <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, width: '100%' }}>
         {error && <Text style={{ color: 'white' }}>{error}</Text>}
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Totais:{'\n'}{countData}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Totais:{'\n'}{countData + errorplace.length}</Text>
         </View>
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Levantados:{'\n'}{countBensLevantamento}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Levantados:{'\n'}{findItems.length + errorplace.length }</Text>
         </View>
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Diferença:{'\n'}{countData - countBensLevantamento}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Diferença:{'\n'}{(countData + errorplace.length) - (findItems.length + errorplace.length)}</Text>
         </View>
       </View>
       <ScrollView>
         {findItems.map((item) => (
           <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: item.idbem, key: item.idbem })} key={item.idbem}>
-            <BoxBem data={item} key={item.idbem} />
+            <BoxLev data={item} key={item.idbem} />
           </TouchableOpacity>
         ))}
+        {BemErPlace.map((item) => (
+          <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: item.idbem, key: item.idbem })} key={item.idbem}>
+            <BoxLev data={item} key={item.idbem} />
+          </TouchableOpacity>
+        ))}
+        
       </ScrollView>
 
       <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{  marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>

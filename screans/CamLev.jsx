@@ -73,27 +73,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
       // Requisição para adicionar o bem ao levantamento
       console.log("entrou no try do add ");
-
-
       const addResponse = await api.post('http://192.168.1.114:3000/addBensLevantamento', newData, {
           headers: {
               'Content-Type': 'application/json',
           },
-
       });
       const result = await addResponse.data
 
       console.log("pé navegar: ", idbem);
       navigation.navigate('EditBemLev', { id: idbem });
 
-      if (!addResponse.ok) {
-        throw new Error(result.message || 'Erro na solicitação');
-
-
-      }
-
       // Navegação para a tela inicial só após o sucesso da requisição POST
-
     } catch (error) {
       console.error('Erro ao processar QR code', error);
     }
