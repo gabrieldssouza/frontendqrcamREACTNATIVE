@@ -270,7 +270,7 @@ return (
       </TouchableOpacity>
 
       <View  style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, }} > 
-      <TouchableOpacity onPress={verifyNoTag} style={{ marginRight: 10, flex: 0.4, width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20}}>
+      <TouchableOpacity  style={{ marginRight: 10, flex: 0.4, width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20}}>
        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
        encontrar bens s/ identificação
         </Text>
