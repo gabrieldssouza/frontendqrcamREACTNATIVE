@@ -65,7 +65,7 @@ export default function LoginScreen() {
                     <TextInput
                         style={{ padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 10 }}
                         value={email}
-                        placeholder="email"
+                        placeholder="Email"
                         onChangeText={setEmail}
                         placeholderTextColor="black"
                     />
@@ -75,7 +75,7 @@ export default function LoginScreen() {
                         style={{ padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 10 }}
                         secureTextEntry
                         value={senha}
-                        placeholder="senha"
+                        placeholder="Senha"
                         placeholderTextColor="black"
                         onChangeText={setSenha}
                     />

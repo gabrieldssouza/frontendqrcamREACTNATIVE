@@ -56,7 +56,6 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
                             <View style={{ paddingLeft: 20, justifyContent: "center"}}>
                             <Text  style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>Inventário - {item.ano}</Text>
                             <Text >Responsável: {item.responsavel}</Text>
-                            <Text >data: { item.idLevantamento}</Text>
                             </View>
                         </View>
                     </View>

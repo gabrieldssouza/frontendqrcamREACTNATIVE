@@ -99,12 +99,13 @@ export default function BemFormEdit(props) {
     try {
       const response = await api.put('/editarBem', formData);
       console.log('Bem editado com sucesso:', response.data);
-      navigation.navigate('Initial');
+      navigation.navigate('BemLocLev');
       console.log("editado ");
     } catch (error) {
       console.error('Erro ao editar bem:', error);
       Alert.alert('Erro', 'Erro ao editar bem. Tente novamente.');
     }
+    navigation.navigate('BemLocLev');
   };
 
   return (

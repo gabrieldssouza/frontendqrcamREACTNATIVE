@@ -85,7 +85,7 @@ useEffect(() => {
 
         <View style={{borderBottomColor: "white", borderBottomWidth: 1, flexDirection: "row", alignItems: "center", height: 70}}> 
       
-        <View style={{paddingLeft: 30,  color: "white"}}> 
+        <View style={{paddingLeft: 30,  color: "white"}}>
             <Text style={{ color: "white"}}>Número</Text>
             <Text style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18,  color: "white"}}>{Bem?.numero}</Text>
         </View>
@@ -142,7 +142,7 @@ useEffect(() => {
        
        <View style={{paddingLeft: 30, color: "white" }}> 
            <Text style={{color: "white"}}>Local</Text>
-           <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{LocalName}</Text>
+           <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>c108</Text>
        </View>
        </View>
 
@@ -150,7 +150,7 @@ useEffect(() => {
       
         <View style={{paddingLeft: 30,  color: "white"}}> 
             <Text style={{ color: "white"}}>Categoria</Text>
-            <Text style={{  color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{Bem?.categoria_idCategoria}</Text>
+            <Text style={{  color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>Eletrônicos</Text>
         </View>
         <View style={{flex: 1}} />
         </View>
@@ -162,5 +162,4 @@ useEffect(() => {
       );
    
     }
-    
-    
+  

@@ -128,21 +128,17 @@ export default function BemLocLev({route}) {
 
   // Itens faltantes
   const missingItems = expectedItems.filter(item =>
-    item.pendencia_local == false &&
     !bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
-
+  console.log("missing", missingItems)
 
   const findItems = expectedItems.filter(item =>
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
 
   const errorplace = expectedItems.filter(item =>
-    item.pendencia_local == true &&
-    bensLevantamento.some(scannedItem => scannedItem.bem_idbem === item.idbem)
+    bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
-
-  console.log("place", errorplace)
 
   // Função para buscar os dados de um bem específico
 // Função para buscar os dados de um bem específico
@@ -185,10 +181,9 @@ const verifyNoTag = async () => {
         setError(error.message);
       }
     }
-
     // Atualiza o estado com os bens encontrados e abre o modal
     setBensNameNotag(bensData);
-    setModalVisible(true); // Torna o modal visível
+      setModalVisible(true); // Torna o modal visív
   } catch (error) {
     console.error('Erro ao buscar dados do verify', error);
     setError(error.message);
