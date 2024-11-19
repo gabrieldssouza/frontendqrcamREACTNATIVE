@@ -127,7 +127,7 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
     <!-- Rodapé com local, data e assinaturas -->
     <table style="width: 100%; margin-top: 30px;">
       <tr>
-            <td style="text-align: left;">Data: ____/____/______</td>
+            <td style="text-align: left;"> Data: ____/____/______</td>
         <td style="text-align: right;">
           <div>__________________________________________________</div>
           <div>Diretor(a) de Administração</div>
@@ -157,9 +157,9 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
   }
 
  return(
-  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.28, }}> 
-    <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.28, backgroundColor: "#ECAA71", borderRadius: 15,  marginRight: 10 }}>
-        <Text style={{paddingVertical: 11, fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 9}}>Gerar {'\n'} relatório </Text>
+  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.45, }}> 
+    <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.43, backgroundColor: "#ECAA71", borderRadius: 15,  marginRight: 10 }}>
+        <Text style={{paddingVertical: 10.5, fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Gerar {'\n'} relatório </Text>
   </TouchableOpacity> 
   </View>
  );

@@ -64,6 +64,11 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
         ))}
 
      </ScrollView>
+     <TouchableOpacity onPress={() => navigation.navigate('addLev')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 30 }}>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
+          <Ionicons name="add" size={48} color="white" />
+        </Text>
+      </TouchableOpacity>
          
     </View>
 

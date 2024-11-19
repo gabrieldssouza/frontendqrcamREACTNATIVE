@@ -32,7 +32,7 @@ export default function IndividualBem({ route }) {
     }
   };
 
-  const [Local, setLocal] = useState(null); // Estado para armazenar os dados do local
+  const [Local, setLocal] = useState([]); // Estado para armazenar os dados do local
 const [LocalName, setLocalName] = useState(''); // Estado para armazenar o nome do local
 
 useEffect(() => {
@@ -50,7 +50,7 @@ const fetchLocal = async () => {
   try {
     const response = await api.get(`/local/${Bem.local_idLocais}`);
     setLocal(response.data); // Atualiza o estado com os dados do local
-    console.log("Local data:", response.data);
+    console.log("Local data:", response.data.nome);
   } catch (error) {
     console.error('Erro ao buscar local', error);
   }
@@ -142,7 +142,7 @@ useEffect(() => {
        
        <View style={{paddingLeft: 30, color: "white" }}> 
            <Text style={{color: "white"}}>Local</Text>
-           <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>c108</Text>
+           <Text style={{color: "white", paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{Local.nome}</Text>
        </View>
        </View>
 

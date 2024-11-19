@@ -270,19 +270,14 @@ return (
       </TouchableOpacity>
 
       <View  style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, }} > 
-      <TouchableOpacity onPress={verifyNoTag} style={{ marginRight: 10, flex: 0.4, width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20}}>
+  
+      <TouchableOpacity onPress={() => navigation.navigate("FormNoTag", { etiqueta: false})} style={{ marginRight: 10, flex: 0.45 , width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 15 }}>
        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-       encontrar bens s/ identificação
-        </Text>
-      </TouchableOpacity>
-      {renderModals()}
-      <TouchableOpacity onPress={() => navigation.navigate("FormNoTag", { etiqueta: false})} style={{ marginRight: 10, flex:0.3 , width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20 }}>
-       <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-         Sem identificação
+         Bem{'\n'} sem identificação
         </Text>
       </TouchableOpacity>
       
-      <TouchableOpacity style={{ flex:0.3 }}>
+      <TouchableOpacity style={{ flex:0.45 }}>
        {renderRelatorio()}
       </TouchableOpacity>
     </View>

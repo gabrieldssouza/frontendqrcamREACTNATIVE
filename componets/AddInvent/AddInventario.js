@@ -3,25 +3,28 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 
-export default function AddLocalForms() {
+export default function AddInventario() {
   const navigation = useNavigation();
-  const [nome, setNome] = useState('');
+  const [ano, setAno] = useState('');
   const [ responsavel, setResponsavel] = useState('');
+  const data_hora = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
 
 
   const handleCadastrar = async () => {
-    if (!nome) {
-      Alert.alert('Erro', 'Por favor, preencha o nome do local.');
+    const data_hora = new Date().toISOString().split('T')[0];
+    console.log(data_hora)
+    if (!responsavel || !ano) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('nome', nome);
-
-    console.log(formData);
     try {
-      const response = await api.post('/criarlocal', {
-        nome, responsavel
+      console.log("ano", ano)
+      const response = await api.post('/addLevantamento', {
+        data_hora,
+        responsavel,
+        ano 
       });
       console.log('Local criado com sucesso:', response.data);
       navigation.navigate('Local'); // Navega de volta para a tela de locais
@@ -31,18 +34,20 @@ export default function AddLocalForms() {
     }
   };
 
+
   return (
+    
     <View style={{ width: '80%' }}>
-      <Text style={{ fontSize: 25, color: "white", marginTop: 30, marginBottom: 10, textAlign: 'center' }}>Adicionar Local</Text>
+      <Text style={{ fontSize: 25, color: "white", marginTop: 30, marginBottom: 10, textAlign: 'center' }}>Adicionar Inventário</Text>
       <View>
-        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Nome do Local:</Text>
-        <TextInput value={nome} onChangeText={setNome} style={styles.input} />
-      </View>
-      <View>
-        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Nome do Responsável:</Text>
+        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Responsável:</Text>
         <TextInput value={responsavel} onChangeText={setResponsavel} style={styles.input} />
       </View>
-      <TouchableOpacity style={{ borderRadius: 30, paddingTop:10 }} onPress={handleCadastrar}>
+      <View>
+        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Ano do inventário:</Text>
+        <TextInput value={ano} onChangeText={setAno} style={styles.input} />
+      </View>
+      <TouchableOpacity style={{ borderRadius: 30, paddingTop: 10}} onPress={handleCadastrar}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
     </View>
@@ -52,11 +57,11 @@ export default function AddLocalForms() {
 const styles = {
   input: {
     borderColor: "white",
+    color:"white",
     borderWidth: 2,
     borderRadius: 15,
     padding: 9,
     marginBottom: 10,
-    color: 'white'
   },
   buttonText: {
     fontSize: 18,
