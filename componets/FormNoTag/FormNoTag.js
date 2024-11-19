@@ -24,6 +24,7 @@ export default function FormNoTag() {
   const [openCategoria, setOpenCategoria] = useState(false);
   const [valueCategoria, setValueCategoria] = useState(null);
   const [itemsCategoria, setItemsCategoria] = useState([]);
+  const [openEstadoConservacao, setOpenEstadoConservacao] = useState(false);
 
   useEffect(() => {
     const fetchLocais = async () => {
@@ -136,29 +137,86 @@ export default function FormNoTag() {
         <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
         <Text style={styles.label}>Data de Aquisição:</Text>
         <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
-        <Text style={styles.label}>Estado de Conservação:</Text>
-        <TextInput value={estadoConservacao} onChangeText={setEstadoConservacao} style={styles.input} />
         <Text style={styles.label}>Valor:</Text>
         <TextInput value={valor} onChangeText={setValor} style={styles.input} />
-        <Text style={styles.label}>Local:</Text>
-        <View style={{ zIndex: openLocal ? 2000 : 1000 }}>
-          <DropDownPicker
-            open={openLocal}
-            value={valueLocal}
-            items={itemsLocal}
-            setOpen={setOpenLocal}
-            setValue={setValueLocal}
-            setItems={setItemsLocal}
-            placeholder="Selecione um local"
-            placeholderStyle={{ color: '#ccc' }}
-            containerStyle={styles.dropDownContainer}
-            style={styles.dropDown}
-            dropDownContainerStyle={styles.dropDownList}
-            onChangeValue={setLocal}
-          />
-        </View>
-        <Text style={styles.label}>Categoria:</Text>
-        <View style={{ zIndex: openCategoria ? 2000 : 800 }}>
+        <Text style={{color:"white"}}>Estado de Conservação:</Text>
+        <View style={{ zIndex: openEstadoConservacao ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openEstadoConservacao}
+    value={estadoConservacao}
+    items={[
+      { label: 'Ótimo', value: 'ótimo' },
+      { label: 'Bom', value: 'bom' },
+      { label: 'Ruim', value: 'ruim' },
+      { label: 'Péssimo', value: 'péssimo' }
+    ]}
+    setOpen={setOpenEstadoConservacao}
+    setValue={setEstadoConservacao}
+    placeholder="Selecione o estado de conservação"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openEstadoConservacao ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}
+    textStyle={{
+      color: '#D1D5DB', 
+    }}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+
+<Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10,}}>Local:</Text>
+<View style={{ zIndex: openLocal ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openLocal}
+    value={valueLocal}
+    items={itemsLocal}
+    setOpen={setOpenLocal}
+    setValue={setValueLocal}
+    setItems={setItemsLocal}
+    placeholder="Selecione um local"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openLocal ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}
+    textStyle={{
+      color: '#D1D5DB', 
+    }}
+    onChangeValue={setLocal}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+<Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10}}>Categoria:</Text>
+        <View style={{ zIndex: 800 }}>
           <DropDownPicker
             open={openCategoria}
             value={valueCategoria}
@@ -168,11 +226,22 @@ export default function FormNoTag() {
             setItems={setItemsCategoria}
             placeholder="Selecione uma categoria"
             placeholderStyle={{ color: '#ccc' }}
-            containerStyle={styles.dropDownContainer}
-            style={styles.dropDown}
-            dropDownContainerStyle={styles.dropDownList}
+            containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
+            style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B'}}
+            dropDownContainerStyle={{
+              backgroundColor: '#29304B',
+              borderColor: '#ccc',
+              borderWidth: 1,
+              borderRadius: 10,
+              zIndex: 800
+            }}
             dropDownDirection="DOWN"
-            onChangeValue={setIDcategoria}
+            onChangeValue={setIDcategoria}   textStyle={{
+              color: '#D1D5DB', 
+            }}
+            arrowIconStyle={{
+              tintColor: '#ECAA71', // Cor da seta
+            }}
           />
         </View>
 
