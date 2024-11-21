@@ -1,31 +1,55 @@
 {
   "expo": {
-    "name": "frontend",
+    "name": "qrcam",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./assets/logoicon.png",
+    "splash": {
+      "image": "./assets/logotccbranca.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#29304B"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/logoicon.png",
+        "backgroundColor": "#29304B"
+      },
+      "permissions": [
+        "INTERNET",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.gabrielsouza5.frontend"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logotccbranca.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fb0d5505-2a2d-4cb2-87a6-28c1652a8e08"
+      }
     },
     "plugins": [
       [
-        "expo-camera",
+        "expo-build-properties",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
-          "recordAudioAndroid": true
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
       ]
-    ],
-    "sdkVersion": "52.0.0"
+    ]
   }
 }

@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 export default function FormNoTag() {
   const navigation = useNavigation();
@@ -16,6 +18,74 @@ export default function FormNoTag() {
   const [local, setLocal] = useState('');
   const [IDcategoria, setIDcategoria] = useState('');
   const [foto, setFoto] = useState(null);
+  const [locais, setLocais] = useState([]);
+  const [openLocal, setOpenLocal] = useState(false);
+  const [valueLocal, setValueLocal] = useState(null);
+  const [itemsLocal, setItemsLocal] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [openCategoria, setOpenCategoria] = useState(false);
+  const [valueCategoria, setValueCategoria] = useState(null);
+  const [itemsCategoria, setItemsCategoria] = useState([]);
+  const [openEstadoConservacao, setOpenEstadoConservacao] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false)
+
+  const formatCurrency = (value) => {
+    // Remove caracteres não numéricos
+    const numericValue = value.replace(/\D/g, "");
+    // Adiciona vírgula e duas casas decimais
+    const formattedValue = (parseInt(numericValue, 10) / 100).toFixed(2).replace(".", ",");
+    return formattedValue;
+  };
+  
+  // Função para tratar mudanças no campo de valor
+  const handleValorChange = (input) => {
+    const formatted = formatCurrency(input);
+    setValor(formatted);
+  };
+  
+  const showDatePickerHandler = () => {
+    setShowDatePicker(true);
+  };
+  
+  // Função para capturar a data selecionada
+  const onDateChange = (event, selectedDate) => {
+    setShowDatePicker(false); // Fecha o calendário
+    if (selectedDate) {
+      const day = selectedDate.getDate().toString().padStart(2, "0");
+      const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = selectedDate.getFullYear();
+      const formattedDate = `${day}/${month}/${year}`; // Formato: DD/MM/YYYY
+      setAquisicao(formattedDate);
+    }
+  };
+  
+  useEffect(() => {
+    const fetchLocais = async () => {
+      try {
+        const response = await api.get('/listarlocais');
+        const result = response.data;
+        setLocais(result);
+        setItemsLocal(result.map(item => ({ label: item.nome, value: item.idLocais })));
+      } catch (error) {
+        console.error('Erro ao buscar locais', error);
+      }
+    };
+    fetchLocais();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await api.get('/listarcategorias');
+        const result = response.data;
+        setCategorias(result);
+        setItemsCategoria(result.map(item => ({ label: item.nome, value: item.idCategoria })));
+      } catch (error) {
+        console.error('Erro ao buscar categorias', error);
+      }
+    };
+    fetchCategorias();
+  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -27,71 +97,213 @@ export default function FormNoTag() {
 
     if (!result.canceled) {
       setFoto(result.assets[0].uri);
+    }
+  };
 
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Erro', 'Permissão para acessar a câmera foi negada.');
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFoto(result.assets[0].uri);
     }
   };
 
   const handleCadastrar = async () => {
     if (!nome || !numero || !codigo || !estadoConservacao || !local || !IDcategoria) {
-        Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
-        return;
+      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
+      return;
     }
     const formData = new FormData();
     formData.append('nome', nome);
     formData.append('numero', numero);
-    formData.append('codigo', codigo);
+    formData.append('codigo', numero);
     formData.append('data_aquisicao', dataAquisicao);
     formData.append('estado_conservacao', estadoConservacao);
     formData.append('valor_aquisicao', valor);
-    formData.append('local', local);
+    formData.append('local_idLocais', local);
     formData.append('categoria_idCategoria', IDcategoria);
-    formData.append('etiqueta', true);
+    formData.append('etiqueta',  false);
+
     if (foto) {
-        const filename = foto.split('/').pop();
-        const match = /\.(\w+)$/.exec(filename);
-        const type = match ? `image/${match[1]}` : `image`;
-        formData.append('foto', {
-            uri: foto,
-            name: filename,
-            type,
-        });
+      const filename = foto.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+      formData.append('foto', {
+        uri: foto,
+        name: filename,
+        type,
+      });
     }
     console.log(formData);
     try {
-        const response = await api.post('/criarbem', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        console.log('Bem criado com sucesso:', response.data);
-        navigation.navigate('Initial');
+      const response = await api.post('/criarbem', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Bem criado com sucesso:', response.data);
+      navigation.navigate('Initial');
     } catch (error) {
-        console.error('Erro ao criar bem:', error);
-        Alert.alert('Erro', 'Erro ao criar bem. Tente novamente.');
+      console.error('Erro ao criar bem:', error);
+      Alert.alert('Erro', 'Erro ao criar bem. Tente novamente.');
     }
-};
+  };
 
   return (
     <ScrollView>
       <View>
-        <Text>Nome:</Text>
+        <Text style={styles.label}>Nome:</Text>
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
-        <Text>Número:</Text>
+        <Text style={styles.label}>Número:</Text>
         <TextInput value={numero} onChangeText={setNumero} style={styles.input} />
-        <Text>Código:</Text>
-        <TextInput value={codigo} onChangeText={setCodigo} style={styles.input} />
-        <Text>Data de Aquisição:</Text>
-        <TextInput value={dataAquisicao} onChangeText={setAquisicao} style={styles.input} />
-        <Text>Estado de Conservação:</Text>
-        <TextInput value={estadoConservacao} onChangeText={setEstadoConservacao} style={styles.input} />
-        <Text>Valor:</Text>
-        <TextInput value={valor} onChangeText={setValor} style={styles.input} />
-        <Text>Local:</Text>
-        <TextInput value={local} onChangeText={setLocal} style={styles.input} />
-        <Text>Categoria:</Text>
-        <TextInput value={IDcategoria} onChangeText={setIDcategoria} style={styles.input} />
-        <Button title="Escolher Foto" onPress={pickImage} />
-        {foto && <Image source={{ uri: foto }} style={{ width: 200, height: 200 }} />}
+        <Text style={{color:"white"}}>Data de Aquisição:</Text>
+        <TouchableOpacity onPress={showDatePickerHandler} style={styles.input}>
+          <Text style={{ color: dataAquisicao ? "white" : "#ccc" }}>
+              {dataAquisicao || "Selecione uma data"}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+       <Text style={{color:"white"}}>Valor:</Text>
+  <TextInput
+    value={valor}
+    onChangeText={handleValorChange}
+    style={styles.input}
+    keyboardType="numeric" // Abre o teclado numérico
+    placeholder="0,00"
+    placeholderTextColor="#ccc"
+  />
+        <Text style={{color:"white"}}>Estado de Conservação:</Text>
+        <View style={{ zIndex: openEstadoConservacao ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openEstadoConservacao}
+    value={estadoConservacao}
+    items={[
+      { label: 'Ótimo', value: 'ótimo' },
+      { label: 'Bom', value: 'bom' },
+      { label: 'Ruim', value: 'ruim' },
+      { label: 'Péssimo', value: 'péssimo' }
+    ]}
+    setOpen={setOpenEstadoConservacao}
+    setValue={setEstadoConservacao}
+    placeholder="Selecione o estado de conservação"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openEstadoConservacao ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}
+    textStyle={{
+      color: '#D1D5DB', 
+    }}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+
+<Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10,}}>Local:</Text>
+<View style={{ zIndex: openLocal ? 2000 : 1000 }}>
+  <DropDownPicker
+    open={openLocal}
+    value={valueLocal}
+    items={itemsLocal}
+    setOpen={setOpenLocal}
+    setValue={setValueLocal}
+    setItems={setItemsLocal}
+    placeholder="Selecione um local"
+    placeholderStyle={{ color: '#ccc' }}
+    containerStyle={{
+      zIndex: openLocal ? 2000 : 1000,
+      height: 40,
+      width: Dimensions.get("window").width * 0.85,
+      marginBottom: 10
+    }}
+    style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B' }}
+    dropDownContainerStyle={{
+      backgroundColor: '#29304B',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 10,
+      zIndex: 2000
+    }}
+    textStyle={{
+      color: '#D1D5DB', 
+    }}
+    onChangeValue={setLocal}
+    arrowIconStyle={{
+      tintColor: '#ECAA71', // Cor da seta
+    }}
+  />
+</View>
+<Text style={{color:"white", marginVertical: 5,
+    borderRadius: 15,
+    marginTop: 10}}>Categoria:</Text>
+        <View style={{ zIndex: 800 }}>
+          <DropDownPicker
+            open={openCategoria}
+            value={valueCategoria}
+            items={itemsCategoria}
+            setOpen={setOpenCategoria}
+            setValue={setValueCategoria}
+            setItems={setItemsCategoria}
+            placeholder="Selecione uma categoria"
+            placeholderStyle={{ color: '#ccc' }}
+            containerStyle={{ height: 40, width: Dimensions.get("window").width * 0.85, marginBottom: 10 }}
+            style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 15, padding: 9, backgroundColor: '#29304B'}}
+            dropDownContainerStyle={{
+              backgroundColor: '#29304B',
+              borderColor: '#ccc',
+              borderWidth: 1,
+              borderRadius: 10,
+              zIndex: 800
+            }}
+            dropDownDirection="DOWN"
+            onChangeValue={setIDcategoria}   textStyle={{
+              color: '#D1D5DB', 
+            }}
+            arrowIconStyle={{
+              tintColor: '#ECAA71', // Cor da seta
+            }}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={pickImage}>
+          <Text style={styles.buttonFoto}>Escolher Foto</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={takePhoto}>
+          <Text style={styles.buttonFoto}>Tirar Foto</Text>
+        </TouchableOpacity>
+        </View>
+        {foto && <Image source={{ uri: foto }} style={styles.image} />}
         <TouchableOpacity onPress={handleCadastrar}>
           <Text style={styles.buttonText}>Confirmar</Text>
         </TouchableOpacity>
@@ -109,7 +321,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 15,
     marginBottom: 10,
-    color: "white"
+    color: "white",
+    backgroundColor: '#29304B'
   },
   buttonText: {
     fontSize: 18,
@@ -119,5 +332,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#ECAA71",
     borderRadius: 30,
     paddingVertical: 10
+  }, buttonFoto: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: "#ECAA71",
+    borderRadius: 30,
+    paddingHorizontal: 30, 
+    paddingVertical: 10, 
+    marginTop: 10
+  },
+  label: {
+    color: 'white',
+    marginBottom: 5
+  },
+  dropDownContainer: {
+    height: 40,
+    width: Dimensions.get("window").width * 0.85,
+    marginBottom: 10,
+    zIndex: 2000,
+  },
+  dropDown: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 15,
+    padding: 9,
+    backgroundColor: '#29304B'
+  },
+  dropDownList: {
+    backgroundColor: '#29304B',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    zIndex: 2000
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    marginBottom: 10
+  },
+  image: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    marginBottom: 10
   }
 });

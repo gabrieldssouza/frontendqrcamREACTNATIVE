@@ -90,7 +90,7 @@ useFocusEffect(
       <LogoTop/>
 
       < View > 
-                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Levantamento</Text>
+                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Inventários</Text>
 
                     <View style={{ height: 3,
     backgroundColor: 'white', width: Dimensions.get("window").width * 0.85, marginTop: 4

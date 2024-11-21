@@ -12,9 +12,10 @@ import api from '../services/api';
 export default function LevLocais({route}) {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
-  const idLevantamento = route.params?.idLevantamento; // Verifica se idLevantamento foi passado corretamente
+  const idLevantamento = route.params?.idLevantamento; 
+  const ano = route.params?.anoLev; 
   console.log("id levantamento cam", idLevantamento); 
- 
+  console.log("ano", ano);
 
   useEffect(() => {
 
@@ -46,7 +47,7 @@ export default function LevLocais({route}) {
       
 
       < View  > 
-                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Nome da filial</Text>
+                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Locais - inventário {ano}</Text>
 
                     <View style={{ height: 3,
     backgroundColor: 'white', width: Dimensions.get("window").width * 0.85, marginTop: 4

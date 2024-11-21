@@ -20,12 +20,14 @@ export default function LoginScreen() {
            const response = await api.post('/logar', { email, senha });
            if (response) {
                navigation.navigate('Initial');
-           } else {
-               alert("Email ou senha incorretos.");
            }
        } catch (error) {
-           console.error("Erro ao fazer login:", error.message);
-           alert("Erro ao fazer login. Tente novamente.");
+            if(error.response.status === 401){
+                alert("Email ou senha inválidos.");
+            } else{
+                console.error("Erro ao fazer login:", error.message);
+                alert("Erro ao fazer login. Tente novamente.");
+            }
         }
     }
 
@@ -65,7 +67,7 @@ export default function LoginScreen() {
                     <TextInput
                         style={{ padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 10 }}
                         value={email}
-                        placeholder="email"
+                        placeholder="Email"
                         onChangeText={setEmail}
                         placeholderTextColor="black"
                     />
@@ -75,12 +77,12 @@ export default function LoginScreen() {
                         style={{ padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 10 }}
                         secureTextEntry
                         value={senha}
-                        placeholder="senha"
+                        placeholder="Senha"
                         placeholderTextColor="black"
                         onChangeText={setSenha}
                     />
 
-                    <TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={handleLogin}>
+<TouchableOpacity style={[styles.buttonLog, { alignItems: "center" }]} onPress={handleLogin}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Entrar</Text>
                     </TouchableOpacity>
                 </View>

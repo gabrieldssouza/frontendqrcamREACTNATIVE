@@ -76,10 +76,10 @@ export default function LocaisScreen() {
         <View style={{ marginTop: 30, marginBottom: 20 }}>
           <TextInput
             placeholder='Pesquisar'
-            placeholderTextColor='black'
+            placeholderTextColor='#F0F0F0'
             value={searchText}
             onChangeText={setSearchText}
-            style={{ borderColor: "black", borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
+            style={{  borderColor: "#F0F0F0", color: '#FFFFFF', borderWidth: 2, width: Dimensions.get("window").width * 0.85, textAlign: "left", height: 49, borderRadius: 15, padding: 9, marginRight: '2%' }}
           />
         </View>
       </View>
@@ -89,23 +89,15 @@ export default function LocaisScreen() {
             <BoxLocais data={item} />
           </TouchableOpacity>
         ))}
+        
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.navigate('Forms')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('NovoLocal')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 30 }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
           <Ionicons name="add" size={48} color="white" />
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cam', { action: 'encontrar' })} style={{ position: "absolute", bottom: 50, left: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-          <Ionicons name="camera" size={48} color="white" />
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('LevScreen')} style={{
-          justifyContent: 'center', textAlign: 'center', width: Dimensions.get("window").width * 0.85,
-          backgroundColor: "#ECAA71", height: 50, alignItems: "center", borderRadius: 10
-        }}>
-          <Text>Levantamento</Text>
-      </TouchableOpacity>
+     
+     
     </View>
   );
 }

@@ -21,7 +21,8 @@ import EditBemLevScreen from "../screans/EditBemLev";
 import LevScreen from "../screans/LevScreen";
 import BensDeLocalScreen from "../screans/BensDeLocalScreen";
 import AddLocal from "../screans/AddLocal";
-
+import FormsNoTag from "../screans/FormsNoTag";
+import Addlevantamento from "../screans/Addlevantamento";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigation() {
@@ -40,13 +41,15 @@ export default function AppNavigation() {
                 <Stack.Screen name="Cam" options={{ headerShown: false }} component={CameraScreen} />
                 <Stack.Screen name="Local" options={{ headerShown: false }} component={LocaisScreen} />
                 <Stack.Screen name="Categoria" options={{ headerShown: false }} component={CategoriaScreen} />
-                <Stack.Screen name="Levantamento" options={{ headerShown: false }} component={LevLocais} /> 
-                 <Stack.Screen name="CamLev" component={CameraLevantamento} /> 
-                <Stack.Screen name="BemLocLev" component={BemLocLev} />
-                <Stack.Screen name="EditBemLev" component={EditBemLevScreen} />
-                <Stack.Screen name="LevScreen" component={LevScreen} />
-                <Stack.Screen name="BensDeLocal" component={BensDeLocalScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="NovoLocal" component={AddLocal} options={{ headerShown: false }} />
+                <Stack.Screen name="Levantamento" options={{ headerShown: false }} component={LevLocais} /> 
+                 <Stack.Screen name="CamLev"options={{ headerShown: false }}   component={CameraLevantamento} /> 
+                <Stack.Screen name="BemLocLev" options={{ headerShown: false }}  component={BemLocLev}  />
+                <Stack.Screen name="EditBemLev" options={{ headerShown: false }} component={EditBemLevScreen} />
+                <Stack.Screen name="LevScreen" options={{ headerShown: false }}  component={LevScreen} />
+                <Stack.Screen name="BensDeLocal" options={{ headerShown: false }}  component={BensDeLocalScreen}  />
+                <Stack.Screen name="NovoLocal" options={{ headerShown: false }}  component={AddLocal}  />
+                <Stack.Screen name="FormNoTag" options={{ headerShown: false }}  component={FormsNoTag}  />
+                <Stack.Screen name="addLev" options={{ headerShown: false }}  component={Addlevantamento}  />
             </Stack.Navigator>
          </NavigationContainer>    
     );

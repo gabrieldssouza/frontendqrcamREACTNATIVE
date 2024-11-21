@@ -10,6 +10,7 @@ import RelatorioFaltas from '../componets/LevRelat/LevRelatorio';
 
 import FormNoTag from '../componets/FormNoTag/FormNoTag';
 import BemForm from '../componets/NewBemForms/BemForm';
+import BoxLev from '../componets/BocLev/BoxLev';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,17 +20,16 @@ import ModalNoTag from '../componets/ModalNoTag/ModalNoTag';
 
 export default function BemLocLev({route}) {
   const navigation = useNavigation();
-  
   const [data, setData] = useState([]);
   const [countData, setCountData] = useState(0);
   const [error, setError] = useState(null);
   const [bensLevantamento, setBensLevantamento] = useState([]);
   const [countBensLevantamento, setCountBensLevantamento] = useState(0);
   const [bensNotag, setBensNotag] = useState([]);
+  const [bensNameNotag, setBensNameNotag] = useState([]);
   const idLocal = route.params?.idLocal;
   const idBem = route.params?.idBem;
   const idLevantamento = route.params?.idLevantamento;
-  const [BemIdsTag, setBemIdsTag] = useState([]);
   const [modalVisible, setModalVisible] = useState(false); 
   const [IdLevantamento, setIdLevantamento] = useState(null)
   const matchingItems = [];
@@ -66,7 +66,7 @@ export default function BemLocLev({route}) {
   const fetchData = async () => {
     try {
 
-      const response = await api.get(`/listarlocal/1`);
+      const response = await api.get(`/listarlocal/${idLocal}`);
       if (response.status !== 200) {
 
         throw new Error('Erro ao pegar dados');
@@ -101,140 +101,136 @@ export default function BemLocLev({route}) {
 
   useFocusEffect(
     useCallback(() => {
-      fetchData();
-      fetchBensLevantamento();
+       fetchData();
+       fetchBensLevantamento();
+       processErrorPlace()
     }, [])
   );
 
-  useEffect(() => {
-    const fetchBem = async () => {
-      try {
-        const response = await axios.get(`/listarbem/${idBem}`);
+  const [BemErPlace, setBemErPlace] = useState([]); // Estado para armazenar os resultados
 
-        if (!response.ok) {
-          throw new Error('Erro ao pegar dados');
-        }
-        const result = await response.json();
-        setBem(result);
-      } catch (error) {
-        console.error('Erro ao buscar bem', error);
+const fetchBem = async (idBem) => {
+  try {
+    const response = await api.get(`/listarbem/${idBem}`);
+    if (response.status !== 200) {
+      throw new Error('Erro ao pegar dados');
+    }
+    console.log("dat")
+    return response.data; // Retorna os dados do bem
+  } catch (error) {
+    console.error('Err ao buscar bem id do bem:', idBem, error);
+    return null; // Retorna null em caso de erro
+  }
+};
+const errorplace = []
+  const processErrorPlace = async () => {
+    errorplace = bensLevantamento.filter(scannedItem =>
+      !expectedItems.some(item => item.idbem == scannedItem.bem_idbem)
+    );
+    const resultArray = []; // Array temporário para armazenar os dados
+    for (const scannedItem of errorplace) {
+      const bemData = await fetchBem(scannedItem.bem_idbem); // Chama a função para cada item
+      if (bemData) {
+        resultArray.push(bemData); // Adiciona ao array se não for null
       }
-    };
-    fetchBem();
-  }, [idBem]);
+    }
+    setBemErPlace(resultArray); // Atualiza o estado com os resultados
+  };
+
+  if (errorplace.length > 0) {
+    processErrorPlace();
+  }
+ // Executa quando errorplace for atualizado
+
   
-  // Determinar itens esperados
-  const expectedItems = data;
+  const expectedItems = data; // Bens Esperados na sala
 
   // Itens faltantes
   const missingItems = expectedItems.filter(item =>
-    item.pendencia_local == false &&
     !bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
-
+ 
 
   const findItems = expectedItems.filter(item =>
     bensLevantamento.some(scannedItem => scannedItem.bem_idbem == item.idbem)
   );
 
-  const errorplace = expectedItems.filter(item =>
-    item.pendencia_local == true &&
-    bensLevantamento.some(scannedItem => scannedItem.bem_idbem === item.idbem)
-  );
-  console.log("place", errorplace)
-  const verifyNoTag = async () => {
-    console.log("entro no verify");
-    try {
-      const response = await api.get('/listarbens');
-      if (response.status !== 200) {
-        throw new Error('Erro ao pegar dados');
-      }
-      const result = await response.data;
-  
-      const filteredResult = result.filter(bem => bem.etiqueta == false);
-      setBensNotag(filteredResult); // Atualiza o estado com os bens sem etiqueta
-  
-      console.log("nottagbens", filteredResult);
-  
-      // Inicializa um array para armazenar os itens correspondentes
-      
-  
-      // A lógica para encontrar os bens com os mesmos nomes
-      missingItems.forEach((missingBem) => {
-        const matchedBem = filteredResult.find(bem => bem.nome === missingBem.nome);
-        console.log(missingBem.nome);
-        if (matchedBem) {
-          // Adiciona os IDs no array se os nomes coincidirem
-          matchingItems.push({ id1: missingBem.idbem, id2: matchedBem.idbem });
-          console.log("Itens correspondentes:", matchingItems);
-        }
-      });
-  
-      // Filtrar duplicados em matchingItems (caso haja algum)
-      const uniqueItems = matchingItems.filter((value, index, self) =>
-        index == self.findIndex((t) => (
-          t.id1 == value.id1 && t.id2 == value.id2
-        ))
-      );
-  
-      // Verifica se há itens correspondentes e chama a função `FindBensNoTag`
-      if (uniqueItems.length > 0) {
-        console.log('Itens encontrados:', uniqueItems);
-        // Envia o array de itens para a função `FindBensNoTag`
-        FindBensNoTag(uniqueItems);
-      } else {
-        console.log('Nenhum item com nome correspondente encontrado');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar dados', error);
-      setError(error.message);
+  console.log("BemErPlae",BemErPlace)
+
+// Função para buscar os dados de um bem específico
+// Função para buscar os dados de um bem específico
+const fetchBemNome = async (nome) => {
+  try {
+    console.log("nome enviado", nome);
+    const response = await api.get(`/buscarPorNome?nome=${nome}`);
+    if (response.status !== 200) {
+      throw new Error('Erro ao pegar dados');
     }
-  };
-  
-  const FindBensNoTag = async (itemsArray) => {
-    console.log("chegou no FindBensNoTag");
-    try {
-      for (const item of itemsArray) {
-        const { id1, id2 } = item; // Extrai os IDs do objeto
-        const ids = [id1, id2]; // Cria um array com os dois IDs
-        for (const id of ids) {
-          const response = await api.get(`/listarbem/${id}`);
-          if (response.status !== 200) {
-            throw new Error('Erro ao pegar dados');
-          }
-          const result = response.data;
-          console.log("data", result); // Exibe o resultado do bem encontrado
+    console.log(response.data);
+    return response.data; // Retorna os dados do bem encontrado
+  } catch (error) {
+    console.error('Erro ao buscar dados de nome', error);
+    throw error;
+  }
+};
 
-          // Aqui você precisa garantir que está manipulando o estado corretamente.
-          setBemIdsTag(prevBemIdsTag => [...prevBemIdsTag, result]);
-        }
+// Função para verificar os bens sem etiqueta
+const verifyNoTag = async () => {
+  console.log("Entrou no verify");
+
+  try {
+    const response = await api.get('/listarBensNoTag');
+    if (response.status !== 200) {
+      throw new Error('Erro ao pegar dados');
+    }
+    const result = await response.data;
+    setBensNotag(result); // Atualiza o estado com os bens sem etiqueta
+
+    console.log("Bens sem etiqueta:", result);
+
+    // Agora busca os bens correspondentes para cada bem sem etiqueta
+    const bensData = [];
+    for (const bemNoTag of result) {
+      try {
+        const bemNome = await fetchBemNome(bemNoTag.nome);
+        bensData.push({ bemNoTag, bensCorrespondentes: bemNome });
+      } catch (error) {
+        setError(error.message);
       }
-      
-      // Após o loop, torna o modal visível
-      setModalVisible(true); 
-    } catch (error) {
-      console.error('Erro ao buscar bem', error);
     }
-  };
+    // Atualiza o estado com os bens encontrados e abre o modal
+    setBensNameNotag(bensData);
+      setModalVisible(true); // Torna o modal visív
+  } catch (error) {
+    console.error('Erro ao buscar dados do verify', error);
+    setError(error.message);
+  }
+};
 
+// Função para renderizar o modal
+const renderModals = () => {
+  // Verifica se bensNameNotag é um array e se não está vazio
+  if (Array.isArray(bensNameNotag) && bensNameNotag.length > 0) {
+    return bensNameNotag.map((item, index) => (
+      <ModalNoTag
+        key={index}
+        NoTag={item.bemNoTag}  // Passa os dados do bem sem etiqueta
+        BemNome={item.bensCorrespondentes}  // Passa os bens correspondentes encontrados
+        onClose={() => setModalVisible(false)} // Função para esconder o modal
+      />
+    ));
+  }
+  return null; // Retorna null se não houver bens para renderizar
+};
+
+// A renderização do modal deve ser chamada onde você deseja exibir os modais
+
+const renderRelatorio = () => {
   
-
-  const renderItem = ({ item }) => {
-    if (!item.idbem) {
-      console.warn('ID do bem não definido', item);
-      return null; // Ou um componente de fallback, se necessário
-    }
-    return (
-      <Text style={styles.item}>{item.nome}</Text>
-    );
+    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={BemErPlace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
   };
 
-
-  const renderRelatorio = () => {
-    return <RelatorioFaltas faltando={missingItems} encontrados={findItems} lugarErrado={errorplace} lugar={idLocal} quantidade={countData} bensFinded={countBensLevantamento}/>;
-  };
-
-  return (
+return (
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#29304B', position: "relative" }}>
       <LogoTop />
       <View>
@@ -244,21 +240,27 @@ export default function BemLocLev({route}) {
       <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, width: '100%' }}>
         {error && <Text style={{ color: 'white' }}>{error}</Text>}
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Totais:{'\n'}{countData}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Totais:{'\n'}{countData + errorplace.length}</Text>
         </View>
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Levantados:{'\n'}{countBensLevantamento}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Levantados:{'\n'}{findItems.length + errorplace.length }</Text>
         </View>
         <View style={{ alignItems: 'center', flex: 1 }}>
-          <Text style={{ textAlign: "center", color: 'white' }}>Diferença:{'\n'}{countData - countBensLevantamento}</Text>
+          <Text style={{ textAlign: "center", color: 'white' }}>Diferença:{'\n'}{(countData + errorplace.length) - (findItems.length + errorplace.length)}</Text>
         </View>
       </View>
       <ScrollView>
         {findItems.map((item) => (
           <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: item.idbem, key: item.idbem })} key={item.idbem}>
-            <BoxBem data={item} key={item.idbem} />
+            <BoxLev data={item} key={item.idbem} />
           </TouchableOpacity>
         ))}
+        {BemErPlace.map((item) => (
+          <TouchableOpacity onPress={() => navigation.navigate('Bem', { idbem: item.idbem, key: item.idbem })} key={item.idbem}>
+            <BoxLev data={item} key={item.idbem} />
+          </TouchableOpacity>
+        ))}
+        
       </ScrollView>
 
       <TouchableOpacity onPress={() => navigation.navigate('CamLev', { idLevantamento: idLevantamento })} style={{  marginBottom: 25, position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 50 }}>
@@ -268,27 +270,18 @@ export default function BemLocLev({route}) {
       </TouchableOpacity>
 
       <View  style={{ flexDirection: "row", justifyContent: "space-between", padding: 10, }} > 
-      <TouchableOpacity onPress={verifyNoTag} style={{ marginRight: 10, flex: 0.4, width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20}}>
+  
+      <TouchableOpacity onPress={() => navigation.navigate("FormNoTag", { etiqueta: false})} style={{ marginRight: 10, flex: 0.45 , width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 15 }}>
        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-       encontrar bens s/ identificação
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Forms", { etiqueta: false})} style={{ marginRight: 10, flex:0.3 , width: Dimensions.get("window").width * 0.10, backgroundColor: "#ECAA71", borderRadius: 20 }}>
-       <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
-         Sem identificação
+         Bem{'\n'} sem identificação
         </Text>
       </TouchableOpacity>
       
-      <TouchableOpacity style={{ flex:0.3 }}>
+      <TouchableOpacity style={{ flex:0.45 }}>
        {renderRelatorio()}
       </TouchableOpacity>
-      </View>
-      {modalVisible && (
-  <ModalNoTag
-    data={BemIdsTag} // Passando os dados encontrados
-    onClose={() => setModalVisible(false)} // Função para esconder o modal
-  />
-)}
+    </View>
+    
 
     </View>
   );

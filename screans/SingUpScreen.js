@@ -4,6 +4,7 @@ import { enableFreeze } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import api from "../services/api";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SingUpScreen(){ 
     const navigation = useNavigation();
@@ -56,7 +57,7 @@ export default function SingUpScreen(){
                     <TouchableOpacity style={{borderRadius: 50, borderWidth: 2, borderColor: 'black', padding: 10, alignItems: 'left', marginLeft: 20
       }} 
                     onPress={() => navigation.goBack()}> 
-                        <Text> k-----</Text>   
+                          <Ionicons name="arrow-back" size={20} color="black" />
                     </TouchableOpacity>
     
                     <Text style={{paddingHorizontal: "24%", justifyContent: "center", 
@@ -67,39 +68,39 @@ export default function SingUpScreen(){
     
                     <View className="form" style={{margin: "8%"}} >
 
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10, }}>Nome</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, }}>Nome</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         value={nome}
-                        placeholder="nome"
+                        placeholder="Nome"
                         onChangeText={setNome}/>
 
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10, }}>Sobrenome</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, }}>Sobrenome</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         value={sobrenome}
-                        placeholder="sobrenome"
+                        placeholder="Sobrenome"
                         onChangeText={setSobrenome}/>
 
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10, }}>Telefone</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, }}>Telefone</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         value={telefone}
-                        placeholder="telefone"
+                        placeholder="Telefone"
                         onChangeText={setTelefone}/>
         
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10, }}>Email</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, }}>Email</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         value={email}
-                        placeholder="email"
+                        placeholder="Email"
                         onChangeText={setEmail}/>
     
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10 }}>Senha</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, marginBottom: 5, }}>Senha</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         secureTextEntry
                         value={senha}
-                        placeholder="senha"
+                        placeholder="Senha"
                         onChangeText={setSenha}/>
                     
-                    <Text style={{marginLeft: 4, fontWeight: 400, marginVertical: 10 }}>Confirme a senha</Text> 
-                        <TextInput style={{padding: 8, backgroundColor: "#3D4364", width: "100%", borderRadius: 15}} 
+                    <Text style={{marginLeft: 4, fontWeight: 400, marginTop: 10, marginBottom: 5, }}>Confirme a senha</Text> 
+                        <TextInput style={{padding: 10, backgroundColor: "#3D4364", width: "100%", borderRadius: 10}} 
                         secureTextEntry
                         value={confirmSenha} 
                         placeholder="Confirmar senha"

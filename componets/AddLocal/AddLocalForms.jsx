@@ -35,14 +35,14 @@ export default function AddLocalForms() {
     <View style={{ width: '80%' }}>
       <Text style={{ fontSize: 25, color: "white", marginTop: 30, marginBottom: 10, textAlign: 'center' }}>Adicionar Local</Text>
       <View>
-        <Text>Nome do Local:</Text>
+        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Nome do Local:</Text>
         <TextInput value={nome} onChangeText={setNome} style={styles.input} />
       </View>
       <View>
-        <Text>Nome do Responsável:</Text>
+        <Text style={{color: "white", paddingLeft: 5, paddingBottom:2}}>Nome do Responsável:</Text>
         <TextInput value={responsavel} onChangeText={setResponsavel} style={styles.input} />
       </View>
-      <TouchableOpacity style={{ borderRadius: 30 }} onPress={handleCadastrar}>
+      <TouchableOpacity style={{ borderRadius: 30, paddingTop:10 }} onPress={handleCadastrar}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
     </View>
@@ -51,11 +51,12 @@ export default function AddLocalForms() {
 
 const styles = {
   input: {
-    borderColor: "black",
+    borderColor: "white",
     borderWidth: 2,
     borderRadius: 15,
     padding: 9,
     marginBottom: 10,
+    color: 'white'
   },
   buttonText: {
     fontSize: 18,

@@ -14,8 +14,8 @@ export default function LogoTop(){
        
       <Image
                     source={require("../../assets/logotccbranca.png")}
-                   style={{ width: 90, 
-                    height: 90, 
+                   style={{ width: '80%', 
+                    height: '80%', 
                     resizeMode: 'contain',  
                     alignItems: 'center', 
                     marginLeft: 10 , justifyContent:"center", 

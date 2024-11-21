@@ -43,7 +43,7 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
     <!-- Cabeçalho com logo e título -->
     <table style="width: 100%; border: none;">
       <tr>
-        <td style="width: 10%;"><img src="logo-do-app.png" alt="Logo" style="width: 100px; height: auto;"></td>
+        <td style="width: 10%;"><img src="https://i.imgur.com/pRC35QQ.png" alt="Logo" style="width: 100px; height: auto;"></td>
         <td style="text-align: center; font-size: 18px; font-weight: bold;">Relatório de Gerenciamento Patrimonial - Inventário ${lugar}</td>
         <td style="width: 10%;"></td>
       </tr>
@@ -54,7 +54,7 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
       <p><strong>Período do Levantamento:</strong> ${obterDataAtualFormatada()}</p>
       <p><strong>Entidade:</strong> [Nome da Entidade]</p>
       <p><strong>Total de itens no/a local seguinte levantamento anterior: ${quantidade}</strong></p>
-      <p><strong>Total de itens encontrados no/a local: ${bensFinded}</strong></p>
+      <p><strong>Total de itens encontrados no/a local: ${bensFinded + lugarErrado.length}</strong></p>
     
     </div>
 
@@ -74,10 +74,10 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
                 <tr>
                   <td>${item.codigo}</td>
                   <td>${item.nome}</td>
-                  <td>R$ ${item.valor_aquisicao}</td>
+                  <td>${item.valor_aquisicao}</td>
                   <td>${item.estado_conservacao}</td>
                 </tr>
-              `).join('')}      </tbody>
+              `).join('')}    </tbody>
     </table>
 
     <!-- Tabela de itens encontrados -->
@@ -127,16 +127,16 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
     <!-- Rodapé com local, data e assinaturas -->
     <table style="width: 100%; margin-top: 30px;">
       <tr>
-        <td style="text-align: left;">Local, ${obterDataAtualFormatada()}</td>
+            <td style="text-align: left;"> Data: ____/____/______</td>
         <td style="text-align: right;">
-          <div>____________________________________</div>
+          <div>__________________________________________________</div>
           <div>Diretor(a) de Administração</div>
         </td>
       </tr>
       <tr>
         <td style="text-align: left;"></td>
         <td style="text-align: right;">
-          <div>____________________________________</div>
+          <div>__________________________________________________</div>
           <div>Responsável</div>
         </td>
       </tr>
@@ -157,9 +157,9 @@ export default function RelatorioFaltas({faltando, encontrados, lugarErrado,  lu
   }
 
  return(
-  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.28, }}> 
-    <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.28, backgroundColor: "#ECAA71", borderRadius: 15,  marginRight: 10 }}>
-        <Text style={{paddingVertical: 11, fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 9}}>Gerar {'\n'} relatório </Text>
+  <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between",  width: Dimensions.get("window").width * 0.45, }}> 
+    <TouchableOpacity onPress={UnicoEstado} style={{ width: Dimensions.get("window").width * 0.43, backgroundColor: "#ECAA71", borderRadius: 15,  marginRight: 10 }}>
+        <Text style={{paddingVertical: 10.5, fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Gerar {'\n'} relatório </Text>
   </TouchableOpacity> 
   </View>
  );

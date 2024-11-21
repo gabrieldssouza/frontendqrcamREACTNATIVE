@@ -23,11 +23,11 @@ export default function WelcomeScreen() {
                     }
                     onPress={() => navigation.navigate('SingUp')}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>
-                        Sign Up
+                        Cadastre-se
                     </Text>
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
-                    <Text style={{ color: 'white' }}>Already have an account?</Text>
+                    <Text style={{ color: 'white' }}>Já possui uma conta?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                         <Text style={{ fontWeight: '600', color: '#ECAA71', marginLeft: 4 }}>Login</Text>
                     </TouchableOpacity>

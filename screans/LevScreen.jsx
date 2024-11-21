@@ -11,10 +11,8 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
  import api from '../services/api';
 
  export default function LevScreen()  {
-  const route = useRoute();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
- 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,33 +40,22 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
       
 
       < View  > 
-                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Nome da filial</Text>
-
+                    <Text style={{fontSize: 25, color: "white", marginLeft: 10, marginTop: 30}}>Inventários</Text>
                     <View style={{ height: 3,
     backgroundColor: 'white', width: Dimensions.get("window").width * 0.85, marginTop: 4
     }} />
                            
       </View>
-
-
-
       <ScrollView style={{ marginTop: 30}}>
       
         {data.map((item, index) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Levantamento', { idLevantamento: item.idLevantamento })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Levantamento', { idLevantamento: item.idLevantamento, anoLev: item.ano})}>
 
                    <View className="containerBoxBem" key={item.idbem}>
                         <View style={{ backgroundColor: "#3C4568", width: Dimensions.get("screen").width * 0.85, height: 120, borderRadius: 15, padding: 15, flexDirection: 'row', marginBottom: 10, marginTop: 10 }}>
-                            <View>
-                            <Image
-                                source={{uri: data.qrcode}}
-                                style={{ width: 90, height: 90, backgroundColor: "black", borderRadius: 15 }}
-                            />
-                            </View>
                             <View style={{ paddingLeft: 20, justifyContent: "center"}}>
-                            <Text  style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>{item.ano}</Text>
+                            <Text  style={{ paddingBottom: 5, fontWeight: "bold", fontSize: 18}}>Inventário - {item.ano}</Text>
                             <Text >Responsável: {item.responsavel}</Text>
-                            <Text >data: { item.idLevantamento}</Text>
                             </View>
                         </View>
                     </View>
@@ -77,9 +64,12 @@ import BoxLocais from '../componets/BoxLocais/BoxLocais';
         ))}
 
      </ScrollView>
+     <TouchableOpacity onPress={() => navigation.navigate('addLev')} style={{ position: "absolute", bottom: 50, right: 30, width: Dimensions.get("window").width * 0.18, backgroundColor: "#ECAA71", borderRadius: 30 }}>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center', color: 'white', paddingVertical: 11 }}>
+          <Ionicons name="add" size={48} color="white" />
+        </Text>
+      </TouchableOpacity>
          
-
-
     </View>
 
   
